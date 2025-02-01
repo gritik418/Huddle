@@ -1,13 +1,14 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { JSX } from "react";
 import { FaEye, FaUser } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosLock } from "react-icons/io";
 
-const Login = () => {
+const Login = (): JSX.Element => {
   return (
-    <div className="flex justify-center items-center border-2 h-screen bg-gray-100">
+    <div className="flex justify-center items-center border-2 min-h-screen py-16 bg-gray-100">
       <div className="flex bg-white max-w-[600px] w-[90%] flex-col items-center justify-center px-2 py-4 sm:p-8 rounded-lg">
         <Image
           src={"/images/logo-vertical.png"}
