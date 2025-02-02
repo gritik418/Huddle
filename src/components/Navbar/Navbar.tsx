@@ -1,10 +1,14 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { JSX } from "react";
 import { HiChatBubbleBottomCenterText } from "react-icons/hi2";
 import { IoHome } from "react-icons/io5";
 
 const Navbar = (): JSX.Element => {
+  const pathname: string = usePathname();
+
   return (
     <nav className="shadow-md h-14 px-4">
       <div className="items-center h-full flex gap-8 justify-between">
@@ -19,18 +23,28 @@ const Navbar = (): JSX.Element => {
           </Link>
 
           <ul className="flex items-center gap-4">
-            <li>
+            <li
+              className={`${
+                pathname === "/" ? "text-[var(--secondary)] font-bold" : ""
+              }`}
+            >
               <Link
-                href={""}
+                href={"/"}
                 className="flex gap-1 items-center text-sm font-medium"
               >
                 <IoHome className="text-xl" /> Home
               </Link>
             </li>
 
-            <li>
+            <li
+              className={`${
+                pathname.startsWith("/chat")
+                  ? "text-[var(--secondary)] font-bold"
+                  : ""
+              }`}
+            >
               <Link
-                href={""}
+                href={"/chat"}
                 className="flex gap-1 items-center text-sm font-medium"
               >
                 <HiChatBubbleBottomCenterText className="text-xl" /> Chats
