@@ -41,9 +41,10 @@ const ChatListItem = ({
           >
             {firstName} {lastName}
           </p>
+
           <p
             className={`text-xs text-gray-400 font-medium ${
-              isSelected ? "text-gray-100" : "text-black"
+              isSelected ? "text-gray-50" : "text-black"
             }`}
           >
             {lastMessage}
