@@ -5,7 +5,9 @@ const ChatSection = ({
 }: {
   children: React.ReactNode;
 }): JSX.Element => {
-  return <div className="w-1/3 border-2 h-[calc(100%-56px)]">{children}</div>;
+  return (
+    <div className="w-1/3 border-r-2 border-gray-100 h-full">{children}</div>
+  );
 };
 
 export default ChatSection;

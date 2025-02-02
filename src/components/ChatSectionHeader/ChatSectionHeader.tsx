@@ -5,7 +5,7 @@ import { IoIosNotifications } from "react-icons/io";
 
 const ChatSectionHeader = (): JSX.Element => {
   return (
-    <div className="h-16 border-b-[1px] flex items-center p-2 gap-3">
+    <div className="h-16 border-b-2 px-3 border-gray-100 flex items-center p-2 gap-3">
       <ChatSearchBar />
 
       <div className="gap-1 flex">

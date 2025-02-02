@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React, { JSX } from "react";
 
 const ChatListItem = ({
   firstName,
@@ -11,7 +11,7 @@ const ChatListItem = ({
   firstName: string;
   lastName: string;
   lastMessage: string;
-}) => {
+}): JSX.Element => {
   let isSelected: boolean = false;
   if (firstName == "John") {
     isSelected = true;
@@ -42,8 +42,8 @@ const ChatListItem = ({
             {firstName} {lastName}
           </p>
           <p
-            className={`text-sm text-gray-400 font-medium ${
-              isSelected ? "text-gray-200" : "text-black"
+            className={`text-xs text-gray-400 font-medium ${
+              isSelected ? "text-gray-100" : "text-black"
             }`}
           >
             {lastMessage}
