@@ -2,8 +2,8 @@ import SocketProvider from "@/contexts/SocketContext/SocketProvider";
 import ReduxProvider from "@/providers/ReduxProvider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 import { ToastContainer } from "react-toastify";
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

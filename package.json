@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
+    "@radix-ui/react-menubar": "^1.1.6",
     "@reduxjs/toolkit": "^2.5.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.474.0",
     "next": "15.1.6",
     "next-themes": "^0.4.4",
     "react": "^19.0.0",
@@ -20,6 +24,8 @@
     "react-redux": "^9.2.0",
     "react-toastify": "^11.0.3",
     "socket.io-client": "^4.8.1",
+    "tailwind-merge": "^3.0.1",
+    "tailwindcss-animate": "^1.0.7",
     "zod": "^3.24.1"
   },
   "devDependencies": {

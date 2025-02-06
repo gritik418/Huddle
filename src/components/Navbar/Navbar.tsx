@@ -3,8 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { JSX } from "react";
-import { HiChatBubbleBottomCenterText } from "react-icons/hi2";
-import { IoHome } from "react-icons/io5";
+import { IoChatbubblesSharp, IoHome } from "react-icons/io5";
+import ProfileMenu from "../ProfileMenu/ProfileMenu";
+import { FaUserFriends } from "react-icons/fa";
 
 const Navbar = (): JSX.Element => {
   const pathname: string = usePathname();
@@ -47,28 +48,20 @@ const Navbar = (): JSX.Element => {
                 href={"/chat"}
                 className="flex gap-1 items-center text-sm font-medium"
               >
-                <HiChatBubbleBottomCenterText className="text-xl" /> Chats
+                <IoChatbubblesSharp className="text-xl" /> Chats
               </Link>
             </li>
           </ul>
         </div>
 
-        <div className="flex gap-2 bg-gray-200 pl-4 p-1 rounded-full">
-          <div className="flex flex-col justify-center items-start">
-            <p className="text-sm font-normal">John Doe</p>
-            <p className="text-xs">@johndoe</p>
+        <div className="flex gap-3 items-center">
+          <div className="flex bg-gray-200 relative cursor-pointer h-10 w-10 items-center justify-center rounded-full">
+            <FaUserFriends className="text-2xl" />
+
+            <span className="absolute h-2 w-2 bg-red-400 rounded-full right-1 top-1"></span>
           </div>
-          <div className="h-10 w-10 rounded-full">
-            <Image
-              src={
-                "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
-              }
-              alt="avatar"
-              height={40}
-              width={40}
-              className="h-full w-full rounded-full object-cover"
-            />
-          </div>
+
+          <ProfileMenu />
         </div>
       </div>
     </nav>
