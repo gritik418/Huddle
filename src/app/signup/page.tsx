@@ -128,7 +128,7 @@ const SignUp = (): JSX.Element => {
 
           <div className="flex flex-col mb-4">
             <label
-              htmlFor="password_confirmation"
+              htmlFor="passwordConfirmation"
               className="text-lg text-gray-600 font-medium"
             >
               Confirm Password
@@ -137,11 +137,11 @@ const SignUp = (): JSX.Element => {
             <div className="flex items-center gap-2 rounded-md p-2 bg-gray-100 outline-none">
               <IoIosLock className="text-lg" />
               <input
-                id="password_confirmation"
+                id="passwordConfirmation"
                 type="password"
                 className="flex-1 bg-transparent outline-none"
                 placeholder="Enter your password"
-                name="password_confirmation"
+                name="passwordConfirmation"
               />
               <FaEye />
             </div>
