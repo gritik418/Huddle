@@ -1,7 +1,7 @@
-import React, { JSX } from "react";
-import ChatSearchBar from "../ChatSearchBar/ChatSearchBar";
-import { FiPlus } from "react-icons/fi";
+import { JSX } from "react";
 import { IoIosNotifications } from "react-icons/io";
+import ChatRequestDialog from "../ChatRequestDialog/ChatRequestDialog";
+import ChatSearchBar from "../ChatSearchBar/ChatSearchBar";
 
 const ChatSectionHeader = (): JSX.Element => {
   return (
@@ -9,9 +9,7 @@ const ChatSectionHeader = (): JSX.Element => {
       <ChatSearchBar />
 
       <div className="gap-1 flex">
-        <div className="flex min-h-10 h-10 w-10 min-w-10 rounded-full items-center justify-center bg-gray-100">
-          <FiPlus />
-        </div>
+        <ChatRequestDialog />
 
         <div className="relative flex min-h-10 h-10 w-10 min-w-10 rounded-full items-center justify-center bg-gray-100">
           <IoIosNotifications />
