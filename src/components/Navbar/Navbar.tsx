@@ -5,13 +5,13 @@ import { usePathname } from "next/navigation";
 import { JSX } from "react";
 import { IoChatbubblesSharp, IoHome } from "react-icons/io5";
 import ProfileMenu from "../ProfileMenu/ProfileMenu";
-import { FaUserFriends } from "react-icons/fa";
+import { BsBellFill } from "react-icons/bs";
 
 const Navbar = (): JSX.Element => {
   const pathname: string = usePathname();
 
   return (
-    <nav className="shadow-md h-14 px-4">
+    <nav className="shadow-lg sticky top-0 h-14 px-4 z-[999]">
       <div className="items-center h-full flex gap-8 justify-between">
         <div className="flex gap-8">
           <Link href={"/"}>
@@ -25,9 +25,7 @@ const Navbar = (): JSX.Element => {
 
           <ul className="flex items-center gap-4">
             <li
-              className={`${
-                pathname === "/" ? "text-[var(--secondary)] font-bold" : ""
-              }`}
+              className={`${pathname === "/" ? "text-[var(--secondary)]" : ""}`}
             >
               <Link
                 href={"/"}
@@ -39,9 +37,7 @@ const Navbar = (): JSX.Element => {
 
             <li
               className={`${
-                pathname.startsWith("/chat")
-                  ? "text-[var(--secondary)] font-bold"
-                  : ""
+                pathname.startsWith("/chat") ? "text-[var(--secondary)]" : ""
               }`}
             >
               <Link
@@ -56,7 +52,7 @@ const Navbar = (): JSX.Element => {
 
         <div className="flex gap-3 items-center">
           <div className="flex bg-gray-200 relative cursor-pointer h-10 w-10 items-center justify-center rounded-full">
-            <FaUserFriends className="text-2xl" />
+            <BsBellFill />
 
             <span className="absolute h-2 w-2 bg-red-400 rounded-full right-1 top-1"></span>
           </div>

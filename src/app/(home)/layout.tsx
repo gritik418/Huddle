@@ -1,9 +1,11 @@
 import HomeSidebar from "@/components/HomeSidebar/HomeSidebar";
 import Navbar from "@/components/Navbar/Navbar";
-import StoriesContainer from "@/components/StoriesContainer/StoriesContainer";
-import React, { JSX } from "react";
 
-const Home = (): JSX.Element => {
+export default function Layout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <div className="h-screen">
       <Navbar />
@@ -11,11 +13,10 @@ const Home = (): JSX.Element => {
         <HomeSidebar />
 
         <div className="flex w-[calc(100%-300px)] flex-1 bg-gray-100 p-3">
-          <StoriesContainer />
+          {/* <StoriesContainer /> */}
+          {children}
         </div>
       </div>
     </div>
   );
-};
-
-export default Home;
+}
