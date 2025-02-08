@@ -3,7 +3,7 @@ import { IoSearchOutline } from "react-icons/io5";
 
 const ChatSearchBar = (): JSX.Element => {
   return (
-    <div className="bg-[#f2f2f2] px-4 h-10 flex rounded-full p-2 w-full items-center gap-2">
+    <div className="bg-[#f2f2f2] px-4 h-10 w-[calc(100%-90px)] flex rounded-full p-2 items-center gap-2">
       <input
         type="text"
         placeholder="Search here..."

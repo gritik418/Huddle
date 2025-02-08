@@ -3,8 +3,8 @@ import React, { JSX } from "react";
 
 const MessageItem = ({ isSent }: { isSent: boolean }): JSX.Element => {
   return isSent ? (
-    <div className="bg-[var(--secondary)] ml-auto w-max p-2 my-2 px-4 rounded-tl-3xl rounded-br-3xl rounded-bl-3xl">
-      <p className="text-white text-xs font-medium">
+    <div className="bg-[var(--secondary)] ml-auto max-w-[85%] p-2 my-2 px-4 rounded-tl-3xl rounded-br-3xl rounded-bl-3xl">
+      <p className="text-white text-xs font-medium text-wrap">
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officiis,
         quibusdam?
       </p>

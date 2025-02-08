@@ -1,7 +1,7 @@
 import { JSX } from "react";
-import { IoIosNotifications } from "react-icons/io";
-import ChatRequestDialog from "../ChatRequestDialog/ChatRequestDialog";
+import ChatNotificationMenu from "../ChatNotificationMenu/ChatNotificationMenu";
 import ChatSearchBar from "../ChatSearchBar/ChatSearchBar";
+import SendChatRequestDialog from "../SendChatRequestDialog/SendChatRequestDialog";
 
 const ChatSectionHeader = (): JSX.Element => {
   return (
@@ -9,12 +9,9 @@ const ChatSectionHeader = (): JSX.Element => {
       <ChatSearchBar />
 
       <div className="gap-1 flex">
-        <ChatRequestDialog />
+        <SendChatRequestDialog />
 
-        <div className="relative flex min-h-10 h-10 w-10 min-w-10 rounded-full items-center justify-center bg-gray-100">
-          <IoIosNotifications />
-          <span className="absolute h-2 w-2 bg-red-400 rounded-full top-1 right-1"></span>
-        </div>
+        <ChatNotificationMenu />
       </div>
     </div>
   );
