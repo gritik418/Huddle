@@ -31,11 +31,13 @@ const chatRequestSlice = createSlice({
         state.searchedUsersForChatRequest = [];
       })
       .addCase(searchUsersForChatRequestAsync.fulfilled, (state, action) => {
-        if (action.payload.success) {
-          if (action.payload.users) {
-            state.searchedUsersForChatRequest = action.payload.users;
-          } else {
-            state.searchUserForChatRequestMessage = action.payload.message;
+        if (action.payload) {
+          if (action.payload?.success) {
+            if (action.payload.users) {
+              state.searchedUsersForChatRequest = action.payload.users;
+            } else {
+              state.searchUserForChatRequestMessage = action.payload.message;
+            }
           }
         }
       })

@@ -11,7 +11,6 @@ export const searchUsersForChatRequest = async (searchQuery: string) => {
         },
       }
     );
-
     return data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
@@ -19,5 +18,9 @@ export const searchUsersForChatRequest = async (searchQuery: string) => {
         return error.response.data;
       }
     }
+    return {
+      success: false,
+      message: "We couldn't find any matching users.",
+    };
   }
 };

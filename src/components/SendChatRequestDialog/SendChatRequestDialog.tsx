@@ -1,15 +1,14 @@
 "use client";
-import { AppDispatch } from "@/app/store";
 import {
-  searchUsersForChatRequestAsync,
   selectSearchedUsersForChatRequest,
   selectSearchUserForChatRequestMessage,
 } from "@/features/chatRequest/chatRequestSlice";
-import { ChangeEvent, JSX, useEffect, useState } from "react";
+import { JSX } from "react";
 import { FiPlus } from "react-icons/fi";
 import { MdGroups2 } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
-import Spinner from "../Spinner/Spinner";
+import { useSelector } from "react-redux";
+import SearchBarForChatRequest from "../SearchBarForChatRequest/SearchBarForChatRequest";
+import SearchedUserForChatItem from "../SearchedUserForChatItem/SearchedUserForChatItem";
 import {
   Dialog,
   DialogContent,
@@ -17,25 +16,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import SearchedUserForChatItem from "../SearchedUserForChatItem/SearchedUserForChatItem";
 
 const SendChatRequestDialog = (): JSX.Element => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const dispatch = useDispatch<AppDispatch>();
   const searchedUsers = useSelector(selectSearchedUsersForChatRequest);
   const message: string = useSelector(selectSearchUserForChatRequestMessage);
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
-
-  useEffect(() => {
-    const timeOutId = setTimeout(() => {
-      dispatch(searchUsersForChatRequestAsync(searchQuery));
-    }, 1500);
-
-    return () => clearTimeout(timeOutId);
-  }, [searchQuery, dispatch]);
 
   return (
     <Dialog>
@@ -54,18 +38,8 @@ const SendChatRequestDialog = (): JSX.Element => {
             <div className="h-1 border-b-2 mt-4 w-2/3"></div>
           </DialogTitle>
         </DialogHeader>
-        <div className="grid gap-1">
-          <p className="text-xs text-gray-500">
-            Search for users to send a chat request.
-          </p>
-          <input
-            type="text"
-            onChange={handleChange}
-            value={searchQuery}
-            placeholder="Search users..."
-            className="bg-gray-100 p-2 rounded-lg outline-[var(--secondary)]"
-          />
-        </div>
+
+        <SearchBarForChatRequest />
 
         <div className="mt-2 max-h-[400px]">
           {searchedUsers?.length > 0 ? (
