@@ -1,19 +1,67 @@
-import React from "react";
+"use client";
+import {
+  GetChatRequestsApiResponse,
+  useGetChatRequestsQuery,
+} from "@/features/api/chatRequestApi";
+import { IoIosNotifications } from "react-icons/io";
+import Spinner from "../Spinner/Spinner";
 import {
   Menubar,
   MenubarContent,
-  MenubarItem,
   MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarSub,
-  MenubarSubContent,
-  MenubarSubTrigger,
   MenubarTrigger,
 } from "../ui/menubar";
-import { IoIosNotifications } from "react-icons/io";
+import ChatRequestItem from "../ChatRequestItem/ChatRequestItem";
 
 const ChatNotificationMenu = () => {
+  const { isLoading, data, error } = useGetChatRequestsQuery();
+
+  const renderContent = () => {
+    if (isLoading) {
+      return (
+        <div className="flex items-center my-3 justify-center">
+          <Spinner variant="small" />
+        </div>
+      );
+    }
+
+    if (error || !data) {
+      return (
+        <div className="flex items-center my-3 justify-center">
+          <p className="text-xs">No requests found.</p>
+        </div>
+      );
+    }
+
+    if (data.message) {
+      return (
+        <div className="flex items-center my-3 justify-center">
+          <p className="text-xs">{data.message}</p>
+        </div>
+      );
+    }
+
+    if (!data.requests) {
+      return (
+        <div className="flex items-center my-3 justify-center">
+          <p className="text-xs">{"No requests found."}</p>
+        </div>
+      );
+    }
+
+    if (!data?.message && !data.requests) {
+      return (
+        <div className="flex items-center my-3 justify-center">
+          <p className="text-xs">{"No requests found."}</p>
+        </div>
+      );
+    }
+
+    return data?.requests.map((request: ChatRequest) => (
+      <ChatRequestItem key={request._id} {...request.sender} />
+    ));
+  };
+
   return (
     <Menubar className="p-0 border-none">
       <MenubarMenu>
@@ -26,27 +74,11 @@ const ChatNotificationMenu = () => {
             <span className="absolute h-2 w-2 bg-red-400 rounded-full top-1 right-1"></span>
           </div>
         </MenubarTrigger>
-        <MenubarContent>
-          <MenubarItem>
-            New Tab <MenubarShortcut>⌘T</MenubarShortcut>
-          </MenubarItem>
-          <MenubarItem>
-            New Window <MenubarShortcut>⌘N</MenubarShortcut>
-          </MenubarItem>
-          <MenubarItem disabled>New Incognito Window</MenubarItem>
-          <MenubarSeparator />
-          <MenubarSub>
-            <MenubarSubTrigger>Share</MenubarSubTrigger>
-            <MenubarSubContent>
-              <MenubarItem>Email link</MenubarItem>
-              <MenubarItem>Messages</MenubarItem>
-              <MenubarItem>Notes</MenubarItem>
-            </MenubarSubContent>
-          </MenubarSub>
-          <MenubarSeparator />
-          <MenubarItem>
-            Print... <MenubarShortcut>⌘P</MenubarShortcut>
-          </MenubarItem>
+        <MenubarContent className="max-w-[500px] min-w-[300px]">
+          <p className="p-1 text-sm font-medium text-gray-500">Chat Requests</p>
+          <div className="flex flex-col max-h-[430px] overflow-y-scroll hide-scrollbar">
+            {renderContent()}
+          </div>
         </MenubarContent>
       </MenubarMenu>
     </Menubar>
