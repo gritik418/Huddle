@@ -13,7 +13,6 @@ export default function Layout({
         <HomeSidebar />
 
         <div className="flex w-[calc(100%-300px)] flex-1 bg-gray-100 p-3">
-          {/* <StoriesContainer /> */}
           {children}
         </div>
       </div>

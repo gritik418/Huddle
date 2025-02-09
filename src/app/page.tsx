@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar/Navbar";
 import StoriesContainer from "@/components/StoriesContainer/StoriesContainer";
 import { JSX } from "react";
 
-const Home = (): JSX.Element => {
+const App = (): JSX.Element => {
   return (
     <div className="h-screen">
       <Navbar />
@@ -22,4 +22,4 @@ const Home = (): JSX.Element => {
   );
 };
 
-export default Home;
+export default App;

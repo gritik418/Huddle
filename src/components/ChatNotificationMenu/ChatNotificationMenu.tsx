@@ -1,8 +1,5 @@
 "use client";
-import {
-  GetChatRequestsApiResponse,
-  useGetChatRequestsQuery,
-} from "@/features/api/chatRequestApi";
+import { useGetChatRequestsQuery } from "@/features/api/chatRequestApi";
 import { IoIosNotifications } from "react-icons/io";
 import Spinner from "../Spinner/Spinner";
 import {
@@ -25,7 +22,7 @@ const ChatNotificationMenu = () => {
       );
     }
 
-    if (error || !data) {
+    if (error || !data?.requests?.length) {
       return (
         <div className="flex items-center my-3 justify-center">
           <p className="text-xs">No requests found.</p>
@@ -37,22 +34,6 @@ const ChatNotificationMenu = () => {
       return (
         <div className="flex items-center my-3 justify-center">
           <p className="text-xs">{data.message}</p>
-        </div>
-      );
-    }
-
-    if (!data.requests) {
-      return (
-        <div className="flex items-center my-3 justify-center">
-          <p className="text-xs">{"No requests found."}</p>
-        </div>
-      );
-    }
-
-    if (!data?.message && !data.requests) {
-      return (
-        <div className="flex items-center my-3 justify-center">
-          <p className="text-xs">{"No requests found."}</p>
         </div>
       );
     }

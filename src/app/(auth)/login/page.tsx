@@ -1,5 +1,5 @@
 "use client";
-import { LoginResponse, useUserLoginMutation } from "@/features/api/authAPI";
+import { LoginResponse, useUserLoginMutation } from "@/features/api/authApi";
 import loginSchema, { LoginData } from "@/validators/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";

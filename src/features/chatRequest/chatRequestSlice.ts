@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { searchUsersForChatRequest } from "./chatRequestAPI";
+import { RootState } from "@/app/store";
 
 interface ChatRequestState {
   searchedUsersForChatRequest: SearchedUserForChat[];
@@ -48,12 +49,10 @@ const chatRequestSlice = createSlice({
   },
 });
 
-export const selectSearchedUsersForChatRequest = (state: {
-  chatRequest: ChatRequestState;
-}) => state.chatRequest.searchedUsersForChatRequest;
+export const selectSearchedUsersForChatRequest = (state: RootState) =>
+  state.chatRequest.searchedUsersForChatRequest;
 
-export const selectSearchUserForChatRequestMessage = (state: {
-  chatRequest: ChatRequestState;
-}) => state.chatRequest.searchUserForChatRequestMessage;
+export const selectSearchUserForChatRequestMessage = (state: RootState) =>
+  state.chatRequest.searchUserForChatRequestMessage;
 
 export default chatRequestSlice;
