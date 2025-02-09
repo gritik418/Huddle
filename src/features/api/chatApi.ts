@@ -6,6 +6,12 @@ type GetChatsApiResponse = {
   chats?: Chat[];
 };
 
+type GetChatByIdApiResponse = {
+  success: boolean;
+  message?: string;
+  chat?: Chat;
+};
+
 const chatApi = createApi({
   reducerPath: "chatApi",
   baseQuery: fetchBaseQuery({
@@ -22,9 +28,19 @@ const chatApi = createApi({
         },
       }),
     }),
+    getChatById: build.query<GetChatByIdApiResponse, string>({
+      query: (chatId: string) => ({
+        url: `/${chatId}`,
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetChatsQuery } = chatApi;
+export const { useGetChatsQuery, useGetChatByIdQuery } = chatApi;
 
 export default chatApi;
