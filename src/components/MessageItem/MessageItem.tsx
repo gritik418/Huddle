@@ -20,7 +20,7 @@ const MessageItem = ({ isSent }: { isSent: boolean }): JSX.Element => {
         height={20}
         width={20}
       />
-      <div className="bg-white w-max p-2 px-4 rounded-tr-3xl rounded-br-3xl rounded-bl-3xl">
+      <div className="bg-white p-2 px-4 rounded-tr-3xl rounded-br-3xl rounded-bl-3xl">
         <p className="text-gray-600 text-xs font-medium">
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officiis,
           quibusdam?

@@ -14,10 +14,12 @@ const SelectedChat = () => {
       <Navbar />
 
       <div className="flex h-[calc(100%-56px)]">
-        <ChatSection>
-          <ChatSectionHeader />
-          <ChatList />
-        </ChatSection>
+        <div className="hidden md:flex">
+          <ChatSection>
+            <ChatSectionHeader />
+            <ChatList />
+          </ChatSection>
+        </div>
 
         <MessageSection>
           <MessageSectionHeader />

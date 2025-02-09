@@ -3,7 +3,7 @@ import React, { JSX } from "react";
 
 const IdleChat = (): JSX.Element => {
   return (
-    <div className="flex flex-col flex-1 h-full items-center justify-center">
+    <div className="hidden md:flex flex-col flex-1 h-full items-center justify-center">
       <Image
         src={"/images/idle-chat.jpg"}
         alt="idle"

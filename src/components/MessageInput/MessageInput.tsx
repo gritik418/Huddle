@@ -3,8 +3,8 @@ import { BsFillSendFill } from "react-icons/bs";
 
 const MessageInput = () => {
   return (
-    <div className="h-20 bg-[#f2f2f2] flex items-start justify-center">
-      <div className="flex h-14 bg-white w-[90%] gap-2 pl-5 rounded-full items-center p-1 justify-between">
+    <div className="h-20 bg-[#f2f2f2] flex items-start justify-center pt-2">
+      <div className="flex h-14 bg-white w-full max-w-[90%] gap-2 pl-5 rounded-full items-center p-1 justify-between">
         <input
           type="text"
           placeholder="Type here..."

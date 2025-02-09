@@ -6,7 +6,9 @@ const ChatSection = ({
   children: React.ReactNode;
 }): JSX.Element => {
   return (
-    <div className="w-1/3 border-r-2 border-gray-100 h-full">{children}</div>
+    <div className="w-full md:w-[400px] border-r-2 border-gray-100 h-full">
+      {children}
+    </div>
   );
 };
 

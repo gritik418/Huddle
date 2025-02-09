@@ -5,7 +5,7 @@ const MessageSection = ({
 }: {
   children: React.ReactNode;
 }): JSX.Element => {
-  return <div className="w-2/3">{children}</div>;
+  return <div className="flex flex-1 flex-col">{children}</div>;
 };
 
 export default MessageSection;
