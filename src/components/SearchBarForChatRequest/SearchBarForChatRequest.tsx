@@ -14,7 +14,9 @@ const SearchBarForChatRequest = (): JSX.Element => {
 
   useEffect(() => {
     const timeOutId = setTimeout(() => {
-      dispatch(searchUsersForChatRequestAsync(searchQuery));
+      if (searchQuery.length > 0) {
+        dispatch(searchUsersForChatRequestAsync(searchQuery));
+      }
     }, 1500);
 
     return () => clearTimeout(timeOutId);

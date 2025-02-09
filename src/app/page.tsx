@@ -1,8 +1,9 @@
+"use client";
 import AddPost from "@/components/AddPost/AddPost";
 import HomeSidebar from "@/components/HomeSidebar/HomeSidebar";
 import Navbar from "@/components/Navbar/Navbar";
 import StoriesContainer from "@/components/StoriesContainer/StoriesContainer";
-import React, { JSX } from "react";
+import { JSX } from "react";
 
 const Home = (): JSX.Element => {
   return (
