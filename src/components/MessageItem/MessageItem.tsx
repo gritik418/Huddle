@@ -1,12 +1,13 @@
 import Image from "next/image";
 import React, { JSX } from "react";
 
-const MessageItem = ({ isSent }: { isSent: boolean }): JSX.Element => {
+type PropsType = { isSent: boolean; message: Message };
+
+const MessageItem = ({ isSent, message }: PropsType): JSX.Element => {
   return isSent ? (
-    <div className="bg-[var(--secondary)] ml-auto max-w-[85%] p-2 my-2 px-4 rounded-tl-3xl rounded-br-3xl rounded-bl-3xl">
-      <p className="text-white text-xs font-medium text-wrap">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officiis,
-        quibusdam?
+    <div className="bg-[var(--secondary)] w-max ml-auto max-w-[85%] p-2 my-2 px-4 rounded-tl-3xl rounded-br-3xl rounded-bl-3xl">
+      <p className="text-white w-max text-xs font-medium text-wrap">
+        {message.content}
       </p>
     </div>
   ) : (
@@ -21,9 +22,8 @@ const MessageItem = ({ isSent }: { isSent: boolean }): JSX.Element => {
         width={20}
       />
       <div className="bg-white p-2 px-4 rounded-tr-3xl rounded-br-3xl rounded-bl-3xl">
-        <p className="text-gray-600 text-xs font-medium">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officiis,
-          quibusdam?
+        <p className="text-gray-600 text-xs w-max font-medium">
+          {message.content}
         </p>
       </div>
     </div>

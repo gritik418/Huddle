@@ -61,3 +61,14 @@ interface ChatMember {
   username: string;
   profilePicture?: string;
 }
+
+interface Message {
+  _id: string;
+  chatId: Types.ObjectId;
+  sender: Types.ObjectId;
+  content?: string;
+  attachment?: Attachment[];
+  sentAt?: Date;
+  readAt?: Date;
+  status: "sent" | "delivered" | "read" | "failed";
+}

@@ -1,6 +1,6 @@
 import { selectUser } from "@/features/user/userSlice";
 import Image from "next/image";
-import React, { JSX } from "react";
+import { JSX } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useSelector } from "react-redux";
 

@@ -12,9 +12,10 @@ const SocketProvider = ({
 }): JSX.Element => {
   const socket: Socket = useMemo(
     () =>
-      io("http://localhost:8080", {
+      io("ws://localhost:8080", {
         withCredentials: true,
         transports: ["websocket"],
+        reconnection: true,
       }),
     []
   );

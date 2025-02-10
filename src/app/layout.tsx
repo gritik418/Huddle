@@ -5,6 +5,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import "./globals.css";
 import UserProvider from "@/components/UserProvider/UserProvider";
+import SocketHandler from "@/components/SocketHandler/SocketHandler";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +34,9 @@ export default function RootLayout({
       >
         <SocketProvider>
           <ReduxProvider>
-            <UserProvider>{children}</UserProvider>
+            <UserProvider>
+              <SocketHandler>{children}</SocketHandler>
+            </UserProvider>
           </ReduxProvider>
         </SocketProvider>
         <ToastContainer />

@@ -5,21 +5,26 @@ import chatRequestApi from "@/features/api/chatRequestApi";
 import chatApi from "@/features/api/chatApi";
 import userApi from "@/features/api/userApi";
 import userSlice from "@/features/user/userSlice";
+import messageApi from "@/features/api/messageApi";
+import messageSlice from "@/features/message/messageSlice";
 
 const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [chatApi.reducerPath]: chatApi.reducer,
+    [messageApi.reducerPath]: messageApi.reducer,
     [chatRequestApi.reducerPath]: chatRequestApi.reducer,
     [userSlice.reducerPath]: userSlice.reducer,
     [chatRequestSlice.reducerPath]: chatRequestSlice.reducer,
+    [messageSlice.reducerPath]: messageSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(authApi.middleware)
       .concat(userApi.middleware)
       .concat(chatApi.middleware)
+      .concat(messageApi.middleware)
       .concat(chatRequestApi.middleware),
 });
 

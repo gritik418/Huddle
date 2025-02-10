@@ -8,6 +8,7 @@ import MessageSection from "@/components/MessageSection/MessageSection";
 import MessageSectionHeader from "@/components/MessageSectionHeader/MessageSectionHeader";
 import Spinner from "@/components/Spinner/Spinner";
 import { useGetChatByIdQuery } from "@/features/api/chatApi";
+import { useGetMessagesQuery } from "@/features/api/messageApi";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { JSX } from "react";
@@ -23,7 +24,9 @@ const SelectedChat = (): JSX.Element => {
   }
 
   const { chatId } = params;
-  const { isLoading, data, error } = useGetChatByIdQuery(chatId);
+  const { isLoading: isChatLoading, data, error } = useGetChatByIdQuery(chatId);
+  const { isLoading: isMessagesLoading } = useGetMessagesQuery(chatId);
+  const isLoading = isChatLoading || isMessagesLoading;
 
   if (isLoading) {
     return (
@@ -61,7 +64,7 @@ const SelectedChat = (): JSX.Element => {
       <MessageSection>
         <MessageSectionHeader chat={data?.chat} />
         <MessagePlayground />
-        <MessageInput />
+        <MessageInput chatId={chatId} chat={data.chat} />
       </MessageSection>
     </>
   );
