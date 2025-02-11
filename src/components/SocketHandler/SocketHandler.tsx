@@ -1,7 +1,12 @@
 "use client";
 import { AppDispatch } from "@/app/store";
-import { MESSAGE_SENT, NEW_MESSAGE } from "@/constants/events";
+import {
+  MESSAGE_SENT,
+  NEW_CHAT_REQUEST,
+  NEW_MESSAGE,
+} from "@/constants/events";
 import { useSocket } from "@/contexts/SocketContext/SocketProvider";
+import { addChatRequest } from "@/features/chatRequest/chatRequestSlice";
 import { addMessage } from "@/features/message/messageSlice";
 import { usePathname } from "next/navigation";
 import React, { JSX, useCallback, useEffect } from "react";
@@ -17,6 +22,7 @@ const SocketHandler = ({
   const pathname: string = usePathname();
   const dispatch = useDispatch<AppDispatch>();
 
+  //notification pending
   const newMessageHandler = useCallback(({ message }: { message: Message }) => {
     if (pathname.includes(message.chatId)) {
       dispatch(addMessage(message));
@@ -34,15 +40,29 @@ const SocketHandler = ({
     []
   );
 
+  //notification pending
+  const newChatRequestHandler = useCallback(
+    ({ chatRequest }: { chatRequest: ChatRequest }) => {
+      if (chatRequest._id) {
+        dispatch(addChatRequest(chatRequest));
+      }
+    },
+    []
+  );
+
   useEffect(() => {
     socket?.on(NEW_MESSAGE, newMessageHandler);
 
     socket?.on(MESSAGE_SENT, messageSentHandler);
 
-    return () => {
-      socket?.off(NEW_MESSAGE);
+    socket?.on(NEW_CHAT_REQUEST, newChatRequestHandler);
 
-      socket?.off(MESSAGE_SENT);
+    return () => {
+      socket?.off(NEW_MESSAGE, newMessageHandler);
+
+      socket?.off(MESSAGE_SENT, messageSentHandler);
+
+      socket?.off(NEW_CHAT_REQUEST, newChatRequestHandler);
     };
   }, []);
   return <div>{children}</div>;

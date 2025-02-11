@@ -9,20 +9,18 @@ import {
   MenubarTrigger,
 } from "../ui/menubar";
 import ChatRequestItem from "../ChatRequestItem/ChatRequestItem";
+import { useSelector } from "react-redux";
+import {
+  selectChatRequests,
+  selectChatRequestsLoading,
+} from "@/features/chatRequest/chatRequestSlice";
 
 const ChatNotificationMenu = () => {
-  const { isLoading, data, error } = useGetChatRequestsQuery();
+  const chatRequests: ChatRequest[] = useSelector(selectChatRequests);
+  const error = useSelector(selectChatRequestsLoading);
 
   const renderContent = () => {
-    if (isLoading) {
-      return (
-        <div className="flex items-center my-3 justify-center">
-          <Spinner variant="small" />
-        </div>
-      );
-    }
-
-    if (error || !data?.requests?.length) {
+    if (error || !chatRequests?.length) {
       return (
         <div className="flex items-center my-3 justify-center">
           <p className="text-xs">No requests found.</p>
@@ -30,15 +28,7 @@ const ChatNotificationMenu = () => {
       );
     }
 
-    if (data.message) {
-      return (
-        <div className="flex items-center my-3 justify-center">
-          <p className="text-xs">{data.message}</p>
-        </div>
-      );
-    }
-
-    return data?.requests.map((request: ChatRequest) => (
+    return chatRequests?.map((request: ChatRequest) => (
       <ChatRequestItem key={request._id} {...request.sender} />
     ));
   };

@@ -13,9 +13,7 @@ const MessageItem = ({ isSent, message }: PropsType): JSX.Element => {
   ) : (
     <div className="flex my-2 items-start gap-1">
       <Image
-        src={
-          "https://images.unsplash.com/photo-1499557354967-2b2d8910bcca?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHByb2ZpbGUlMjBpbWFnZXN8ZW58MHx8MHx8fDA%3D"
-        }
+        src={message.sender.profilePicture || "/images/default-profile.jpg"}
         className="h-5 w-5 rounded-full"
         alt="profile-image"
         height={20}

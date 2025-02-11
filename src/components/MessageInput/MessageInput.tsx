@@ -38,12 +38,13 @@ const MessageInput = ({ chatId, chat }: { chatId: string; chat: Chat }) => {
           value={content}
           className="flex-1 outline-none text-lg text-gray-500"
         />
-        <div
+        <button
           onClick={handleSendMessage}
-          className="cursor-pointer flex h-12 w-12 rounded-full bg-[var(--secondary)] items-center justify-center"
+          disabled={content === ""}
+          className="flex h-12 w-12 rounded-full bg-[var(--secondary)] items-center justify-center"
         >
           <BsFillSendFill className="text-white text-lg" />
-        </div>
+        </button>
       </div>
     </div>
   );

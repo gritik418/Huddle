@@ -21,7 +21,7 @@ const MessagePlayground = (): JSX.Element => {
         <MessageItem
           key={message._id}
           message={message}
-          isSent={user?._id === message.sender}
+          isSent={user?._id === message.sender._id}
         />
       ))}
       <div ref={messagesEndRef}></div>

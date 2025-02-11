@@ -29,7 +29,7 @@ interface SearchedUserForChat {
   lastName?: string;
 }
 
-interface ChatRequestUser {
+interface ChatRequestSender {
   _id: string;
   username: string;
   profilePicture?: string;
@@ -40,7 +40,7 @@ interface ChatRequestUser {
 interface ChatRequest {
   _id: string;
   receiver: string;
-  sender: ChatRequestUser;
+  sender: ChatRequestSender;
   status: "pending" | "accepted" | "rejected";
 }
 
@@ -62,10 +62,18 @@ interface ChatMember {
   profilePicture?: string;
 }
 
+interface MessageSender {
+  _id: string;
+  firstName: string;
+  lastName?: string;
+  username: string;
+  profilePicture?: string;
+}
+
 interface Message {
   _id: string;
   chatId: Types.ObjectId;
-  sender: Types.ObjectId;
+  sender: MessageSender;
   content?: string;
   attachment?: Attachment[];
   sentAt?: Date;
