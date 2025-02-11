@@ -1,5 +1,5 @@
 import { SEND_MESSAGE } from "@/constants/events";
-import { useSocket } from "@/contexts/SocketContext/SocketProvider";
+import { useSocket } from "@/contexts/socket/SocketProvider";
 import { selectUser } from "@/features/user/userSlice";
 import { ChangeEvent, useState } from "react";
 import { BsFillSendFill } from "react-icons/bs";

@@ -1,11 +1,11 @@
-import SocketProvider from "@/contexts/SocketContext/SocketProvider";
+import SocketHandler from "@/components/SocketHandler/SocketHandler";
+import UserProvider from "@/components/UserProvider/UserProvider";
+import SocketProvider from "@/contexts/socket/SocketProvider";
 import ReduxProvider from "@/providers/ReduxProvider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import "./globals.css";
-import UserProvider from "@/components/UserProvider/UserProvider";
-import SocketHandler from "@/components/SocketHandler/SocketHandler";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

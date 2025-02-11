@@ -3,7 +3,7 @@ import React, { JSX } from "react";
 import { FaCheck } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
-const ChatRequestItem = (user: ChatRequestUser): JSX.Element => {
+const ChatRequestItem = (user: ChatRequestSender): JSX.Element => {
   return (
     <div className="flex justify-between items-center gap-5 hover:bg-gray-50 p-1 rounded-md">
       <div className="flex items-center gap-1">

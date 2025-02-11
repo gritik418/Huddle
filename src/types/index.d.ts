@@ -80,3 +80,10 @@ interface Message {
   readAt?: Date;
   status: "sent" | "delivered" | "read" | "failed";
 }
+
+interface NotificationData {
+  id: string;
+  type: "CHAT_REQUEST" | "NEW_MESSAGE" | "NEW_GROUP";
+  chatRequest?: ChatRequest;
+  message?: Message;
+}

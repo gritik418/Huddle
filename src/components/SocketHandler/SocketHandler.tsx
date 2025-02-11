@@ -5,13 +5,15 @@ import {
   NEW_CHAT_REQUEST,
   NEW_MESSAGE,
 } from "@/constants/events";
-import { useSocket } from "@/contexts/SocketContext/SocketProvider";
+import { useSocket } from "@/contexts/socket/SocketProvider";
 import { addChatRequest } from "@/features/chatRequest/chatRequestSlice";
 import { addMessage } from "@/features/message/messageSlice";
 import { usePathname } from "next/navigation";
 import React, { JSX, useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import { Socket } from "socket.io-client";
+import Notification from "../Notification/Notification";
 
 const SocketHandler = ({
   children,
@@ -22,14 +24,25 @@ const SocketHandler = ({
   const pathname: string = usePathname();
   const dispatch = useDispatch<AppDispatch>();
 
-  //notification pending
-  const newMessageHandler = useCallback(({ message }: { message: Message }) => {
-    if (pathname.includes(message.chatId)) {
-      dispatch(addMessage(message));
-    } else {
-      // notify
-    }
-  }, []);
+  const newMessageHandler = useCallback(
+    ({ message }: { message: Message }) => {
+      if (pathname.includes(message.chatId.toString())) {
+        dispatch(addMessage(message));
+      } else {
+        toast(
+          Notification({
+            id: message.chatId,
+            type: "NEW_MESSAGE",
+            message: message,
+          }),
+          {
+            hideProgressBar: true,
+          }
+        );
+      }
+    },
+    [pathname, dispatch]
+  );
 
   const messageSentHandler = useCallback(
     ({ message }: { message: Message }) => {
@@ -37,20 +50,31 @@ const SocketHandler = ({
         dispatch(addMessage(message));
       }
     },
-    []
+    [pathname, dispatch]
   );
 
-  //notification pending
   const newChatRequestHandler = useCallback(
     ({ chatRequest }: { chatRequest: ChatRequest }) => {
       if (chatRequest._id) {
         dispatch(addChatRequest(chatRequest));
+        toast(
+          Notification({
+            id: chatRequest._id,
+            type: "CHAT_REQUEST",
+            chatRequest,
+          }),
+          {
+            hideProgressBar: true,
+          }
+        );
       }
     },
-    []
+    [dispatch]
   );
 
   useEffect(() => {
+    if (!socket) return;
+
     socket?.on(NEW_MESSAGE, newMessageHandler);
 
     socket?.on(MESSAGE_SENT, messageSentHandler);
@@ -64,7 +88,7 @@ const SocketHandler = ({
 
       socket?.off(NEW_CHAT_REQUEST, newChatRequestHandler);
     };
-  }, []);
+  }, [socket, newMessageHandler, messageSentHandler, newChatRequestHandler]);
   return <div>{children}</div>;
 };
 
