@@ -13,9 +13,12 @@ import Link from "next/link";
 
 const ProfileMenu = (): JSX.Element => {
   return (
-    <Menubar className="bg-none outline-none border-none">
+    <Menubar asChild className="bg-none outline-none border-none">
       <MenubarMenu>
-        <MenubarTrigger className="p-0 rounded-xl cursor-pointer">
+        <MenubarTrigger
+          asChild
+          className="p-0 bg-none rounded-xl cursor-pointer"
+        >
           <div className="h-10 w-10 rounded-xl">
             <Image
               src={

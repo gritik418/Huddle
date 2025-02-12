@@ -11,7 +11,7 @@ const Navbar = (): JSX.Element => {
   const pathname: string = usePathname();
 
   return (
-    <nav className="shadow-lg sticky top-0 h-14 px-4 z-50">
+    <nav className="shadow-lg sticky top-0 h-14 px-4 z-50 bg-white/75 backdrop-blur-sm">
       <div className="items-center h-full flex gap-8 justify-between">
         <div className="flex gap-8">
           <Link href={"/"}>
