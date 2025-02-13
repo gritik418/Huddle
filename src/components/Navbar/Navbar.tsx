@@ -3,15 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { JSX } from "react";
+import { IoIosNotifications, IoIosPersonAdd } from "react-icons/io";
 import { IoChatbubblesSharp, IoHome } from "react-icons/io5";
 import ProfileMenu from "../ProfileMenu/ProfileMenu";
-import { BsBellFill } from "react-icons/bs";
 
 const Navbar = (): JSX.Element => {
   const pathname: string = usePathname();
 
   return (
-    <nav className="shadow-lg sticky top-0 h-14 px-4 z-50 bg-white/75 backdrop-blur-sm">
+    <nav className="shadow-lg sticky top-0 h-14 px-4 z-50 bg-white/75 backdrop-blur-lg">
       <div className="items-center h-full flex gap-8 justify-between">
         <div className="flex gap-8">
           <Link href={"/"}>
@@ -52,7 +52,13 @@ const Navbar = (): JSX.Element => {
 
         <div className="flex gap-3 items-center">
           <div className="flex bg-gray-200 relative cursor-pointer h-10 w-10 items-center justify-center rounded-full">
-            <BsBellFill />
+            <IoIosPersonAdd className="text-xl text-gray-700" />
+
+            <span className="absolute h-2 w-2 bg-red-400 rounded-full right-1 top-1"></span>
+          </div>
+
+          <div className="flex bg-gray-200 relative cursor-pointer h-10 w-10 items-center justify-center rounded-full">
+            <IoIosNotifications className="text-xl text-gray-700" />
 
             <span className="absolute h-2 w-2 bg-red-400 rounded-full right-1 top-1"></span>
           </div>

@@ -16,10 +16,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
+import { useRouter } from "next/navigation";
 
 const SendChatRequestDialog = (): JSX.Element => {
+  const router = useRouter();
   const searchedUsers = useSelector(selectSearchedUsersForChatRequest);
   const message: string = useSelector(selectSearchUserForChatRequestMessage);
+
+  const handleCreateGroupChat = (): void => {
+    router.push("/group/create");
+  };
 
   return (
     <Dialog>
@@ -31,7 +37,10 @@ const SendChatRequestDialog = (): JSX.Element => {
       <DialogContent className="sm:max-w-[425px] rounded-lg">
         <DialogHeader>
           <DialogTitle className="mt-4 w-full flex flex-col items-center">
-            <button className="flex p-2 gap-3 rounded-lg w-full bg-[var(--secondary)] outline-none text-white">
+            <button
+              onClick={handleCreateGroupChat}
+              className="flex p-2 gap-3 rounded-lg w-full bg-[var(--secondary)] outline-none text-white"
+            >
               <MdGroups2 />
               Create group chat
             </button>

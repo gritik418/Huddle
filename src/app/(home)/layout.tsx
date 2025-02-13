@@ -9,7 +9,7 @@ export default function Layout({
   return (
     <div className="h-screen">
       <Navbar />
-      <div className="flex h-[calc(100%-56px)]">
+      <div className="flex bg-gray-100 pt-4 h-[calc(100%-56px)]">
         <HomeSidebar />
 
         <div className="flex w-[calc(100%-300px)] flex-1 bg-gray-100 p-3">

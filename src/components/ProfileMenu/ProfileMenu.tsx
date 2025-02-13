@@ -1,15 +1,17 @@
-import React, { JSX } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { JSX } from "react";
+import { FaUser } from "react-icons/fa";
+import { FiLogOut } from "react-icons/fi";
+import { IoMdSettings } from "react-icons/io";
 import {
   Menubar,
   MenubarContent,
   MenubarItem,
   MenubarMenu,
   MenubarSeparator,
-  MenubarShortcut,
   MenubarTrigger,
 } from "../ui/menubar";
-import Image from "next/image";
-import Link from "next/link";
 
 const ProfileMenu = (): JSX.Element => {
   return (
@@ -33,13 +35,17 @@ const ProfileMenu = (): JSX.Element => {
         </MenubarTrigger>
         <MenubarContent>
           <Link href={"/profile"}>
-            <MenubarItem className="cursor-pointer">Profile</MenubarItem>
+            <MenubarItem className="cursor-pointer gap-2">
+              <FaUser /> Profile
+            </MenubarItem>
           </Link>
-          <MenubarItem>New Window</MenubarItem>
+          <MenubarItem className="cursor-pointer gap-2">
+            <IoMdSettings /> Settings
+          </MenubarItem>
           <MenubarSeparator />
-          <MenubarItem>Share</MenubarItem>
-          <MenubarSeparator />
-          <MenubarItem>Print</MenubarItem>
+          <MenubarItem className="cursor-pointer gap-2">
+            <FiLogOut /> Logout
+          </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
     </Menubar>

@@ -1,16 +1,19 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { JSX } from "react";
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import { FaStream, FaUserFriends } from "react-icons/fa";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { FaBroadcastTower } from "react-icons/fa";
+import { HiLightningBolt } from "react-icons/hi";
+import { FaPeopleGroup } from "react-icons/fa6";
 
 const HomeSidebar = (): JSX.Element => {
   const pathname: string = usePathname();
   return (
-    <div className="bg-gray-100 w-[300px] flex flex-col p-3 gap-3">
-      <div className="flex flex-col bg-white rounded-lg p-2 items-center">
+    <div className="w-[300px] flex flex-col p-3 gap-3">
+      <div className="flex flex-col bg-white rounded-lg p-2 py-6 items-center">
         <div className="flex h-20 w-20">
           <Image
             src={
@@ -64,6 +67,18 @@ const HomeSidebar = (): JSX.Element => {
         </Link>
 
         <Link
+          href={"/pulse"}
+          className={`flex items-center p-2 gap-2 rounded-lg ${
+            pathname.startsWith("/pulse")
+              ? "bg-[var(--secondary)] text-white"
+              : ""
+          }`}
+        >
+          <HiLightningBolt className="text-lg" />
+          <p className="text-sm font-bold">Pulse</p>
+        </Link>
+
+        <Link
           href={"/buddies"}
           className={`flex items-center p-2 gap-2 rounded-lg ${
             pathname.startsWith("/buddies")
@@ -73,6 +88,30 @@ const HomeSidebar = (): JSX.Element => {
         >
           <FaUserFriends className="text-lg" />
           <p className="text-sm font-bold">Buddies</p>
+        </Link>
+
+        <Link
+          href={"/channels"}
+          className={`flex items-center p-2 gap-2 rounded-lg ${
+            pathname.startsWith("/channels")
+              ? "bg-[var(--secondary)] text-white"
+              : ""
+          }`}
+        >
+          <FaBroadcastTower className="text-lg" />
+          <p className="text-sm font-bold">Channels</p>
+        </Link>
+
+        <Link
+          href={"/communities"}
+          className={`flex items-center p-2 gap-2 rounded-lg ${
+            pathname.startsWith("/communities")
+              ? "bg-[var(--secondary)] text-white"
+              : ""
+          }`}
+        >
+          <FaPeopleGroup className="text-lg" />
+          <p className="text-sm font-bold">Communities</p>
         </Link>
       </div>
     </div>
