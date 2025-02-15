@@ -1,7 +1,5 @@
 "use client";
-import ChatList from "@/components/ChatList/ChatList";
 import ChatSection from "@/components/ChatSection/ChatSection";
-import ChatSectionHeader from "@/components/ChatSectionHeader/ChatSectionHeader";
 import MessageInput from "@/components/MessageInput/MessageInput";
 import MessagePlayground from "@/components/MessagePlayground/MessagePlayground";
 import MessageSection from "@/components/MessageSection/MessageSection";
@@ -11,7 +9,7 @@ import { useGetChatByIdQuery } from "@/features/api/chatApi";
 import { useGetMessagesQuery } from "@/features/api/messageApi";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import React, { JSX } from "react";
+import { JSX } from "react";
 
 const SelectedChat = (): JSX.Element => {
   const params: { chatId: string } = useParams();
@@ -25,7 +23,9 @@ const SelectedChat = (): JSX.Element => {
 
   const { chatId } = params;
   const { isLoading: isChatLoading, data, error } = useGetChatByIdQuery(chatId);
-  const { isLoading: isMessagesLoading } = useGetMessagesQuery(chatId);
+  const { isLoading: isMessagesLoading } = useGetMessagesQuery(chatId, {
+    refetchOnMountOrArgChange: true,
+  });
   const isLoading = isChatLoading || isMessagesLoading;
 
   if (isLoading) {
@@ -55,10 +55,7 @@ const SelectedChat = (): JSX.Element => {
   return (
     <>
       <div className="hidden md:flex">
-        <ChatSection>
-          <ChatSectionHeader />
-          <ChatList chatId={chatId} />
-        </ChatSection>
+        <ChatSection chatId={chatId} />
       </div>
 
       <MessageSection>

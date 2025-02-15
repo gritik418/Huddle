@@ -31,13 +31,18 @@ const chatRequestSlice = createSlice({
   initialState,
   reducers: {
     addChatRequest: (state, action) => {
-      console.log(action.payload);
       const existingRequest = state.chatRequests.find(
         (request) => request._id === action.payload._id
       );
       if (!existingRequest) {
         state.chatRequests.push(action.payload);
       }
+    },
+    removeChatRequest: (state, action) => {
+      const chatRequests = state.chatRequests.filter(
+        (request) => request._id !== action.payload
+      );
+      state.chatRequests = chatRequests;
     },
   },
   extraReducers: (builder) => {
@@ -98,6 +103,6 @@ export const selectChatRequestsLoading = (state: RootState) =>
 export const selectChatRequests = (state: RootState) =>
   state.chatRequest.chatRequests;
 
-export const { addChatRequest } = chatRequestSlice.actions;
+export const { addChatRequest, removeChatRequest } = chatRequestSlice.actions;
 
 export default chatRequestSlice;

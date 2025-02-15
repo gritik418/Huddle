@@ -1,13 +1,17 @@
-import React, { JSX } from "react";
+import { useGetChatsQuery } from "@/features/api/chatApi";
+import { JSX } from "react";
+import ChatList from "../ChatList/ChatList";
+import ChatSectionHeader from "../ChatSectionHeader/ChatSectionHeader";
 
-const ChatSection = ({
-  children,
-}: {
-  children: React.ReactNode;
-}): JSX.Element => {
+type PropsType = { chatId: string | null };
+
+const ChatSection = ({ chatId }: PropsType): JSX.Element => {
+  useGetChatsQuery();
+
   return (
     <div className="w-full md:w-[400px] border-r-2 border-gray-100 h-full">
-      {children}
+      <ChatSectionHeader />
+      <ChatList chatId={chatId} />
     </div>
   );
 };

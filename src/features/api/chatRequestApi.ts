@@ -5,6 +5,11 @@ export type SendChatRequestApiResponse = {
   message?: string;
 };
 
+export type ChatRequestApiResponse = {
+  success: boolean;
+  message?: string;
+};
+
 export type GetChatRequestsApiResponse = {
   success: boolean;
   message?: string;
@@ -38,10 +43,34 @@ const chatRequestApi = createApi({
         body: { receiverId },
       }),
     }),
+    acceptChatRequest: build.mutation<ChatRequestApiResponse, string>({
+      query: (requestId: string) => ({
+        url: `/${requestId}/accept`,
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
+    declineChatRequest: build.mutation<ChatRequestApiResponse, string>({
+      query: (requestId: string) => ({
+        url: `/${requestId}/decline`,
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useSendChatRequestMutation, useGetChatRequestsQuery } =
-  chatRequestApi;
+export const {
+  useSendChatRequestMutation,
+  useGetChatRequestsQuery,
+  useAcceptChatRequestMutation,
+  useDeclineChatRequestMutation,
+} = chatRequestApi;
 
 export default chatRequestApi;

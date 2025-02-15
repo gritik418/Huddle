@@ -29,7 +29,7 @@ const ChatNotificationMenu = () => {
     }
 
     return chatRequests?.map((request: ChatRequest) => (
-      <ChatRequestItem key={request._id} {...request.sender} />
+      <ChatRequestItem key={request._id} chatRequest={request} />
     ));
   };
 

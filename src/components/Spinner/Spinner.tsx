@@ -4,7 +4,7 @@ import React, { JSX } from "react";
 const Spinner = ({
   variant,
 }: {
-  variant: "xs" | "small" | "medium" | "large";
+  variant: "xs" | "small" | "medium" | "large" | null;
 }): JSX.Element => {
   switch (variant) {
     case "xs":
@@ -47,9 +47,9 @@ const Spinner = ({
     default:
       return (
         <Image
-          height={30}
-          width={30}
-          src={"/images/loading.gif"}
+          height={20}
+          width={20}
+          src={"/images/loader.gif"}
           alt="loading"
         />
       );

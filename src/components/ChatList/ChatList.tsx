@@ -1,13 +1,15 @@
 "use client";
 import React, { JSX } from "react";
 import ChatListItem from "../ChatListItem/ChatListItem";
-import { useGetChatsQuery } from "@/features/api/chatApi";
 import Spinner from "../Spinner/Spinner";
+import { useSelector } from "react-redux";
+import { selectChats, selectChatsLoading } from "@/features/chat/chatSlice";
 
 type PropsType = { chatId: string | null };
 
 const ChatList = ({ chatId }: PropsType): JSX.Element => {
-  const { isLoading, data, error } = useGetChatsQuery();
+  const isLoading: boolean = useSelector(selectChatsLoading);
+  const chats: Chat[] = useSelector(selectChats);
 
   const renderContent = () => {
     if (isLoading) {
@@ -18,7 +20,7 @@ const ChatList = ({ chatId }: PropsType): JSX.Element => {
       );
     }
 
-    if (error || !data) {
+    if (!chats || chats.length === 0) {
       return (
         <div className="flex items-center my-3 justify-center">
           <p className="text-xs">No chats at this moment.</p>
@@ -26,15 +28,7 @@ const ChatList = ({ chatId }: PropsType): JSX.Element => {
       );
     }
 
-    if (error || !data?.chats?.length) {
-      return (
-        <div className="flex items-center my-3 justify-center">
-          <p className="text-xs">No chats at this moment.</p>
-        </div>
-      );
-    }
-
-    return data?.chats.map((chat: Chat) => (
+    return chats.map((chat: Chat) => (
       <ChatListItem key={chat._id} chat={chat} chatId={chatId} />
     ));
   };

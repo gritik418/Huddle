@@ -2,6 +2,7 @@
 import { AppDispatch } from "@/app/store";
 import {
   MESSAGE_SENT,
+  NEW_CHAT,
   NEW_CHAT_REQUEST,
   NEW_MESSAGE,
 } from "@/constants/events";
@@ -14,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { Socket } from "socket.io-client";
 import Notification from "../Notification/Notification";
+import { addChat } from "@/features/chat/chatSlice";
 
 const SocketHandler = ({
   children,
@@ -72,23 +74,44 @@ const SocketHandler = ({
     [dispatch]
   );
 
+  const newChatHandler = useCallback(
+    ({ chat }: { chat: Chat }) => {
+      if (chat._id) {
+        dispatch(addChat(chat));
+      }
+    },
+    [dispatch]
+  );
+
+  // ADDED_TO_GROUP, {chat,creator};
+
   useEffect(() => {
     if (!socket) return;
 
-    socket?.on(NEW_MESSAGE, newMessageHandler);
+    socket.on(NEW_MESSAGE, newMessageHandler);
 
-    socket?.on(MESSAGE_SENT, messageSentHandler);
+    socket.on(MESSAGE_SENT, messageSentHandler);
 
-    socket?.on(NEW_CHAT_REQUEST, newChatRequestHandler);
+    socket.on(NEW_CHAT_REQUEST, newChatRequestHandler);
+
+    socket.on(NEW_CHAT, newChatHandler);
 
     return () => {
-      socket?.off(NEW_MESSAGE, newMessageHandler);
+      socket.off(NEW_MESSAGE, newMessageHandler);
 
-      socket?.off(MESSAGE_SENT, messageSentHandler);
+      socket.off(MESSAGE_SENT, messageSentHandler);
 
-      socket?.off(NEW_CHAT_REQUEST, newChatRequestHandler);
+      socket.off(NEW_CHAT_REQUEST, newChatRequestHandler);
+
+      socket.off(NEW_CHAT, newChatHandler);
     };
-  }, [socket, newMessageHandler, messageSentHandler, newChatRequestHandler]);
+  }, [
+    socket,
+    newMessageHandler,
+    messageSentHandler,
+    newChatRequestHandler,
+    newChatHandler,
+  ]);
   return <div>{children}</div>;
 };
 

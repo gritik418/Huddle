@@ -7,6 +7,7 @@ import userApi from "@/features/api/userApi";
 import userSlice from "@/features/user/userSlice";
 import messageApi from "@/features/api/messageApi";
 import messageSlice from "@/features/message/messageSlice";
+import chatSlice from "@/features/chat/chatSlice";
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     [userSlice.reducerPath]: userSlice.reducer,
     [chatRequestSlice.reducerPath]: chatRequestSlice.reducer,
     [messageSlice.reducerPath]: messageSlice.reducer,
+    [chatSlice.reducerPath]: chatSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
