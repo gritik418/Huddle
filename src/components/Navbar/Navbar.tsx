@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { JSX } from "react";
 import { IoChatbubblesSharp, IoHome } from "react-icons/io5";
 import FollowRequestsMenu from "../FollowRequestsMenu/FollowRequestsMenu";
+import NavigationDrawer from "../NavigationDrawer/NavigationDrawer";
 import NotificationsDrawer from "../NotificationsDrawer/NotificationsDrawer";
 import ProfileMenu from "../ProfileMenu/ProfileMenu";
 
@@ -24,7 +25,7 @@ const Navbar = (): JSX.Element => {
             />
           </Link>
 
-          <ul className="flex items-center gap-4">
+          <ul className="hidden md:flex items-center gap-4">
             <li
               className={`${pathname === "/" ? "text-[var(--secondary)]" : ""}`}
             >
@@ -57,6 +58,8 @@ const Navbar = (): JSX.Element => {
           <NotificationsDrawer />
 
           <ProfileMenu />
+
+          <NavigationDrawer />
         </div>
       </div>
     </nav>

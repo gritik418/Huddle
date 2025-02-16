@@ -1,9 +1,11 @@
+import { selectUser } from "@/features/user/userSlice";
 import Image from "next/image";
 import Link from "next/link";
 import { JSX } from "react";
 import { FaUser } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { IoMdSettings } from "react-icons/io";
+import { useSelector } from "react-redux";
 import {
   Menubar,
   MenubarContent,
@@ -12,11 +14,10 @@ import {
   MenubarSeparator,
   MenubarTrigger,
 } from "../ui/menubar";
-import { useSelector } from "react-redux";
-import { selectUser } from "@/features/user/userSlice";
 
 const ProfileMenu = (): JSX.Element => {
   const user: User | null = useSelector(selectUser);
+
   return (
     <Menubar asChild className="bg-none outline-none border-none">
       <MenubarMenu>

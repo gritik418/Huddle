@@ -1,15 +1,18 @@
 "use client";
 import SearchBar from "@/components/SearchBar/SearchBar";
+import SearchedAccounts from "@/components/SearchedAccounts/SearchedAccounts";
 import { Tabs } from "@chakra-ui/react";
-import React, { JSX } from "react";
+import { JSX, useState } from "react";
 import { FaHashtag } from "react-icons/fa";
 import { GrChannel } from "react-icons/gr";
 import { LuUser } from "react-icons/lu";
 
 const Explore = (): JSX.Element => {
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
   return (
     <div className="flex flex-col w-full gap-5">
-      <SearchBar />
+      <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
       <div className="bg-white rounded-lg p-3">
         <Tabs.Root defaultValue="accounts">
@@ -39,7 +42,10 @@ const Explore = (): JSX.Element => {
             </Tabs.Trigger>
           </Tabs.List>
 
-          <Tabs.Content value="accounts">Manage your team members</Tabs.Content>
+          <Tabs.Content value="accounts">
+            <SearchedAccounts searchQuery={searchQuery} />
+          </Tabs.Content>
+
           <Tabs.Content value="projects">Manage your projects</Tabs.Content>
           <Tabs.Content value="hashtags">
             Manage your tasks for freelancers

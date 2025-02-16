@@ -1,17 +1,28 @@
-import React, { JSX } from "react";
+import React, { ChangeEvent, JSX } from "react";
 import { FaSearch } from "react-icons/fa";
 
-const SearchBar = (): JSX.Element => {
+type PropsType = {
+  searchQuery: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+};
+
+const SearchBar = ({ setSearchQuery, searchQuery }: PropsType): JSX.Element => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
   return (
     <div className="flex w-full bg-white p-3  gap-2 rounded-lg">
-      <input
-        className="flex w-full p-2 bg-gray-100 outline-none rounded-lg"
-        type="text"
-        placeholder="Explore people, channels, communities, and more."
-      />
-      <button className="bg-[var(--secondary)] px-5 text-white rounded-lg font-semibold">
-        <FaSearch />
-      </button>
+      <div className="flex w-full bg-gray-100 rounded-lg items-center p-1 px-4 gap-2">
+        <FaSearch className="text-gray-400" />
+        <input
+          onChange={handleChange}
+          value={searchQuery}
+          className="p-2 bg-transparent outline-none text-lg flex-1 text-gray-500"
+          type="text"
+          placeholder="Explore people, channels, communities, and more."
+        />
+      </div>
     </div>
   );
 };
