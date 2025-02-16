@@ -8,17 +8,19 @@ import { usePathname } from "next/navigation";
 import { FaBroadcastTower } from "react-icons/fa";
 import { HiLightningBolt } from "react-icons/hi";
 import { FaPeopleGroup } from "react-icons/fa6";
+import { useSelector } from "react-redux";
+import { selectUser } from "@/features/user/userSlice";
 
 const HomeSidebar = (): JSX.Element => {
   const pathname: string = usePathname();
+  const user: User | null = useSelector(selectUser);
+
   return (
-    <div className="w-[300px] flex flex-col p-3 gap-3">
+    <div className="hidden w-[300px] md:flex flex-col p-3 gap-3">
       <div className="flex flex-col bg-white rounded-lg p-2 py-6 items-center">
         <div className="flex h-20 w-20">
           <Image
-            src={
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
-            }
+            src={user?.profilePicture || "/images/default-profile.jpg"}
             alt="avatar"
             height={80}
             width={80}
@@ -26,19 +28,21 @@ const HomeSidebar = (): JSX.Element => {
           />
         </div>
 
-        <p className="text-sm font-semibold mt-1 mb-3">John Doe</p>
+        <p className="text-sm font-semibold mt-1 mb-3">
+          {user?.firstName} {user?.lastName}
+        </p>
 
         <div className="flex justify-evenly w-full">
           <div className="flex flex-col items-center text-gray-600">
             <p className="text-xs font-bold">Following</p>
-            <p className="font-semibold text-xs">120</p>
+            <p className="font-semibold text-xs">{user?.following.length}</p>
           </div>
 
           <div className="min-h-full border-[1px] border-gray-300"></div>
 
           <div className="flex flex-col items-center text-gray-600">
             <p className="text-xs font-bold">Followers</p>
-            <p className="font-semibold text-xs">120</p>
+            <p className="font-semibold text-xs">{user?.followers.length}</p>
           </div>
         </div>
       </div>

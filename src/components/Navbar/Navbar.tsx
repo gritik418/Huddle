@@ -3,10 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { JSX } from "react";
-import { IoIosNotifications, IoIosPersonAdd } from "react-icons/io";
 import { IoChatbubblesSharp, IoHome } from "react-icons/io5";
-import ProfileMenu from "../ProfileMenu/ProfileMenu";
 import FollowRequestsMenu from "../FollowRequestsMenu/FollowRequestsMenu";
+import NotificationsDrawer from "../NotificationsDrawer/NotificationsDrawer";
+import ProfileMenu from "../ProfileMenu/ProfileMenu";
 
 const Navbar = (): JSX.Element => {
   const pathname: string = usePathname();
@@ -54,11 +54,7 @@ const Navbar = (): JSX.Element => {
         <div className="flex gap-3 items-center">
           <FollowRequestsMenu />
 
-          <div className="flex bg-gray-100 relative cursor-pointer h-10 w-10 items-center justify-center rounded-full">
-            <IoIosNotifications className="text-xl text-gray-700" />
-
-            <span className="absolute h-2 w-2 bg-red-400 rounded-full right-1 top-1"></span>
-          </div>
+          <NotificationsDrawer />
 
           <ProfileMenu />
         </div>

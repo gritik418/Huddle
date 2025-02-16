@@ -12,8 +12,11 @@ import {
   MenubarSeparator,
   MenubarTrigger,
 } from "../ui/menubar";
+import { useSelector } from "react-redux";
+import { selectUser } from "@/features/user/userSlice";
 
 const ProfileMenu = (): JSX.Element => {
+  const user: User | null = useSelector(selectUser);
   return (
     <Menubar asChild className="bg-none outline-none border-none">
       <MenubarMenu>
@@ -23,13 +26,11 @@ const ProfileMenu = (): JSX.Element => {
         >
           <div className="h-10 w-10 rounded-xl">
             <Image
-              src={
-                "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
-              }
+              src={user?.profilePicture || "/images/default-profile.jpg"}
               alt="avatar"
-              height={40}
-              width={40}
-              className="h-full w-full rounded-xl object-cover"
+              height={50}
+              width={50}
+              className="h-full w-full rounded-xl object-contain"
             />
           </div>
         </MenubarTrigger>
