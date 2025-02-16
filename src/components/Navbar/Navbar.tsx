@@ -6,6 +6,7 @@ import { JSX } from "react";
 import { IoIosNotifications, IoIosPersonAdd } from "react-icons/io";
 import { IoChatbubblesSharp, IoHome } from "react-icons/io5";
 import ProfileMenu from "../ProfileMenu/ProfileMenu";
+import FollowRequestsMenu from "../FollowRequestsMenu/FollowRequestsMenu";
 
 const Navbar = (): JSX.Element => {
   const pathname: string = usePathname();
@@ -51,13 +52,9 @@ const Navbar = (): JSX.Element => {
         </div>
 
         <div className="flex gap-3 items-center">
-          <div className="flex bg-gray-200 relative cursor-pointer h-10 w-10 items-center justify-center rounded-full">
-            <IoIosPersonAdd className="text-xl text-gray-700" />
+          <FollowRequestsMenu />
 
-            <span className="absolute h-2 w-2 bg-red-400 rounded-full right-1 top-1"></span>
-          </div>
-
-          <div className="flex bg-gray-200 relative cursor-pointer h-10 w-10 items-center justify-center rounded-full">
+          <div className="flex bg-gray-100 relative cursor-pointer h-10 w-10 items-center justify-center rounded-full">
             <IoIosNotifications className="text-xl text-gray-700" />
 
             <span className="absolute h-2 w-2 bg-red-400 rounded-full right-1 top-1"></span>

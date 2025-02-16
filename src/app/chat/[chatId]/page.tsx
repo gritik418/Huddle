@@ -22,12 +22,10 @@ const SelectedChat = (): JSX.Element => {
   }
 
   const { chatId } = params;
-  const { isLoading: isChatLoading, data, error } = useGetChatByIdQuery(chatId);
-  const { isLoading: isMessagesLoading } = useGetMessagesQuery(chatId, {
+  const { isLoading, data, error } = useGetChatByIdQuery(chatId);
+  useGetMessagesQuery(chatId, {
     refetchOnMountOrArgChange: true,
   });
-  const isLoading = isChatLoading || isMessagesLoading;
-
   if (isLoading) {
     return (
       <div className="flex h-screen flex-1 items-center justify-center">

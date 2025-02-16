@@ -21,6 +21,14 @@ interface User {
   passwordResetTokenExpiry?: Date;
 }
 
+interface Follower {
+  _id: string;
+  firstName: string;
+  lastName?: string;
+  username: string;
+  profilePicture?: string;
+}
+
 interface SearchedUserForChat {
   _id: string;
   username: string;
@@ -41,6 +49,21 @@ interface ChatRequest {
   _id: string;
   receiver: string;
   sender: ChatRequestSender;
+  status: "pending" | "accepted" | "rejected";
+}
+
+interface FollowRequestSender {
+  _id: string;
+  username: string;
+  profilePicture?: string;
+  firstName: string;
+  lastName?: string;
+}
+
+interface FollowRequest {
+  _id: string;
+  receiver: string;
+  sender: FollowRequestSender;
   status: "pending" | "accepted" | "rejected";
 }
 

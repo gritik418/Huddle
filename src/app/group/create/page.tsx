@@ -1,10 +1,13 @@
+"use client";
 import SelectGroupAdmins from "@/components/SelectGroupAdmins/SelectGroupAdmins";
 import SelectGroupMembers from "@/components/SelectGroupMembers/SelectGroupMembers";
 import Image from "next/image";
-import React, { JSX } from "react";
+import React, { JSX, useState } from "react";
 import { FaCamera } from "react-icons/fa";
 
 const CreateGroup = (): JSX.Element => {
+  const [adminsToBe, setAdminsToBe] = useState<Follower[]>([]);
+
   return (
     <div className="p-3">
       <div className="flex items-center justify-center mt-8">
@@ -54,9 +57,12 @@ const CreateGroup = (): JSX.Element => {
         </div>
       </div>
 
-      <SelectGroupMembers />
+      <SelectGroupMembers
+        adminsToBe={adminsToBe}
+        setAdminsToBe={setAdminsToBe}
+      />
 
-      <SelectGroupAdmins />
+      <SelectGroupAdmins adminsToBe={adminsToBe} />
 
       <div className="flex container justify-end my-8 m-auto w-full">
         <button className="bg-[var(--secondary)] text-white p-2 rounded-lg font-semibold">

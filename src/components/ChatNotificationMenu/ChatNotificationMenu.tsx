@@ -1,7 +1,5 @@
 "use client";
-import { useGetChatRequestsQuery } from "@/features/api/chatRequestApi";
 import { IoIosNotifications } from "react-icons/io";
-import Spinner from "../Spinner/Spinner";
 import {
   Menubar,
   MenubarContent,
@@ -14,8 +12,9 @@ import {
   selectChatRequests,
   selectChatRequestsLoading,
 } from "@/features/chatRequest/chatRequestSlice";
+import { JSX } from "react";
 
-const ChatNotificationMenu = () => {
+const ChatNotificationMenu = (): JSX.Element => {
   const chatRequests: ChatRequest[] = useSelector(selectChatRequests);
   const error = useSelector(selectChatRequestsLoading);
 

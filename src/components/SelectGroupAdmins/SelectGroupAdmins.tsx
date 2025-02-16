@@ -3,7 +3,11 @@ import { JSX, useState } from "react";
 import SelectAdminTile from "../SelectAdminTile/SelectAdminTile";
 import Image from "next/image";
 
-const SelectGroupAdmins = (): JSX.Element => {
+type PropsType = {
+  adminsToBe: Follower[];
+};
+
+const SelectGroupAdmins = ({ adminsToBe }: PropsType): JSX.Element => {
   const [selectedAdmins, setSelectedAdmins] = useState<string[]>([]);
   return (
     <div className="flex flex-col container m-auto mt-12">
@@ -27,10 +31,13 @@ const SelectGroupAdmins = (): JSX.Element => {
           </div>
         </div>
 
-        <SelectAdminTile
-          selectedAdmins={selectedAdmins}
-          setSelectedAdmins={setSelectedAdmins}
-        />
+        {adminsToBe.map((admin: Follower) => (
+          <SelectAdminTile
+            user={admin}
+            selectedAdmins={selectedAdmins}
+            setSelectedAdmins={setSelectedAdmins}
+          />
+        ))}
       </div>
     </div>
   );

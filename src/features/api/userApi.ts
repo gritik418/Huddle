@@ -6,6 +6,12 @@ type GetUserApiResponse = {
   user?: User;
 };
 
+type GetFollowingApiResponse = {
+  success: boolean;
+  message?: string;
+  following?: Follower[];
+};
+
 const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
@@ -22,9 +28,19 @@ const userApi = createApi({
         },
       }),
     }),
+    getFollowing: build.query<GetFollowingApiResponse, void>({
+      query: () => ({
+        url: "/following",
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetUserQuery } = userApi;
+export const { useGetUserQuery, useGetFollowingQuery } = userApi;
 
 export default userApi;

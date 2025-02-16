@@ -4,10 +4,12 @@ import { RootState } from "@/app/store";
 
 interface MessageState {
   messages: Message[];
+  messagesLoading: boolean;
 }
 
 const initialState: MessageState = {
   messages: [],
+  messagesLoading: false,
 };
 
 const messageSlice = createSlice({
@@ -22,18 +24,36 @@ const messageSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addMatcher(
-      messageApi.endpoints.getMessages.matchFulfilled,
-      (state, action) => {
-        if (action.payload.messages) {
-          state.messages = action.payload.messages;
+    builder
+      .addMatcher(
+        messageApi.endpoints.getMessages.matchPending,
+        (state, action) => {
+          state.messagesLoading = true;
+          state.messages = [];
         }
-      }
-    );
+      )
+      .addMatcher(
+        messageApi.endpoints.getMessages.matchFulfilled,
+        (state, action) => {
+          if (action.payload.messages) {
+            state.messagesLoading = false;
+            state.messages = action.payload.messages;
+          }
+        }
+      )
+      .addMatcher(
+        messageApi.endpoints.getMessages.matchRejected,
+        (state, action) => {
+          state.messagesLoading = false;
+          state.messages = [];
+        }
+      );
   },
 });
 
 export const selectMessages = (state: RootState) => state.message.messages;
+export const selectMessagesLoading = (state: RootState) =>
+  state.message.messagesLoading;
 
 export const { addMessage } = messageSlice.actions;
 
