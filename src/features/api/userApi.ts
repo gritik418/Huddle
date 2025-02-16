@@ -12,6 +12,12 @@ type GetFollowingApiResponse = {
   following?: Follower[];
 };
 
+type GetActiveMembersApiResponse = {
+  success: boolean;
+  message?: string;
+  activeMembers?: string[];
+};
+
 const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
@@ -38,9 +44,23 @@ const userApi = createApi({
         },
       }),
     }),
+    getActiveMembers: build.query<GetActiveMembersApiResponse, void>({
+      query: () => ({
+        url: "/active",
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetUserQuery, useGetFollowingQuery } = userApi;
+export const {
+  useGetUserQuery,
+  useGetFollowingQuery,
+  useGetActiveMembersQuery,
+} = userApi;
 
 export default userApi;

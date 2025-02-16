@@ -16,7 +16,7 @@ const SearchedAccountItem = ({ user }: PropsType): JSX.Element => {
   return (
     <Link
       href={`/user/${user.username}`}
-      className="flex bg-gray-100 p-2 gap-2 items-center rounded-lg"
+      className="flex bg-gray-100 p-2 gap-2 items-center hover:bg-gray-200 transition-colors duration-300 rounded-lg"
     >
       <div className="flex h-16 w-1h-16 rounded-full">
         <Image

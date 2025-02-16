@@ -1,4 +1,4 @@
-import { selectUser } from "@/features/user/userSlice";
+import { selectOnlineMembers, selectUser } from "@/features/user/userSlice";
 import Image from "next/image";
 import { JSX } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 
 const MessageSectionHeader = ({ chat }: { chat: Chat }): JSX.Element => {
   const user: User | null = useSelector(selectUser);
+  const activeMembers: string[] = useSelector(selectOnlineMembers);
 
   if (chat.isGroupChat) {
     return (
@@ -54,7 +55,13 @@ const MessageSectionHeader = ({ chat }: { chat: Chat }): JSX.Element => {
           <p className="text-sm font-medium">
             {sender.firstName} {sender.lastName}
           </p>
-          <p className="text-xs font-medium text-gray-400">{sender.username}</p>
+          {activeMembers.includes(sender._id) ? (
+            <p className="text-xs text-green-600 font-semibold">Active</p>
+          ) : (
+            <p className="text-xs font-medium text-gray-400">
+              {sender.username}
+            </p>
+          )}
         </div>
       </div>
 

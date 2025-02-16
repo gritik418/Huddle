@@ -1,4 +1,4 @@
-import { selectUser } from "@/features/user/userSlice";
+import { selectOnlineMembers, selectUser } from "@/features/user/userSlice";
 import Image from "next/image";
 import Link from "next/link";
 import React, { JSX } from "react";
@@ -11,6 +11,7 @@ type PropsType = {
 
 const ChatListItem = ({ chat, chatId }: PropsType): JSX.Element => {
   const user: User | null = useSelector(selectUser);
+  const activeMembers: string[] = useSelector(selectOnlineMembers);
 
   let isSelected: boolean = false;
   if (chatId) {
@@ -84,7 +85,7 @@ const ChatListItem = ({ chat, chatId }: PropsType): JSX.Element => {
       }`}
     >
       <div className="flex items-center gap-3">
-        <div className="h-12 w-12 rounded-full">
+        <div className="h-12 w-12 rounded-full relative">
           <Image
             src={sender.profilePicture || "/images/default-profile.jpg"}
             alt="proofile-image"
@@ -92,6 +93,9 @@ const ChatListItem = ({ chat, chatId }: PropsType): JSX.Element => {
             height={48}
             width={48}
           />
+          {activeMembers.includes(sender?._id) && (
+            <span className="absolute h-[10px] w-[10px] bg-green-500 bottom-0 right-1 rounded-full"></span>
+          )}
         </div>
 
         <div className="flex flex-col">

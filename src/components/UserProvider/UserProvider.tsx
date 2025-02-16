@@ -1,6 +1,8 @@
 "use client";
-import { useGetUserQuery } from "@/features/api/userApi";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import {
+  useGetActiveMembersQuery,
+  useGetUserQuery,
+} from "@/features/api/userApi";
 import React, { JSX } from "react";
 import Spinner from "../Spinner/Spinner";
 
@@ -10,6 +12,7 @@ const UserProvider = ({
   children: React.ReactNode;
 }>): JSX.Element => {
   const { isLoading } = useGetUserQuery();
+  useGetActiveMembersQuery();
 
   if (isLoading) {
     return (

@@ -5,6 +5,8 @@ import {
   NEW_CHAT,
   NEW_CHAT_REQUEST,
   NEW_MESSAGE,
+  STATUS_UPDATE,
+  USER_ONLINE,
 } from "@/constants/events";
 import { useSocket } from "@/contexts/socket/SocketProvider";
 import { addChatRequest } from "@/features/chatRequest/chatRequestSlice";
@@ -16,6 +18,7 @@ import { toast } from "react-toastify";
 import { Socket } from "socket.io-client";
 import Notification from "../Notification/Notification";
 import { addChat } from "@/features/chat/chatSlice";
+import { addOnlineMember, removeOnlineMember } from "@/features/user/userSlice";
 
 const SocketHandler = ({
   children,
@@ -83,10 +86,23 @@ const SocketHandler = ({
     [dispatch]
   );
 
+  const statusUpdateHandler = useCallback(
+    ({ userId, status }: { userId: string; status: string }) => {
+      if (status === "ONLINE") {
+        dispatch(addOnlineMember({ userId: userId.toString() }));
+      } else {
+        dispatch(removeOnlineMember({ userId: userId.toString() }));
+      }
+    },
+    []
+  );
+
   // ADDED_TO_GROUP, {chat,creator};
 
   useEffect(() => {
     if (!socket) return;
+
+    socket.emit(USER_ONLINE);
 
     socket.on(NEW_MESSAGE, newMessageHandler);
 
@@ -96,6 +112,8 @@ const SocketHandler = ({
 
     socket.on(NEW_CHAT, newChatHandler);
 
+    socket.on(STATUS_UPDATE, statusUpdateHandler);
+
     return () => {
       socket.off(NEW_MESSAGE, newMessageHandler);
 
@@ -104,6 +122,8 @@ const SocketHandler = ({
       socket.off(NEW_CHAT_REQUEST, newChatRequestHandler);
 
       socket.off(NEW_CHAT, newChatHandler);
+
+      socket.off(STATUS_UPDATE, statusUpdateHandler);
     };
   }, [
     socket,
@@ -111,6 +131,7 @@ const SocketHandler = ({
     messageSentHandler,
     newChatRequestHandler,
     newChatHandler,
+    statusUpdateHandler,
   ]);
   return <div>{children}</div>;
 };
