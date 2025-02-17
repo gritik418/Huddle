@@ -5,7 +5,7 @@ import {
 } from "@/features/api/chatRequestApi";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
-import React, { JSX, useState } from "react";
+import { JSX, useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { Bounce, toast } from "react-toastify";
@@ -13,6 +13,7 @@ import Spinner from "../Spinner/Spinner";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/store";
 import { removeChatRequest } from "@/features/chatRequest/chatRequestSlice";
+import Link from "next/link";
 
 type PropsType = {
   chatRequest: ChatRequest;
@@ -176,7 +177,10 @@ const ChatRequestItem = ({ chatRequest }: PropsType): JSX.Element => {
   return (
     <div className="flex justify-between items-center gap-5 hover:bg-gray-50 p-1 rounded-md">
       <div className="flex items-center gap-1">
-        <div className="flex h-12 w-12 rounded-full">
+        <Link
+          href={`/user/${chatRequest.sender.username}`}
+          className="flex h-12 w-12 rounded-full"
+        >
           <Image
             src={
               chatRequest.sender?.profilePicture ||
@@ -187,12 +191,15 @@ const ChatRequestItem = ({ chatRequest }: PropsType): JSX.Element => {
             width={50}
             className="h-12 w-12 rounded-full"
           />
-        </div>
+        </Link>
 
         <div className="flex flex-col">
-          <p className="text-sm font-semibold">
+          <Link
+            href={`/user/${chatRequest.sender.username}`}
+            className="text-sm font-semibold"
+          >
             {chatRequest.sender.firstName} {chatRequest.sender?.lastName}
-          </p>
+          </Link>
 
           <p className="text-xs font-medium text-gray-500">
             @{chatRequest.sender.username}

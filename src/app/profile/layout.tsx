@@ -1,9 +1,11 @@
 "use client";
 import Navbar from "@/components/Navbar/Navbar";
+import { selectUser } from "@/features/user/userSlice";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
+import { useSelector } from "react-redux";
 
 export default function Layout({
   children,
@@ -11,16 +13,7 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   const pathname: string = usePathname();
-
-  const user = {
-    name: "Ritik Gupta",
-    username: "@ritik_",
-    bio: "Web developer | Tech enthusiast | Love coding and design 🌐",
-    email: "ritik@domain.com",
-    followers: 1200,
-    following: 400,
-    posts: 250,
-  };
+  const user: User | null = useSelector(selectUser);
 
   return (
     <div className="flex flex-col bg-gray-100">
@@ -49,26 +42,28 @@ export default function Layout({
           </div>
 
           <div className="flex items-center justify-between pt-24">
-            <div className="flex flex-col">
-              <p className="text-3xl font-semibold">{user.name}</p>
+            <div className="flex flex-col gap-1">
+              <p className="text-3xl font-semibold">
+                {user?.firstName} {user?.lastName}
+              </p>
               <p className="text-xl text-gray-500 font-medium">
-                {user.username}
+                @{user?.username}
               </p>
             </div>
 
             <div className="flex mt-4 space-x-6">
               <div className="flex flex-col items-center">
-                <span className="font-semibold">{user.posts}</span>
+                <span className="font-semibold">{user?.posts.length}</span>
                 <p className="text-gray-500 text-sm">Posts</p>
               </div>
 
               <div className="flex flex-col items-center">
-                <span className="font-semibold">{user.followers}</span>
+                <span className="font-semibold">{user?.followers.length}</span>
                 <p className="text-gray-500 text-sm">Followers</p>
               </div>
 
               <div className="flex flex-col items-center">
-                <span className="font-semibold">{user.following}</span>
+                <span className="font-semibold">{user?.following.length}</span>
                 <p className="text-gray-500 text-sm">Following</p>
               </div>
             </div>

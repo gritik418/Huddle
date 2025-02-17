@@ -1,4 +1,5 @@
 "use client";
+import { useGetFollowRequestsQuery } from "@/features/api/followRequestApi";
 import {
   useGetActiveMembersQuery,
   useGetUserQuery,
@@ -13,6 +14,7 @@ const UserProvider = ({
 }>): JSX.Element => {
   const { isLoading } = useGetUserQuery();
   useGetActiveMembersQuery();
+  useGetFollowRequestsQuery();
 
   if (isLoading) {
     return (

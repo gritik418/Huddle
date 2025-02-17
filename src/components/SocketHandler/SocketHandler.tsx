@@ -4,21 +4,23 @@ import {
   MESSAGE_SENT,
   NEW_CHAT,
   NEW_CHAT_REQUEST,
+  NEW_FOLLOW_REQUEST,
   NEW_MESSAGE,
   STATUS_UPDATE,
   USER_ONLINE,
 } from "@/constants/events";
 import { useSocket } from "@/contexts/socket/SocketProvider";
+import { addChat } from "@/features/chat/chatSlice";
 import { addChatRequest } from "@/features/chatRequest/chatRequestSlice";
+import { addFollowRequest } from "@/features/followRequest/followRequestSlice";
 import { addMessage } from "@/features/message/messageSlice";
+import { addOnlineMember, removeOnlineMember } from "@/features/user/userSlice";
 import { usePathname } from "next/navigation";
 import React, { JSX, useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { Socket } from "socket.io-client";
 import Notification from "../Notification/Notification";
-import { addChat } from "@/features/chat/chatSlice";
-import { addOnlineMember, removeOnlineMember } from "@/features/user/userSlice";
 
 const SocketHandler = ({
   children,
@@ -77,6 +79,25 @@ const SocketHandler = ({
     [dispatch]
   );
 
+  const newfollowRequestHandler = useCallback(
+    ({ followRequest }: { followRequest: FollowRequest }) => {
+      if (followRequest._id) {
+        dispatch(addFollowRequest(followRequest));
+        toast(
+          Notification({
+            id: followRequest._id,
+            type: "FOLLOW_REQUEST",
+            followRequest,
+          }),
+          {
+            hideProgressBar: true,
+          }
+        );
+      }
+    },
+    [dispatch]
+  );
+
   const newChatHandler = useCallback(
     ({ chat }: { chat: Chat }) => {
       if (chat._id) {
@@ -110,6 +131,8 @@ const SocketHandler = ({
 
     socket.on(NEW_CHAT_REQUEST, newChatRequestHandler);
 
+    socket.on(NEW_FOLLOW_REQUEST, newfollowRequestHandler);
+
     socket.on(NEW_CHAT, newChatHandler);
 
     socket.on(STATUS_UPDATE, statusUpdateHandler);
@@ -120,6 +143,8 @@ const SocketHandler = ({
       socket.off(MESSAGE_SENT, messageSentHandler);
 
       socket.off(NEW_CHAT_REQUEST, newChatRequestHandler);
+
+      socket.off(NEW_FOLLOW_REQUEST, newfollowRequestHandler);
 
       socket.off(NEW_CHAT, newChatHandler);
 

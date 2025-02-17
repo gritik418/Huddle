@@ -1,31 +1,20 @@
+import { selectFollowRequests } from "@/features/followRequest/followRequestSlice";
 import { JSX } from "react";
 import { IoIosPersonAdd } from "react-icons/io";
+import { useSelector } from "react-redux";
+import FollowRequestItem from "../FollowRequestItem/FollowRequestItem";
 import {
   Menubar,
   MenubarContent,
   MenubarMenu,
   MenubarTrigger,
 } from "../ui/menubar";
-import FollowRequestItem from "../FollowRequestItem/FollowRequestItem";
 
 const FollowRequestsMenu = (): JSX.Element => {
-  const followRequests: FollowRequest[] = [
-    {
-      _id: "qee",
-      receiver: "adefe",
-      sender: {
-        _id: "wfe",
-        firstName: "Ritik",
-        lastName: "Gupta",
-        username: "ritik_1",
-      },
-      status: "pending",
-    },
-  ];
-  const error = false;
+  const followRequests: FollowRequest[] = useSelector(selectFollowRequests);
 
   const renderContent = () => {
-    if (error || !followRequests?.length) {
+    if (!followRequests?.length) {
       return (
         <div className="flex items-center my-3 justify-center">
           <p className="text-xs">No requests found.</p>

@@ -1,27 +1,15 @@
 "use client";
+import { selectUser } from "@/features/user/userSlice";
 import { JSX } from "react";
+import { useSelector } from "react-redux";
 
 const Profile = (): JSX.Element => {
-  const user = {
-    name: "Ritik Gupta",
-    username: "@ritik_",
-    bio: "Web developer | Tech enthusiast | Love coding and design 🌐",
-    email: "ritik@domain.com",
-    followers: 1200,
-    following: 400,
-    posts: 250,
-  };
+  const user: User | null = useSelector(selectUser);
 
   return (
     <div className="bg-white rounded-lg p-3 mt-4 mb-6">
       <div className="mt-4">
-        <h3 className="text-2xl font-semibold">About</h3>
-        <p className="text-lg text-gray-600 mt-2">{user.bio}</p>
-
-        <div className="mt-4">
-          <h3 className="text-2xl font-semibold">Contact</h3>
-          <p className="text-lg text-gray-600 mt-2">{user.email}</p>
-        </div>
+        <p className="text-lg text-gray-600 mt-2">{user?.bio}</p>
       </div>
 
       <div className="mt-4 flex justify-center">

@@ -6,6 +6,7 @@ const Notification = ({
   type,
   chatRequest,
   message,
+  followRequest,
 }: NotificationData): JSX.Element => {
   if (type === "CHAT_REQUEST")
     return (
@@ -33,6 +34,36 @@ const Notification = ({
 
         <div className="flex items-center justify-between mt-2">
           <p className="text-sm font-bold">Sent you a chat request.</p>
+        </div>
+      </div>
+    );
+
+  if (type === "FOLLOW_REQUEST")
+    return (
+      <div className="flex flex-col w-full">
+        <div className="flex items-center gap-2">
+          <Image
+            src={
+              followRequest?.sender.profilePicture ||
+              "/images/default-profile.jpg"
+            }
+            alt="img"
+            height={50}
+            width={50}
+          />
+
+          <div className="flex flex-col">
+            <p className="text-sm font-bold">
+              {followRequest?.sender.firstName} {followRequest?.sender.lastName}
+            </p>
+            <p className="text-sm font-medium">
+              {followRequest?.sender.username}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between mt-2">
+          <p className="text-sm font-bold">Sent you a follow request.</p>
         </div>
       </div>
     );

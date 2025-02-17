@@ -9,6 +9,8 @@ import messageApi from "@/features/api/messageApi";
 import messageSlice from "@/features/message/messageSlice";
 import chatSlice from "@/features/chat/chatSlice";
 import searchSlice from "@/features/search/searchSlice";
+import followRequestApi from "@/features/api/followRequestApi";
+import followRequestSlice from "@/features/followRequest/followRequestSlice";
 
 const store = configureStore({
   reducer: {
@@ -17,11 +19,13 @@ const store = configureStore({
     [chatApi.reducerPath]: chatApi.reducer,
     [messageApi.reducerPath]: messageApi.reducer,
     [chatRequestApi.reducerPath]: chatRequestApi.reducer,
+    [followRequestApi.reducerPath]: followRequestApi.reducer,
     [userSlice.reducerPath]: userSlice.reducer,
     [chatRequestSlice.reducerPath]: chatRequestSlice.reducer,
     [messageSlice.reducerPath]: messageSlice.reducer,
     [chatSlice.reducerPath]: chatSlice.reducer,
     [searchSlice.reducerPath]: searchSlice.reducer,
+    [followRequestSlice.reducerPath]: followRequestSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -29,7 +33,8 @@ const store = configureStore({
       .concat(userApi.middleware)
       .concat(chatApi.middleware)
       .concat(messageApi.middleware)
-      .concat(chatRequestApi.middleware),
+      .concat(chatRequestApi.middleware)
+      .concat(followRequestApi.middleware),
 });
 
 export default store;

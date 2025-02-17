@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React, { JSX } from "react";
 import { FaCheck } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
@@ -11,7 +12,10 @@ const FollowRequestItem = ({
   return (
     <div className="flex flex-col gap-1 hover:bg-gray-50 p-1 rounded-lg cursor-pointer">
       <div className="flex items-center gap-1">
-        <div className="flex h-12 w-12 rounded-full">
+        <Link
+          href={`/user/${sender.username}`}
+          className="flex h-12 w-12 rounded-full"
+        >
           <Image
             src={sender?.profilePicture || "/images/default-profile.jpg"}
             alt="profile"
@@ -19,12 +23,15 @@ const FollowRequestItem = ({
             width={50}
             className="h-12 w-12 rounded-full"
           />
-        </div>
+        </Link>
 
         <div className="flex flex-col">
-          <p className="text-sm font-semibold">
+          <Link
+            href={`/user/${sender.username}`}
+            className="text-sm font-semibold"
+          >
             {sender.firstName} {sender?.lastName}
-          </p>
+          </Link>
 
           <p className="text-xs font-medium text-gray-500">
             @{sender.username}
