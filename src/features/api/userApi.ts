@@ -34,6 +34,16 @@ const userApi = createApi({
         },
       }),
     }),
+    getUserByUsername: build.query<GetUserApiResponse, string>({
+      query: (username: string) => ({
+        url: `/${username}`,
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
     getFollowing: build.query<GetFollowingApiResponse, void>({
       query: () => ({
         url: "/following",
@@ -61,6 +71,7 @@ export const {
   useGetUserQuery,
   useGetFollowingQuery,
   useGetActiveMembersQuery,
+  useGetUserByUsernameQuery,
 } = userApi;
 
 export default userApi;
