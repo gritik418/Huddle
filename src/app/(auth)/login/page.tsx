@@ -6,15 +6,16 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { JSX } from "react";
+import { JSX, useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaEye, FaUser } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosLock } from "react-icons/io";
 import { Bounce, toast } from "react-toastify";
 
 const Login = (): JSX.Element => {
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [userLogin] = useUserLoginMutation();
   const {
     register,
@@ -186,11 +187,16 @@ const Login = (): JSX.Element => {
                 <input
                   {...register("password")}
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   className="flex-1 bg-transparent outline-none"
                   placeholder="Enter your password"
                 />
-                <FaEye />
+                <div
+                  className="span"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </div>
               </div>
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1 font-semibold">

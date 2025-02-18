@@ -10,6 +10,11 @@ export type LoginResponse = {
   };
 };
 
+export type LogoutResponse = {
+  success: boolean;
+  message?: string;
+};
+
 const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
@@ -27,9 +32,19 @@ const authApi = createApi({
         body: data,
       }),
     }),
+    userLogout: build.mutation<LogoutResponse, void>({
+      query: () => ({
+        url: "/logout",
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useUserLoginMutation } = authApi;
+export const { useUserLoginMutation, useUserLogoutMutation } = authApi;
 
 export default authApi;

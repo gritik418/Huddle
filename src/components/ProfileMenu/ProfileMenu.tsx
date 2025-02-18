@@ -14,9 +14,70 @@ import {
   MenubarSeparator,
   MenubarTrigger,
 } from "../ui/menubar";
+import { LogoutResponse, useUserLogoutMutation } from "@/features/api/authApi";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { Bounce, toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const ProfileMenu = (): JSX.Element => {
   const user: User | null = useSelector(selectUser);
+  const [userLogout] = useUserLogoutMutation();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      const { data, error } = await userLogout();
+
+      if (error) {
+        const errorResponse = error as FetchBaseQueryError;
+        const parsedError = errorResponse?.data as LogoutResponse;
+
+        if (parsedError.message) {
+          toast.error(parsedError.message, {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+          return;
+        }
+      }
+
+      if (data?.success) {
+        toast.success(data.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        setTimeout(() => {
+          router.push("/login");
+        }, 1000);
+      }
+    } catch (error) {
+      toast.error("Some error occured.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
 
   return (
     <Menubar asChild className="bg-none outline-none border-none">
@@ -45,7 +106,7 @@ const ProfileMenu = (): JSX.Element => {
             <IoMdSettings /> Settings
           </MenubarItem>
           <MenubarSeparator />
-          <MenubarItem className="cursor-pointer gap-2">
+          <MenubarItem onClick={handleLogout} className="cursor-pointer gap-2">
             <FiLogOut /> Logout
           </MenubarItem>
         </MenubarContent>
