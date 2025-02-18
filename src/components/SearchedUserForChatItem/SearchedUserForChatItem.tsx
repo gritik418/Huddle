@@ -125,12 +125,13 @@ const SearchedUserForChatItem = (user: SearchedUserForChat): JSX.Element => {
                 <Spinner variant="xs" />
               </div>
             ) : (
-              <div
+              <button
+                disabled={loading}
                 onClick={handleSendChatRequest}
                 className="flex mr-2 h-8 w-8 items-center justify-center cursor-pointer"
               >
                 <BiSolidMessageAdd className="text-2xl text-[var(--secondary)]" />
-              </div>
+              </button>
             )}
           </TooltipTrigger>
           <TooltipContent>

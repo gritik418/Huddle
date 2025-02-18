@@ -1,17 +1,102 @@
 "use client";
 import Navbar from "@/components/Navbar/Navbar";
 import Spinner from "@/components/Spinner/Spinner";
+import {
+  SendFollowRequestApiResponse,
+  useSendFollowRequestMutation,
+} from "@/features/api/followRequestApi";
 import { useGetUserByUsernameQuery } from "@/features/api/userApi";
 import { selectUser } from "@/features/user/userSlice";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import React, { JSX, useState } from "react";
+import { JSX, useState } from "react";
 import { useSelector } from "react-redux";
+import { Bounce, toast } from "react-toastify";
 
 const UserInfo = (): JSX.Element => {
   const params: { username: string } = useParams();
   const user: User | null = useSelector(selectUser);
   const [activeTab, setActiveTab] = useState<"posts" | "channels">("posts");
+  const [sendFollowRequest] = useSendFollowRequestMutation();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleSendFollowRequest = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await sendFollowRequest(user?._id);
+      setLoading(false);
+      if (error) {
+        const errorResponse = error as FetchBaseQueryError;
+        const parsedError = errorResponse?.data as SendFollowRequestApiResponse;
+
+        if (parsedError?.message) {
+          toast.error(parsedError.message, {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+          return;
+        } else {
+          toast.error("Some error occured.", {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        }
+      } else {
+        if (data.success) {
+          toast.success(data.message, {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        } else {
+          toast.error(data.message, {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        }
+      }
+    } catch (error) {
+      toast.error("Some error occured.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
 
   if (!params) {
     return (
@@ -32,7 +117,7 @@ const UserInfo = (): JSX.Element => {
     );
   }
 
-  if (!data?.user) {
+  if (!data?.user || error) {
     return (
       <div className="h-screen">
         <Navbar />
@@ -123,13 +208,29 @@ const UserInfo = (): JSX.Element => {
 
           <div className="flex my-6 justify-end">
             {user?.following.includes(data.user._id.toString()) ? (
-              <div className="flex cursor-pointer text-[var(--secondary)] p-2 rounded-lg px-6 font-bold text-xl bg-gray-100">
+              <button className="flex w-32 h-10 items-center justify-center text-[var(--secondary)] rounded-lg font-bold text-xl bg-gray-100">
                 Following
-              </div>
+              </button>
             ) : (
-              <div className="flex cursor-pointer bg-[var(--secondary)] p-2 rounded-lg px-6 font-bold text-xl text-white">
-                Follow
-              </div>
+              <>
+                {user?.followers.includes(data.user._id.toString()) ? (
+                  <button
+                    disabled={loading}
+                    onClick={handleSendFollowRequest}
+                    className="flex w-36 h-10 items-center justify-center bg-[var(--secondary)] rounded-lg font-bold text-xl text-white"
+                  >
+                    {loading ? <Spinner variant={null} /> : "Follow Back"}
+                  </button>
+                ) : (
+                  <button
+                    disabled={loading}
+                    onClick={handleSendFollowRequest}
+                    className="flex w-24 items-center justify-center h-10 bg-[var(--secondary)] rounded-lg font-bold text-xl text-white"
+                  >
+                    {loading ? <Spinner variant={null} /> : "Follow"}
+                  </button>
+                )}
+              </>
             )}
           </div>
         </div>
