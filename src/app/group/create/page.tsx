@@ -1,15 +1,158 @@
 "use client";
 import SelectGroupAdmins from "@/components/SelectGroupAdmins/SelectGroupAdmins";
 import SelectGroupMembers from "@/components/SelectGroupMembers/SelectGroupMembers";
+import {
+  CreateGroupApiResponse,
+  useCreateGroupMutation,
+} from "@/features/api/groupApi";
+import groupSchema, { GroupData } from "@/validators/groupSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
-import React, { JSX, useState } from "react";
+import { useRouter } from "next/navigation";
+import { JSX, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { FaCamera } from "react-icons/fa";
+import { Bounce, toast } from "react-toastify";
 
 const CreateGroup = (): JSX.Element => {
   const [adminsToBe, setAdminsToBe] = useState<Follower[]>([]);
+  const [selectedAdmins, setSelectedAdmins] = useState<string[]>([]);
+  const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
+  const [memberError, setMemberError] = useState<string>("");
+  const [createGroup] = useCreateGroupMutation();
+  const router = useRouter();
+
+  const {
+    handleSubmit,
+    register,
+    setError,
+    formState: { errors, touchedFields },
+  } = useForm({
+    defaultValues: {
+      groupName: "",
+      groupDescription: "",
+      groupIcon: "",
+    },
+    resolver: zodResolver(groupSchema),
+  });
+
+  const handleCreateGroup = async (values: GroupData) => {
+    if (selectedMembers.length < 2) {
+      setMemberError("There must be at least two members.");
+      toast.error("Select atleast two members.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
+    try {
+      const { data, error } = await createGroup({
+        admins: selectedAdmins,
+        groupDescription: values.groupDescription,
+        groupName: values.groupName,
+        members: selectedMembers,
+      });
+
+      if (error) {
+        const errorResponse = error as FetchBaseQueryError;
+        const parsedError = errorResponse?.data as CreateGroupApiResponse;
+        if (parsedError?.errors) {
+          if (parsedError.errors?.groupName) {
+            setError("groupName", {
+              message: parsedError.errors.groupName,
+            });
+          }
+          if (parsedError.errors?.groupDescription) {
+            setError("groupDescription", {
+              message: parsedError.errors.groupDescription,
+            });
+          }
+          if (parsedError.errors?.members) {
+            setMemberError(parsedError.errors.members);
+          }
+          return;
+        }
+        if (parsedError?.message) {
+          toast.error(parsedError.message, {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+          return;
+        }
+      }
+
+      if (data?.success) {
+        if (data.message) {
+          toast.success(data.message, {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        }
+        setTimeout(() => {
+          router.push("/chat");
+        }, 1000);
+      } else {
+        if (data?.message) {
+          toast.error(data.message, {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+          return;
+        }
+      }
+    } catch (error) {
+      toast.error("Some error occured.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
+
+  useEffect(() => {
+    setMemberError("");
+    if (selectedMembers.length < 2) {
+      setMemberError("There must be at least two members.");
+    }
+  }, [selectedMembers]);
 
   return (
-    <div className="p-3">
+    <form onSubmit={handleSubmit(handleCreateGroup)} className="p-3">
       <div className="flex items-center justify-center mt-8">
         <h1 className="text-3xl font-semibold">Create Group</h1>
       </div>
@@ -30,46 +173,82 @@ const CreateGroup = (): JSX.Element => {
             >
               <FaCamera className="text-2xl" />
             </label>
-            <input className="hidden" type="file" name="" id="group-icon" />
+            <input
+              {...register("groupIcon")}
+              className="hidden"
+              type="file"
+              id="group-icon"
+            />
           </div>
         </div>
 
         <div className="flex flex-col flex-1 w-full gap-4">
           <div className="flex gap-1 flex-col">
-            <label htmlFor="">Group Name</label>
+            <label htmlFor="groupName">Group Name</label>
             <input
+              {...register("groupName")}
               type="text"
-              name=""
               className="border-2 p-2 rounded-lg"
               placeholder="Group Name"
-              id=""
+              id="groupName"
             />
+            {errors.groupName && touchedFields.groupName ? (
+              <span className="text-xs h-2 text-red-500">
+                {errors?.groupName.message}
+              </span>
+            ) : (
+              <span className="h-2 text-xs text-red-500"></span>
+            )}
           </div>
           <div className="flex gap-1 flex-col">
-            <label htmlFor="">Group Description</label>
+            <label htmlFor="groupDescription">Group Description</label>
             <textarea
-              name=""
+              {...register("groupDescription")}
               className="border-2 p-2 resize-none rounded-lg h-20"
               placeholder="Group Description"
-              id=""
+              id="groupDescription"
             />
+            {errors.groupDescription && touchedFields.groupDescription ? (
+              <span className="text-xs h-2 text-red-500">
+                {errors?.groupDescription.message}
+              </span>
+            ) : (
+              <span className="h-2 text-xs text-red-500"></span>
+            )}
           </div>
         </div>
       </div>
 
       <SelectGroupMembers
+        selectedMembers={selectedMembers}
+        setSelectedMembers={setSelectedMembers}
         adminsToBe={adminsToBe}
         setAdminsToBe={setAdminsToBe}
       />
 
-      <SelectGroupAdmins adminsToBe={adminsToBe} />
+      <div className="container m-auto">
+        {memberError ? (
+          <span className="text-xs h-2 text-red-500">{memberError}</span>
+        ) : (
+          <span className="h-2 p-3 text-xs text-red-500"></span>
+        )}
+      </div>
+
+      <SelectGroupAdmins
+        selectedAdmins={selectedAdmins}
+        setSelectedAdmins={setSelectedAdmins}
+        adminsToBe={adminsToBe}
+      />
 
       <div className="flex container justify-end my-8 m-auto w-full">
-        <button className="bg-[var(--secondary)] text-white p-2 rounded-lg font-semibold">
+        <button
+          type="submit"
+          className="bg-[var(--secondary)] text-white p-2 rounded-lg font-semibold"
+        >
           Create Group
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 

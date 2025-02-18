@@ -27,7 +27,7 @@ const SelectAdminTile = ({
     <div
       onClick={() => toggleSelectAdmin(user._id)}
       className={`flex cursor-pointer px-4 items-center gap-2 rounded-lg p-2 ${
-        selectedAdmins.includes("") ? "bg-green-100" : "bg-gray-100 "
+        selectedAdmins.includes(user._id) ? "bg-green-100" : "bg-gray-100 "
       }`}
     >
       <div className="flex">

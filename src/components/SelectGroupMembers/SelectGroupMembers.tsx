@@ -1,5 +1,5 @@
 "use client";
-import { JSX } from "react";
+import { Dispatch, JSX, SetStateAction } from "react";
 import { useGetFollowingQuery } from "@/features/api/userApi";
 import Spinner from "../Spinner/Spinner";
 import SelectMemberTile from "../SelectMemberTile/SelectMemberTile";
@@ -7,11 +7,15 @@ import SelectMemberTile from "../SelectMemberTile/SelectMemberTile";
 type PropsType = {
   setAdminsToBe: React.Dispatch<React.SetStateAction<Follower[]>>;
   adminsToBe: Follower[];
+  selectedMembers: string[];
+  setSelectedMembers: Dispatch<SetStateAction<string[]>>;
 };
 
 const SelectGroupMembers = ({
   setAdminsToBe,
   adminsToBe,
+  selectedMembers,
+  setSelectedMembers,
 }: PropsType): JSX.Element => {
   const { isLoading, data, isError } = useGetFollowingQuery();
 
@@ -34,11 +38,13 @@ const SelectGroupMembers = ({
     }
 
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 py-3 gap-3">
+      <div className="grid grid-cols-1 py-3 gap-3">
         {data.following.map((user) => {
           return (
             <SelectMemberTile
               key={user._id}
+              selectedMembers={selectedMembers}
+              setSelectedMembers={setSelectedMembers}
               member={user}
               adminsToBe={adminsToBe}
               setAdminsToBe={setAdminsToBe}

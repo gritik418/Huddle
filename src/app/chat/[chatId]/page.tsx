@@ -5,7 +5,7 @@ import MessagePlayground from "@/components/MessagePlayground/MessagePlayground"
 import MessageSection from "@/components/MessageSection/MessageSection";
 import MessageSectionHeader from "@/components/MessageSectionHeader/MessageSectionHeader";
 import Spinner from "@/components/Spinner/Spinner";
-import { useGetChatByIdQuery } from "@/features/api/chatApi";
+import { useGetChatByIdQuery, useGetChatsQuery } from "@/features/api/chatApi";
 import { useGetMessagesQuery } from "@/features/api/messageApi";
 import Image from "next/image";
 import { useParams } from "next/navigation";
@@ -23,6 +23,7 @@ const SelectedChat = (): JSX.Element => {
 
   const { chatId } = params;
   const { isLoading, data, error } = useGetChatByIdQuery(chatId);
+  useGetChatsQuery();
   useGetMessagesQuery(chatId, {
     refetchOnMountOrArgChange: true,
   });

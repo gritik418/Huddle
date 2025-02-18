@@ -1,14 +1,19 @@
 "use client";
-import { JSX, useState } from "react";
-import SelectAdminTile from "../SelectAdminTile/SelectAdminTile";
 import Image from "next/image";
+import { JSX } from "react";
+import SelectAdminTile from "../SelectAdminTile/SelectAdminTile";
 
 type PropsType = {
   adminsToBe: Follower[];
+  selectedAdmins: string[];
+  setSelectedAdmins: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-const SelectGroupAdmins = ({ adminsToBe }: PropsType): JSX.Element => {
-  const [selectedAdmins, setSelectedAdmins] = useState<string[]>([]);
+const SelectGroupAdmins = ({
+  adminsToBe,
+  selectedAdmins,
+  setSelectedAdmins,
+}: PropsType): JSX.Element => {
   return (
     <div className="flex flex-col container m-auto mt-12">
       <p className="text-2xl">Select Group Admins</p>
@@ -33,6 +38,7 @@ const SelectGroupAdmins = ({ adminsToBe }: PropsType): JSX.Element => {
 
         {adminsToBe.map((admin: Follower) => (
           <SelectAdminTile
+            key={admin._id}
             user={admin}
             selectedAdmins={selectedAdmins}
             setSelectedAdmins={setSelectedAdmins}

@@ -21,10 +21,22 @@ const UserInfo = (): JSX.Element => {
   const [sendFollowRequest] = useSendFollowRequestMutation();
   const [loading, setLoading] = useState<boolean>(false);
 
+  if (!params) {
+    return (
+      <div className="flex items-center justify-center flex-1">
+        <Spinner variant="medium" />
+      </div>
+    );
+  }
+
+  const { username } = params;
+  const { data, isLoading, error } = useGetUserByUsernameQuery(username);
+  const userId: string = data?.user?._id;
+
   const handleSendFollowRequest = async () => {
     try {
       setLoading(true);
-      const { data, error } = await sendFollowRequest(user?._id);
+      const { data, error } = await sendFollowRequest(userId);
       setLoading(false);
       if (error) {
         const errorResponse = error as FetchBaseQueryError;
@@ -97,17 +109,6 @@ const UserInfo = (): JSX.Element => {
       });
     }
   };
-
-  if (!params) {
-    return (
-      <div className="flex items-center justify-center flex-1">
-        <Spinner variant="medium" />
-      </div>
-    );
-  }
-
-  const { username } = params;
-  const { data, isLoading, error } = useGetUserByUsernameQuery(username);
 
   if (isLoading) {
     return (

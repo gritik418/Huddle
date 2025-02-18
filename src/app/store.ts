@@ -11,12 +11,14 @@ import chatSlice from "@/features/chat/chatSlice";
 import searchSlice from "@/features/search/searchSlice";
 import followRequestApi from "@/features/api/followRequestApi";
 import followRequestSlice from "@/features/followRequest/followRequestSlice";
+import groupApi from "@/features/api/groupApi";
 
 const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [chatApi.reducerPath]: chatApi.reducer,
+    [groupApi.reducerPath]: groupApi.reducer,
     [messageApi.reducerPath]: messageApi.reducer,
     [chatRequestApi.reducerPath]: chatRequestApi.reducer,
     [followRequestApi.reducerPath]: followRequestApi.reducer,
@@ -32,6 +34,7 @@ const store = configureStore({
       .concat(authApi.middleware)
       .concat(userApi.middleware)
       .concat(chatApi.middleware)
+      .concat(groupApi.middleware)
       .concat(messageApi.middleware)
       .concat(chatRequestApi.middleware)
       .concat(followRequestApi.middleware),

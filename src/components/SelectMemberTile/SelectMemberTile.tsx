@@ -1,26 +1,37 @@
 import Image from "next/image";
-import React, { ChangeEvent, JSX } from "react";
+import React, { ChangeEvent, Dispatch, JSX, SetStateAction } from "react";
 
 type PropsType = {
   setAdminsToBe: React.Dispatch<React.SetStateAction<Follower[]>>;
   adminsToBe: Follower[];
   member: Follower;
+  selectedMembers: string[];
+  setSelectedMembers: Dispatch<SetStateAction<string[]>>;
 };
 
 const SelectMemberTile = ({
   member,
   adminsToBe,
   setAdminsToBe,
+  selectedMembers,
+  setSelectedMembers,
 }: PropsType): JSX.Element => {
   const handleSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const isChecked: boolean = e.target.checked;
     const existingMember = adminsToBe.some((admin) => admin._id === member._id);
 
     if (isChecked && !existingMember) {
+      const alreadyAdded: boolean = selectedMembers.includes(member._id);
+      if (!alreadyAdded) {
+        setSelectedMembers(() => [...selectedMembers, member._id]);
+      }
       setAdminsToBe((prevAdmins) => [...prevAdmins, member]);
     } else if (!isChecked && existingMember) {
       setAdminsToBe((prevAdmins) =>
         prevAdmins.filter((admin) => admin._id !== member._id)
+      );
+      setSelectedMembers((prevMember) =>
+        prevMember.filter((id: string) => id !== member._id)
       );
     }
   };
