@@ -106,7 +106,13 @@ interface Message {
 
 interface NotificationData {
   id: string;
-  type: "CHAT_REQUEST" | "NEW_MESSAGE" | "NEW_GROUP" | "FOLLOW_REQUEST";
+  type:
+    | "CHAT_REQUEST"
+    | "NEW_MESSAGE"
+    | "NEW_GROUP"
+    | "FOLLOW_REQUEST"
+    | "ACCEPTED_FOLLOW_REQUEST";
+  followRequestReceiver?: Follower;
   chatRequest?: ChatRequest;
   message?: Message;
   followRequest?: FollowRequest;

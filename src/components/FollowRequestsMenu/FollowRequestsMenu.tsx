@@ -23,7 +23,7 @@ const FollowRequestsMenu = (): JSX.Element => {
     }
 
     return followRequests?.map((request: FollowRequest) => (
-      <FollowRequestItem key={request._id} sender={request.sender} />
+      <FollowRequestItem key={request._id} request={request} />
     ));
   };
 

@@ -1,6 +1,7 @@
 "use client";
 import { AppDispatch } from "@/app/store";
 import {
+  ACCEPTED_FOLLOW_REQUEST,
   MESSAGE_SENT,
   NEW_CHAT,
   NEW_CHAT_REQUEST,
@@ -118,6 +119,24 @@ const SocketHandler = ({
     []
   );
 
+  const acceptedFollowRequestHandler = useCallback(
+    ({ status, receiver }: { status: string; receiver: Follower }) => {
+      if (status === "Accepted") {
+        toast(
+          Notification({
+            id: receiver._id,
+            type: "ACCEPTED_FOLLOW_REQUEST",
+            followRequestReceiver: receiver,
+          }),
+          {
+            hideProgressBar: true,
+          }
+        );
+      }
+    },
+    []
+  );
+
   // ADDED_TO_GROUP, {chat,creator};
 
   useEffect(() => {
@@ -137,6 +156,8 @@ const SocketHandler = ({
 
     socket.on(STATUS_UPDATE, statusUpdateHandler);
 
+    socket.on(ACCEPTED_FOLLOW_REQUEST, acceptedFollowRequestHandler);
+
     return () => {
       socket.off(NEW_MESSAGE, newMessageHandler);
 
@@ -149,6 +170,8 @@ const SocketHandler = ({
       socket.off(NEW_CHAT, newChatHandler);
 
       socket.off(STATUS_UPDATE, statusUpdateHandler);
+
+      socket.off(ACCEPTED_FOLLOW_REQUEST, acceptedFollowRequestHandler);
     };
   }, [
     socket,

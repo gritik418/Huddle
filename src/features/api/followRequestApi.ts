@@ -11,6 +11,11 @@ export type SendFollowRequestApiResponse = {
   message?: string;
 };
 
+export type FollowRequestApiResponse = {
+  success: boolean;
+  message?: string;
+};
+
 const followRequestApi = createApi({
   reducerPath: "followRequestApi",
   baseQuery: fetchBaseQuery({
@@ -38,10 +43,34 @@ const followRequestApi = createApi({
         body: { receiverId },
       }),
     }),
+    acceptFollowRequest: build.mutation<FollowRequestApiResponse, string>({
+      query: (requestId: string) => ({
+        url: `/${requestId}/accept`,
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
+    declineFollowRequest: build.mutation<FollowRequestApiResponse, string>({
+      query: (requestId: string) => ({
+        url: `/${requestId}/decline`,
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetFollowRequestsQuery, useSendFollowRequestMutation } =
-  followRequestApi;
+export const {
+  useGetFollowRequestsQuery,
+  useSendFollowRequestMutation,
+  useAcceptFollowRequestMutation,
+  useDeclineFollowRequestMutation,
+} = followRequestApi;
 
 export default followRequestApi;
