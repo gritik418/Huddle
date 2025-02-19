@@ -5,11 +5,13 @@ import { RootState } from "@/app/store";
 interface UserState {
   user: User | null;
   onlineMembers: string[];
+  followings: Follower[];
 }
 
 const initialState: UserState = {
   user: null,
   onlineMembers: [],
+  followings: [],
 };
 
 const userSlice = createSlice({
@@ -49,6 +51,14 @@ const userSlice = createSlice({
             }
           });
         }
+      )
+      .addMatcher(
+        userApi.endpoints.getFollowing.matchFulfilled,
+        (state, action) => {
+          if (action.payload.success) {
+            state.followings = action.payload.following || [];
+          }
+        }
       );
   },
 });
@@ -56,6 +66,7 @@ const userSlice = createSlice({
 export const { addOnlineMember, removeOnlineMember } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user.user;
+export const selectFollowings = (state: RootState) => state.user.followings;
 export const selectOnlineMembers = (state: RootState) =>
   state.user.onlineMembers;
 

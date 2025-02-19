@@ -1,6 +1,8 @@
 "use client";
 import Navbar from "@/components/Navbar/Navbar";
 import Spinner from "@/components/Spinner/Spinner";
+import UserChannels from "@/components/UserChannels/UserChannels";
+import UserPosts from "@/components/UserPosts/UserPosts";
 import {
   SendFollowRequestApiResponse,
   useSendFollowRequestMutation,
@@ -236,9 +238,9 @@ const UserInfo = (): JSX.Element => {
           </div>
         </div>
 
-        <div className="flex flex-col bg-white h-[60vh] p-3 rounded-lg">
+        <div className="flex flex-col bg-white p-3 rounded-lg">
           <div className="flex">
-            <ul className="flex p-3 items-center w-full gap-4">
+            <ul className="flex items-center w-full gap-4">
               <li
                 onClick={() => setActiveTab("posts")}
                 className={`px-4 p-2 rounded-lg cursor-pointer ${
@@ -263,7 +265,9 @@ const UserInfo = (): JSX.Element => {
             </ul>
           </div>
 
-          <div className="flex mt-4 border-2"></div>
+          <div className="flex mt-4">
+            {activeTab === "posts" ? <UserPosts /> : <UserChannels />}
+          </div>
         </div>
       </div>
     </div>

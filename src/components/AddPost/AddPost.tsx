@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 import { VscMention } from "react-icons/vsc";
 import { GrAttachment } from "react-icons/gr";
+import MentionsMenu from "../MentionsMenu/MentionsMenu";
 
 const AddPost = () => {
   return (
@@ -27,9 +28,8 @@ const AddPost = () => {
 
           <div className="flex mt-2 justify-between items-center">
             <div className="flex gap-3">
-              <div className="flex bg-gray-100 p-2 rounded-lg">
-                <VscMention />
-              </div>
+              <MentionsMenu />
+
               <div className="flex bg-gray-100 p-2 rounded-lg">
                 <GrAttachment />
               </div>

@@ -2,6 +2,7 @@
 import { useGetFollowRequestsQuery } from "@/features/api/followRequestApi";
 import {
   useGetActiveMembersQuery,
+  useGetFollowingQuery,
   useGetUserQuery,
 } from "@/features/api/userApi";
 import React, { JSX } from "react";
@@ -15,6 +16,7 @@ const UserProvider = ({
   const { isLoading } = useGetUserQuery();
   useGetActiveMembersQuery();
   useGetFollowRequestsQuery();
+  useGetFollowingQuery();
 
   if (isLoading) {
     return (

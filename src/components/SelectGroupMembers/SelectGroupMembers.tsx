@@ -1,7 +1,7 @@
 "use client";
+import { selectFollowings } from "@/features/user/userSlice";
 import { Dispatch, JSX, SetStateAction } from "react";
-import { useGetFollowingQuery } from "@/features/api/userApi";
-import Spinner from "../Spinner/Spinner";
+import { useSelector } from "react-redux";
 import SelectMemberTile from "../SelectMemberTile/SelectMemberTile";
 
 type PropsType = {
@@ -17,17 +17,10 @@ const SelectGroupMembers = ({
   selectedMembers,
   setSelectedMembers,
 }: PropsType): JSX.Element => {
-  const { isLoading, data, isError } = useGetFollowingQuery();
+  const following: Follower[] = useSelector(selectFollowings);
 
   function renderContent() {
-    if (isLoading)
-      return (
-        <div className="flex items-center justify-center my-4 w-full">
-          <Spinner variant={"xs"} />
-        </div>
-      );
-
-    if (!data?.following || data.following.length === 0 || isError) {
+    if (!following || following.length === 0) {
       return (
         <div className="flex items-center justify-center my-4 w-full">
           <p className="p-3 text-center">
@@ -39,7 +32,7 @@ const SelectGroupMembers = ({
 
     return (
       <div className="grid grid-cols-1 py-3 gap-3">
-        {data.following.map((user) => {
+        {following.map((user: Follower) => {
           return (
             <SelectMemberTile
               key={user._id}
