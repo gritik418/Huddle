@@ -1,3 +1,4 @@
+import { UpdateUserData } from "@/validators/updateUserSchema";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 type GetUserApiResponse = {
@@ -18,11 +19,25 @@ type GetActiveMembersApiResponse = {
   activeMembers?: string[];
 };
 
+export type UpdateUserApiResponse = {
+  success: boolean;
+  message?: string;
+  errors?: {
+    firstName?: string;
+    lastName?: string;
+    username?: string;
+    coverImage?: string;
+    profilePicture?: string;
+    bio?: string;
+  };
+};
+
 const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user`,
   }),
+  tagTypes: ["user"],
   endpoints: (build) => ({
     getUser: build.query<GetUserApiResponse, void>({
       query: () => ({
@@ -33,6 +48,7 @@ const userApi = createApi({
           "Content-Type": "application/json",
         },
       }),
+      providesTags: ["user"],
     }),
     getUserByUsername: build.query<GetUserApiResponse, string>({
       query: (username: string) => ({
@@ -64,6 +80,15 @@ const userApi = createApi({
         },
       }),
     }),
+    updateUser: build.mutation<UpdateUserApiResponse, FormData>({
+      query: (data: FormData) => ({
+        url: "/",
+        method: "PUT",
+        credentials: "include",
+        body: data,
+      }),
+      invalidatesTags: ["user"],
+    }),
   }),
 });
 
@@ -72,6 +97,7 @@ export const {
   useGetFollowingQuery,
   useGetActiveMembersQuery,
   useGetUserByUsernameQuery,
+  useUpdateUserMutation,
 } = userApi;
 
 export default userApi;

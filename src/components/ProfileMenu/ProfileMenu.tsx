@@ -92,7 +92,7 @@ const ProfileMenu = (): JSX.Element => {
               alt="avatar"
               height={50}
               width={50}
-              className="h-full w-full rounded-xl object-contain"
+              className="h-full w-full rounded-xl object-cover"
             />
           </div>
         </MenubarTrigger>

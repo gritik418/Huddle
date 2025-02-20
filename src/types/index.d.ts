@@ -5,6 +5,7 @@ interface User {
   username: string;
   email: string;
   password?: string;
+  coverImage?: string;
   profilePicture?: string;
   bio?: string;
   isVerified: boolean;
