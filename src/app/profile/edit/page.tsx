@@ -41,7 +41,7 @@ const EditUserInfo = (): JSX.Element => {
     handleSubmit,
     setValue,
     setError,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors, touchedFields },
   } = useForm<FormValues>({
     defaultValues: {
       firstName: user?.firstName,
@@ -254,6 +254,14 @@ const EditUserInfo = (): JSX.Element => {
               id="firstName"
               placeholder="First Name"
             />
+            {errors.firstName && touchedFields.firstName ? (
+              <span className="text-xs text-red-400 h-2 font-semibold">
+                {" "}
+                {errors.firstName.message}
+              </span>
+            ) : (
+              <span className="h-2"></span>
+            )}
           </div>
 
           <div className="flex rounded-lg flex-col p-2 gap-1">
@@ -266,6 +274,14 @@ const EditUserInfo = (): JSX.Element => {
               id="lastName"
               placeholder="Last Name"
             />
+            {errors.lastName && touchedFields.lastName ? (
+              <span className="text-xs text-red-400 h-2 font-semibold">
+                {" "}
+                {errors.lastName.message}
+              </span>
+            ) : (
+              <span className="h-2"></span>
+            )}
           </div>
 
           <div className="flex rounded-lg flex-col p-2 gap-1">
@@ -278,6 +294,14 @@ const EditUserInfo = (): JSX.Element => {
               id="username"
               placeholder="Username"
             />
+            {errors.username && touchedFields.username ? (
+              <span className="text-xs text-red-400 h-2 font-semibold">
+                {" "}
+                {errors.username.message}
+              </span>
+            ) : (
+              <span className="h-2"></span>
+            )}
           </div>
 
           <div className="flex rounded-lg flex-col p-2 gap-1">
@@ -299,6 +323,14 @@ const EditUserInfo = (): JSX.Element => {
               id="bio"
               placeholder="A few words about you..."
             />
+            {errors.bio && touchedFields.bio ? (
+              <span className="text-xs text-red-400 h-2 font-semibold">
+                {" "}
+                {errors.bio.message}
+              </span>
+            ) : (
+              <span className="h-2"></span>
+            )}
           </div>
         </div>
 

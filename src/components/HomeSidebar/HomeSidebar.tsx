@@ -18,7 +18,7 @@ const HomeSidebar = (): JSX.Element => {
   return (
     <div className="hidden w-[300px] md:flex flex-col p-3 gap-3">
       <div className="flex flex-col bg-white rounded-lg p-2 py-6 items-center">
-        <div className="flex h-20 w-20">
+        <div className="flex h-24 w-24">
           <Image
             src={user?.profilePicture || "/images/default-profile.jpg"}
             alt="avatar"
@@ -28,7 +28,7 @@ const HomeSidebar = (): JSX.Element => {
           />
         </div>
 
-        <p className="text-sm font-semibold mt-1 mb-3">
+        <p className="text-sm font-semibold mt-2 mb-3">
           {user?.firstName} {user?.lastName}
         </p>
 
