@@ -22,12 +22,25 @@ interface User {
   passwordResetTokenExpiry?: Date;
 }
 
+interface Post {
+  _id: string;
+  userId: Follower;
+  content: string;
+  mediaUrls?: string[];
+  likes: Types.ObjectId[];
+  comments: Types.ObjectId[];
+  location?: string;
+  mentions?: Types.ObjectId[];
+  hashtags?: string[];
+}
+
 interface Follower {
   _id: string;
   firstName: string;
   lastName?: string;
   username: string;
   profilePicture?: string;
+  coverImage?: string;
 }
 
 interface SearchedUserForChat {

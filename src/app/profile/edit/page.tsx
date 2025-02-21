@@ -226,7 +226,7 @@ const EditUserInfo = (): JSX.Element => {
               />
               <label
                 htmlFor="avatar"
-                className="flex cursor-pointer items-center justify-center text-white absolute bottom-3 right-3 h-10 w-10 bg-[var(--secondary)] rounded-full"
+                className="flex cursor-pointer items-center justify-center text-white absolute bottom-1 right-1 h-10 w-10 bg-[var(--secondary)] rounded-full"
               >
                 <FaCamera />
               </label>
