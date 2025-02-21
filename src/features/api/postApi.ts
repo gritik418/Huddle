@@ -22,9 +22,20 @@ const postApi = createApi({
         },
       }),
     }),
+    getLoggedInUserPosts: build.query<GetPostsByFollwingApiResponse, void>({
+      query: () => ({
+        url: "/",
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetPostsByFollwingQuery } = postApi;
+export const { useGetPostsByFollwingQuery, useGetLoggedInUserPostsQuery } =
+  postApi;
 
 export default postApi;
