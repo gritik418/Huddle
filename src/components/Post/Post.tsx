@@ -12,8 +12,8 @@ type PropsType = {
 
 const Post = ({ post }: PropsType): JSX.Element => {
   return (
-    <div className="bg-white p-3 rounded-lg">
-      <div className="flex items-center justify-between">
+    <div className="bg-white rounded-lg overflow-hidden">
+      <div className="flex items-center border-b-[1px] border-gray-100 p-3 justify-between">
         <Link
           href={`/user/${post.userId.username}`}
           className="flex items-center gap-2"
@@ -43,17 +43,17 @@ const Post = ({ post }: PropsType): JSX.Element => {
         </div>
       </div>
 
-      <div className="flex mt-2">
+      <div className="flex p-3">
         <p>{post.content}</p>
       </div>
 
       {post.mediaUrls && (
-        <div className="flex">
+        <div className="flex p-3">
           <PostMedia postMedia={post.mediaUrls} />
         </div>
       )}
 
-      <div className="flex mt-2 p-2 gap-3">
+      <div className="flex p-3 gap-3">
         <div className="flex bg-gray-100 cursor-pointer p-2 rounded-lg">
           <AiFillLike className="text-xl text-red-400" />
         </div>

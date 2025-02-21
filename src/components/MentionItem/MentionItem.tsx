@@ -30,7 +30,7 @@ const MentionItem = ({
       onClick={handleSelect}
       className="flex p-2 hover:bg-gray-200 duration-300 transition-colors ease-in-out cursor-pointer gap-6 justify-between items-center bg-gray-50"
     >
-      <div className="flex">
+      <div className="flex gap-2">
         <div className="flex h-10 w-10 rounded-full">
           <Image
             src={user.profilePicture || "/images/default-profile.jpg"}

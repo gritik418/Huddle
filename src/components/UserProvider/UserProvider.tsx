@@ -21,7 +21,7 @@ const UserProvider = ({
   if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <Spinner variant="medium" />
+        <Spinner variant="medium" loader={"bird"} />
       </div>
     );
   }

@@ -1,3 +1,4 @@
+import { PostData } from "@/validators/postSchema";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export type GetPostsByFollwingApiResponse = {
@@ -19,6 +20,18 @@ type GetFeedApiResponse = {
     page: number;
     limit: number;
     totalPages: number;
+  };
+};
+
+export type AddPostApiResponse = {
+  success: boolean;
+  message?: string;
+  errors?: {
+    content?: string;
+    mentions?: string;
+    location?: string;
+    hashtags?: string;
+    media?: string;
   };
 };
 
@@ -58,6 +71,14 @@ const postApi = createApi({
         },
       }),
     }),
+    addPost: build.mutation<AddPostApiResponse, FormData>({
+      query: (data: FormData) => ({
+        url: "/",
+        method: "POST",
+        credentials: "include",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -65,6 +86,7 @@ export const {
   useGetPostsByFollwingQuery,
   useGetLoggedInUserPostsQuery,
   useGetFeedQuery,
+  useAddPostMutation,
 } = postApi;
 
 export default postApi;
