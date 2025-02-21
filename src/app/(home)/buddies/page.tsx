@@ -1,4 +1,5 @@
 "use client";
+import Post from "@/components/Post/Post";
 import Spinner from "@/components/Spinner/Spinner";
 import { useGetPostsByFollwingQuery } from "@/features/api/postApi";
 import Image from "next/image";
@@ -10,7 +11,7 @@ const Buddies = (): JSX.Element => {
   function renderContent(): JSX.Element {
     if (isLoading) {
       return (
-        <div className="flex text-xl bg-white rounded-lg justify-center w-full items-center">
+        <div className="flex text-xl bg-white rounded-lg w-full justify-center items-center">
           <Spinner variant={"medium"} />
         </div>
       );
@@ -18,7 +19,7 @@ const Buddies = (): JSX.Element => {
 
     if (error || !data?.posts || data.posts.length === 0) {
       return (
-        <div className="flex flex-col text-xl bg-white rounded-lg justify-center w-full items-center">
+        <div className="flex flex-col bg-white rounded-lg w-full text-xl justify-center items-center">
           <Image
             src={"/images/no-following-post.jpg"}
             alt="no-post"
@@ -30,11 +31,19 @@ const Buddies = (): JSX.Element => {
       );
     }
 
-    return <div className="flex">{data.posts[0].content}</div>;
+    return (
+      <div className="flex flex-col gap-4 w-full">
+        {data.posts.map((post: Post) => (
+          <Post key={post._id} post={post} />
+        ))}
+      </div>
+    );
   }
   return (
     <div className="flex flex-col w-full">
-      <div className="flex flex-1 w-full">{renderContent()}</div>
+      <div className="flex flex-1 w-full rounded-lg overflow-y-scroll hide-scrollbar">
+        {renderContent()}
+      </div>
     </div>
   );
 };
