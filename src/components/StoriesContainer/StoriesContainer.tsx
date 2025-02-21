@@ -4,7 +4,7 @@ import AddStory from "../AddStory/AddStory";
 
 const StoriesContainer = (): JSX.Element => {
   return (
-    <div className="flex w-full h-20 bg-white px-4 items-center rounded-lg">
+    <div className="flex w-full min-h-24 bg-white px-4 items-center rounded-lg">
       <AddStory />
       <div className="h-12 border-[1px] border-gray-200 mx-3"></div>
 

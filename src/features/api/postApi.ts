@@ -6,6 +6,22 @@ export type GetPostsByFollwingApiResponse = {
   posts: Post[];
 };
 
+type GetFeedArgs = {
+  page: number;
+  limit: number;
+};
+
+type GetFeedApiResponse = {
+  success: boolean;
+  message?: string;
+  posts?: Post[];
+  pagination?: {
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+};
+
 const postApi = createApi({
   reducerPath: "postApi",
   baseQuery: fetchBaseQuery({
@@ -32,10 +48,23 @@ const postApi = createApi({
         },
       }),
     }),
+    getFeed: build.query<GetFeedApiResponse, GetFeedArgs>({
+      query: (args: GetFeedArgs) => ({
+        url: `/feed?page=${args.page}&limit=${args.limit}`,
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetPostsByFollwingQuery, useGetLoggedInUserPostsQuery } =
-  postApi;
+export const {
+  useGetPostsByFollwingQuery,
+  useGetLoggedInUserPostsQuery,
+  useGetFeedQuery,
+} = postApi;
 
 export default postApi;
