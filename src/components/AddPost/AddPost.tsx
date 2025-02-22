@@ -3,7 +3,7 @@ import { AddPostApiResponse, useAddPostMutation } from "@/features/api/postApi";
 import postSchema, { PostData } from "@/validators/postSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { GrAttachment } from "react-icons/gr";
 import { IoIosCloseCircle } from "react-icons/io";
@@ -27,8 +27,9 @@ const AddPost = () => {
     register,
     handleSubmit,
     setValue,
-    formState: { isSubmitting },
     reset,
+    clearErrors,
+    formState: { isSubmitting, errors, touchedFields },
   } = useForm<PostData>({
     defaultValues: {
       content: "",
@@ -42,7 +43,7 @@ const AddPost = () => {
     try {
       const formData = new FormData();
 
-      formData.append("content", values.content);
+      if (values.content) formData.append("content", values.content);
       if (values.location) formData.append("location", values.location);
 
       if (selectedMentions && selectedMentions.length > 0) {
@@ -63,7 +64,7 @@ const AddPost = () => {
       if (error) {
         const errorResponse = error as FetchBaseQueryError;
         const parsedError = errorResponse?.data as AddPostApiResponse;
-
+        console.log(parsedError);
         if (parsedError?.message) {
           toast.error(parsedError.message, {
             position: "top-right",
@@ -129,11 +130,13 @@ const AddPost = () => {
 
   const handleMediaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files: FileList | null = e.target.files;
+    clearErrors();
     if (files) {
       setValue("media", files);
-      Object.values(files).map((file: File) =>
-        setMediaPreview((prev) => [...prev, URL.createObjectURL(file)])
-      );
+      setMediaPreview((prev) => [
+        ...prev,
+        ...Object.values(files).map((file) => URL.createObjectURL(file)),
+      ]);
     }
   };
 
@@ -141,6 +144,12 @@ const AddPost = () => {
     setValue("media", undefined);
     setMediaPreview([]);
   };
+
+  useEffect(() => {
+    return () => {
+      mediaPreview.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [mediaPreview]);
 
   return (
     <div className="bg-white p-4 rounded-lg">
@@ -187,6 +196,8 @@ const AddPost = () => {
               <span
                 onClick={handleClearMedia}
                 className="flex text-xl h-max ml-3 cursor-pointer"
+                title="Clear Media"
+                aria-label="Clear Media"
               >
                 <IoIosCloseCircle />
               </span>
@@ -230,6 +241,12 @@ const AddPost = () => {
               </button>
             </div>
           </div>
+
+          {errors.content && (
+            <p className="text-red-500 text-xs mt-2">
+              {errors.content.message}
+            </p>
+          )}
         </form>
       </div>
     </div>

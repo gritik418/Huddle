@@ -8,11 +8,13 @@ interface ChatRequestState {
   searchUserForChatRequestMessage: string;
   chatRequests: ChatRequest[];
   chatRequestsLoading: boolean;
+  searchUserForChatRequestLoading: boolean;
 }
 
 const initialState: ChatRequestState = {
   searchedUsersForChatRequest: [],
   searchUserForChatRequestMessage: "",
+  searchUserForChatRequestLoading: false,
   chatRequests: [],
   chatRequestsLoading: false,
 };
@@ -48,10 +50,12 @@ const chatRequestSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(searchUsersForChatRequestAsync.pending, (state, action) => {
+        state.searchUserForChatRequestLoading = true;
         state.searchUserForChatRequestMessage = "";
         state.searchedUsersForChatRequest = [];
       })
       .addCase(searchUsersForChatRequestAsync.fulfilled, (state, action) => {
+        state.searchUserForChatRequestLoading = false;
         if (action.payload) {
           if (action.payload?.success) {
             if (action.payload.users) {
@@ -63,6 +67,7 @@ const chatRequestSlice = createSlice({
         }
       })
       .addCase(searchUsersForChatRequestAsync.rejected, (state, action) => {
+        state.searchUserForChatRequestLoading = false;
         state.searchUserForChatRequestMessage =
           "We couldn't find any matching users.";
       })
@@ -96,6 +101,9 @@ export const selectSearchedUsersForChatRequest = (state: RootState) =>
 
 export const selectSearchUserForChatRequestMessage = (state: RootState) =>
   state.chatRequest.searchUserForChatRequestMessage;
+
+export const selectSearchUserForChatRequestLoading = (state: RootState) =>
+  state.chatRequest.searchUserForChatRequestLoading;
 
 export const selectChatRequestsLoading = (state: RootState) =>
   state.chatRequest.chatRequestsLoading;

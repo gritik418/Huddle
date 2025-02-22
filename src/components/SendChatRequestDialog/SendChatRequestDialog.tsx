@@ -1,6 +1,7 @@
 "use client";
 import {
   selectSearchedUsersForChatRequest,
+  selectSearchUserForChatRequestLoading,
   selectSearchUserForChatRequestMessage,
 } from "@/features/chatRequest/chatRequestSlice";
 import { JSX } from "react";
@@ -17,15 +18,40 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { useRouter } from "next/navigation";
+import ChatItemSkeleton from "../ChatItemSkeleton/ChatItemSkeleton";
 
 const SendChatRequestDialog = (): JSX.Element => {
   const router = useRouter();
   const searchedUsers = useSelector(selectSearchedUsersForChatRequest);
+  const loading: boolean = useSelector(selectSearchUserForChatRequestLoading);
   const message: string = useSelector(selectSearchUserForChatRequestMessage);
 
   const handleCreateGroupChat = (): void => {
     router.push("/group/create");
   };
+
+  function renderContent(): JSX.Element {
+    if (loading) {
+      <div className="flex flex-col gap-2">
+        <ChatItemSkeleton />
+        <ChatItemSkeleton />
+      </div>;
+    }
+    if ((!searchedUsers || searchedUsers.length) === 0 && message) {
+      return <p className="text-sm">{message}</p>;
+    }
+    if ((!searchedUsers || searchedUsers.length) === 0) {
+      return <p className="text-sm">We couldn't find any matching users.</p>;
+    }
+
+    return (
+      <div className="flex flex-col gap-2">
+        {searchedUsers.map((user: SearchedUserForChat) => {
+          return <SearchedUserForChatItem key={user._id} {...user} />;
+        })}
+      </div>
+    );
+  }
 
   return (
     <Dialog>
@@ -50,17 +76,7 @@ const SendChatRequestDialog = (): JSX.Element => {
 
         <SearchBarForChatRequest />
 
-        <div className="mt-2 max-h-[400px]">
-          {searchedUsers?.length > 0 ? (
-            <div className="flex flex-col gap-2">
-              {searchedUsers.map((user: SearchedUserForChat) => {
-                return <SearchedUserForChatItem key={user._id} {...user} />;
-              })}
-            </div>
-          ) : (
-            <>{message ? <p className="text-sm">{message}</p> : null}</>
-          )}
-        </div>
+        <div className="mt-2 max-h-[400px]">{renderContent()}</div>
       </DialogContent>
     </Dialog>
   );

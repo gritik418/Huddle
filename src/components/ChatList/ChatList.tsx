@@ -5,6 +5,7 @@ import Spinner from "../Spinner/Spinner";
 import { useSelector } from "react-redux";
 import { selectChats, selectChatsLoading } from "@/features/chat/chatSlice";
 import { selectUser } from "@/features/user/userSlice";
+import ChatItemSkeleton from "../ChatItemSkeleton/ChatItemSkeleton";
 
 type PropsType = { chatId: string | null; searchQuery: string | null };
 
@@ -40,8 +41,11 @@ const ChatList = ({ chatId, searchQuery }: PropsType): JSX.Element => {
   const renderContent = () => {
     if (isLoading) {
       return (
-        <div className="flex items-center my-3 justify-center">
-          <Spinner variant="small" />
+        <div className="flex flex-col items-center justify-center">
+          <ChatItemSkeleton />
+          <ChatItemSkeleton />
+          <ChatItemSkeleton />
+          <ChatItemSkeleton />
         </div>
       );
     }

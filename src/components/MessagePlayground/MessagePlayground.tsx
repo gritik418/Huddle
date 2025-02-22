@@ -7,7 +7,7 @@ import { selectUser } from "@/features/user/userSlice";
 import { JSX, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import MessageItem from "../MessageItem/MessageItem";
-import Spinner from "../Spinner/Spinner";
+import MessagePlaygroundSkeleton from "../MessagePlaygroundSkeleton/MessagePlaygroundSkeleton";
 
 const MessagePlayground = (): JSX.Element => {
   const user: User | null = useSelector(selectUser);
@@ -21,11 +21,7 @@ const MessagePlayground = (): JSX.Element => {
   }, [messages]);
 
   if (isLoading) {
-    return (
-      <div className="flex h-screen flex-1 bg-[#f2f2f2] items-center justify-center">
-        <Spinner variant="medium" />
-      </div>
-    );
+    return <MessagePlaygroundSkeleton />;
   }
 
   return (
