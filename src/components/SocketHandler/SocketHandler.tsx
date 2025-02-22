@@ -34,13 +34,14 @@ const SocketHandler = ({
   const dispatch = useDispatch<AppDispatch>();
 
   const newMessageHandler = useCallback(
-    ({ message }: { message: Message }) => {
+    ({ message, chat }: { message: Message; chat: Chat }) => {
       if (pathname.includes(message.chatId.toString())) {
         dispatch(addMessage(message));
       } else {
         toast(
           Notification({
             id: message.chatId,
+            chat: chat,
             type: "NEW_MESSAGE",
             message: message,
           }),

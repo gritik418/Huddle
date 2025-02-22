@@ -9,7 +9,7 @@ const Notification = ({
   followRequest,
   followRequestReceiver,
   creator,
-  postId,
+  chat,
 }: NotificationData): JSX.Element => {
   if (type === "CHAT_REQUEST")
     return (
@@ -131,33 +131,71 @@ const Notification = ({
       </div>
     );
 
-  if (type === "NEW_MESSAGE")
-    return (
-      <div className="flex flex-col w-full">
-        <div className="flex items-center gap-2">
-          <Image
-            src={
-              message?.sender.profilePicture || "/images/default-profile.jpg"
-            }
-            alt="img"
-            className="rounded-full h-12 w-12"
-            height={50}
-            width={50}
-          />
+  if (type === "NEW_MESSAGE") {
+    if (chat?.isGroupChat) {
+      return (
+        <div className="flex flex-col w-full">
+          <div className="flex items-center gap-2">
+            <Image
+              src={chat.groupIcon || "/images/default-group-icon.png"}
+              alt="img"
+              className="rounded-full h-12 w-12"
+              height={50}
+              width={50}
+            />
 
-          <div className="flex flex-col">
-            <p className="text-sm font-bold">
-              {message?.sender.firstName} {message?.sender.lastName}
-            </p>
-            <p className="text-sm font-medium">{message?.sender.username}</p>
+            <div className="flex flex-col">
+              <p className="text-sm font-bold">{chat.groupName}</p>
+            </div>
           </div>
-        </div>
 
-        <div className="flex items-center justify-between p-2">
-          <p className="text-sm font-bold">{message?.content}</p>
+          {message?.content && (
+            <div className="flex items-center mt-2 justify-between p-1">
+              <p className="text-sm font-normal">
+                <span className="font-semibold">
+                  {message?.sender.firstName}:
+                </span>{" "}
+                {message?.content?.slice(0, 20)}
+                {message?.content?.length > 20 ? "..." : ""}
+              </p>
+            </div>
+          )}
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className="flex flex-col w-full">
+          <div className="flex items-center gap-2">
+            <Image
+              src={
+                message?.sender.profilePicture || "/images/default-profile.jpg"
+              }
+              alt="img"
+              className="rounded-full h-12 w-12"
+              height={50}
+              width={50}
+            />
+
+            <div className="flex flex-col">
+              <p className="text-sm font-bold">
+                {message?.sender.firstName} {message?.sender.lastName}
+              </p>
+              <p className="text-sm font-medium">{message?.sender.username}</p>
+            </div>
+          </div>
+
+          {message?.content && (
+            <div className="flex items-center mt-2 justify-between p-1">
+              <p className="text-sm font-bold">
+                {message?.content?.slice(0, 20)}
+                {message?.content?.length > 20 ? "..." : ""}
+              </p>
+            </div>
+          )}
+        </div>
+      );
+    }
+  }
 
   return (
     <div>

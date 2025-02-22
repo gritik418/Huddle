@@ -3,6 +3,8 @@ import Image from "next/image";
 import { JSX } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useSelector } from "react-redux";
+import ChatSenderDropDownMenu from "../ChatSenderDropDownMenu/ChatSenderDropDownMenu";
+import GroupOptionsDropDownMenu from "../GroupOptionsDropDownMenu/GroupOptionsDropDownMenu";
 
 const MessageSectionHeader = ({ chat }: { chat: Chat }): JSX.Element => {
   const user: User | null = useSelector(selectUser);
@@ -27,9 +29,7 @@ const MessageSectionHeader = ({ chat }: { chat: Chat }): JSX.Element => {
           </div>
         </div>
 
-        <div className="flex h-10 w-10 rounded-full bg-gray-100 items-center justify-center">
-          <BsThreeDotsVertical />
-        </div>
+        <GroupOptionsDropDownMenu />
       </div>
     );
   }
@@ -65,9 +65,7 @@ const MessageSectionHeader = ({ chat }: { chat: Chat }): JSX.Element => {
         </div>
       </div>
 
-      <div className="flex h-10 w-10 rounded-full bg-gray-100 items-center justify-center">
-        <BsThreeDotsVertical />
-      </div>
+      <ChatSenderDropDownMenu sender={sender} />
     </div>
   );
 };

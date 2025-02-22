@@ -133,4 +133,5 @@ interface NotificationData {
   followRequest?: FollowRequest;
   creator?: Follower;
   postId?: string;
+  chat?: Chat;
 }

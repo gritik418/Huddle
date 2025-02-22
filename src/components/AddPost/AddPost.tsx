@@ -11,12 +11,15 @@ import { IoIosCloseCircle } from "react-icons/io";
 import { Bounce, toast } from "react-toastify";
 import MentionsMenu from "../MentionsMenu/MentionsMenu";
 import Spinner from "../Spinner/Spinner";
+import { useSelector } from "react-redux";
+import { selectUser } from "@/features/user/userSlice";
 
 const AddPost = () => {
   const [selectedMentions, setSelectedMentions] = useState<string[]>([]);
   const [mediaPreview, setMediaPreview] = useState<string[]>([]);
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [addPost] = useAddPostMutation();
+  const user: User | null = useSelector(selectUser);
 
   const {
     register,
@@ -182,9 +185,7 @@ const AddPost = () => {
       <div className="flex gap-2">
         <div className="h-10 w-10 rounded-full">
           <Image
-            src={
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
-            }
+            src={user?.profilePicture || "/images/default-profile.jpg"}
             alt="avatar"
             height={40}
             width={40}
