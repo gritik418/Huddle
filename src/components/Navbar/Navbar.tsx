@@ -6,7 +6,6 @@ import { JSX } from "react";
 import { IoChatbubblesSharp, IoHome } from "react-icons/io5";
 import FollowRequestsMenu from "../FollowRequestsMenu/FollowRequestsMenu";
 import NavigationDrawer from "../NavigationDrawer/NavigationDrawer";
-import NotificationsDrawer from "../NotificationsDrawer/NotificationsDrawer";
 import ProfileMenu from "../ProfileMenu/ProfileMenu";
 
 const Navbar = (): JSX.Element => {
@@ -54,8 +53,6 @@ const Navbar = (): JSX.Element => {
 
         <div className="flex gap-3 items-center">
           <FollowRequestsMenu />
-
-          <NotificationsDrawer />
 
           <ProfileMenu />
 

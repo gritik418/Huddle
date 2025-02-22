@@ -17,3 +17,5 @@ export const STATUS_UPDATE = "status_update";
 export const NEW_FOLLOW_REQUEST = "new_follow_request";
 
 export const ACCEPTED_FOLLOW_REQUEST = "accepted_follow_request";
+
+export const NEW_MENTION = "new_mention";

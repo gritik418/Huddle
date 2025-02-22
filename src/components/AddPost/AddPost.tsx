@@ -2,25 +2,20 @@
 import { AddPostApiResponse, useAddPostMutation } from "@/features/api/postApi";
 import postSchema, { PostData } from "@/validators/postSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { GrAttachment } from "react-icons/gr";
 import { IoIosCloseCircle } from "react-icons/io";
+import { Bounce, toast } from "react-toastify";
 import MentionsMenu from "../MentionsMenu/MentionsMenu";
 import Spinner from "../Spinner/Spinner";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { Bounce, toast } from "react-toastify";
-
-interface BlobFile extends Blob {
-  readonly name: string;
-  readonly lastModified: number;
-  readonly lastModifiedDate: Date;
-}
 
 const AddPost = () => {
   const [selectedMentions, setSelectedMentions] = useState<string[]>([]);
   const [mediaPreview, setMediaPreview] = useState<string[]>([]);
+  const [hashtags, setHashtags] = useState<string[]>([]);
   const [addPost] = useAddPostMutation();
 
   const {
@@ -29,7 +24,7 @@ const AddPost = () => {
     setValue,
     reset,
     clearErrors,
-    formState: { isSubmitting, errors, touchedFields },
+    formState: { isSubmitting, errors },
   } = useForm<PostData>({
     defaultValues: {
       content: "",
@@ -46,9 +41,19 @@ const AddPost = () => {
       if (values.content) formData.append("content", values.content);
       if (values.location) formData.append("location", values.location);
 
-      if (selectedMentions && selectedMentions.length > 0) {
+      if (
+        selectedMentions &&
+        Array.isArray(selectedMentions) &&
+        selectedMentions.length > 0
+      ) {
         selectedMentions.forEach((mention) => {
-          formData.append("mentions", mention);
+          formData.append("mentions[]", mention);
+        });
+      }
+
+      if (hashtags && hashtags.length > 0) {
+        hashtags.forEach((hashtag) => {
+          formData.append("hashtags", hashtag);
         });
       }
 
@@ -64,7 +69,9 @@ const AddPost = () => {
       if (error) {
         const errorResponse = error as FetchBaseQueryError;
         const parsedError = errorResponse?.data as AddPostApiResponse;
+
         console.log(parsedError);
+
         if (parsedError?.message) {
           toast.error(parsedError.message, {
             position: "top-right",
@@ -85,6 +92,7 @@ const AddPost = () => {
         reset();
         setMediaPreview([]);
         setSelectedMentions([]);
+        setHashtags([]);
 
         if (data.message) {
           toast.success(data.message, {
@@ -145,6 +153,24 @@ const AddPost = () => {
     setMediaPreview([]);
   };
 
+  const handleHashtagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+
+    const words = inputValue.split(" ");
+
+    const validHashtags = words
+      .map((word) => word.trim())
+      .filter((word) => word.startsWith("#") && word.length > 1)
+      .map((word) => {
+        return word.replace(/[^A-Za-z0-9_#]/g, "");
+      });
+    setHashtags(validHashtags);
+  };
+
+  const handleRemoveHashtag = (hashtag: string) => {
+    setHashtags(hashtags.filter((tag) => tag !== hashtag));
+  };
+
   useEffect(() => {
     return () => {
       mediaPreview.forEach((url) => URL.revokeObjectURL(url));
@@ -171,7 +197,7 @@ const AddPost = () => {
           className="flex flex-1 flex-col"
         >
           <textarea
-            className="bg-gray-100 flex-1 min-h-24 resize-none p-2 px-4 outline-none rounded-lg placeholder:font-semibold"
+            className="bg-gray-100 rounded-b-none flex-1 min-h-24 resize-none p-2 px-4 outline-none rounded-lg placeholder:font-semibold"
             placeholder="What's happening?"
             {...register("content")}
           />
@@ -201,6 +227,34 @@ const AddPost = () => {
               >
                 <IoIosCloseCircle />
               </span>
+            </div>
+          )}
+
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Add a hashtag (e.g. #Travel)"
+              className="bg-gray-100 text-xs text-gray-500 p-2 rounded-lg w-full outline-none rounded-t-none"
+              onChange={handleHashtagChange}
+            />
+          </div>
+
+          {hashtags && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {hashtags.map((hashtag) => (
+                <div
+                  key={hashtag}
+                  className="flex items-center bg-blue-500 text-white p-1 rounded-lg"
+                >
+                  <span className="text-xs">{hashtag}</span>
+                  <span
+                    onClick={() => handleRemoveHashtag(hashtag)}
+                    className="ml-2 text-xs cursor-pointer"
+                  >
+                    &times;
+                  </span>
+                </div>
+              ))}
             </div>
           )}
 

@@ -6,6 +6,7 @@ import {
   NEW_CHAT,
   NEW_CHAT_REQUEST,
   NEW_FOLLOW_REQUEST,
+  NEW_MENTION,
   NEW_MESSAGE,
   STATUS_UPDATE,
   USER_ONLINE,
@@ -137,6 +138,25 @@ const SocketHandler = ({
     []
   );
 
+  const newMentionHandler = useCallback(
+    ({ postId, creator }: { postId: string; creator: Follower }) => {
+      if (postId) {
+        toast(
+          Notification({
+            id: postId,
+            type: "NEW_MENTION",
+            creator,
+            postId: postId,
+          }),
+          {
+            hideProgressBar: true,
+          }
+        );
+      }
+    },
+    []
+  );
+
   // ADDED_TO_GROUP, {chat,creator};
 
   useEffect(() => {
@@ -158,6 +178,8 @@ const SocketHandler = ({
 
     socket.on(ACCEPTED_FOLLOW_REQUEST, acceptedFollowRequestHandler);
 
+    socket.on(NEW_MENTION, newMentionHandler);
+
     return () => {
       socket.off(NEW_MESSAGE, newMessageHandler);
 
@@ -172,14 +194,19 @@ const SocketHandler = ({
       socket.off(STATUS_UPDATE, statusUpdateHandler);
 
       socket.off(ACCEPTED_FOLLOW_REQUEST, acceptedFollowRequestHandler);
+
+      socket.off(NEW_MENTION, newMentionHandler);
     };
   }, [
     socket,
     newMessageHandler,
     messageSentHandler,
     newChatRequestHandler,
+    newfollowRequestHandler,
     newChatHandler,
     statusUpdateHandler,
+    acceptedFollowRequestHandler,
+    newMentionHandler,
   ]);
   return <div>{children}</div>;
 };

@@ -8,6 +8,8 @@ const Notification = ({
   message,
   followRequest,
   followRequestReceiver,
+  creator,
+  postId,
 }: NotificationData): JSX.Element => {
   if (type === "CHAT_REQUEST")
     return (
@@ -18,6 +20,7 @@ const Notification = ({
               chatRequest?.sender.profilePicture ||
               "/images/default-profile.jpg"
             }
+            className="rounded-full h-12 w-12"
             alt="img"
             height={50}
             width={50}
@@ -39,6 +42,32 @@ const Notification = ({
       </div>
     );
 
+  if (type === "NEW_MENTION")
+    return (
+      <div className="flex flex-col w-full">
+        <div className="flex items-center gap-2">
+          <Image
+            src={creator?.profilePicture || "/images/default-profile.jpg"}
+            alt="img"
+            className="rounded-full h-12 w-12"
+            height={50}
+            width={50}
+          />
+
+          <div className="flex flex-col">
+            <p className="text-sm font-bold">
+              {creator?.firstName} {creator?.lastName}
+            </p>
+            <p className="text-sm font-medium">{creator?.username}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between mt-2">
+          <p className="text-sm font-bold">Mentioned you in a post.</p>
+        </div>
+      </div>
+    );
+
   if (type === "FOLLOW_REQUEST")
     return (
       <div className="flex flex-col w-full">
@@ -48,6 +77,7 @@ const Notification = ({
               followRequest?.sender.profilePicture ||
               "/images/default-profile.jpg"
             }
+            className="rounded-full h-12 w-12"
             alt="img"
             height={50}
             width={50}
@@ -79,6 +109,7 @@ const Notification = ({
               "/images/default-profile.jpg"
             }
             alt="img"
+            className="rounded-full h-12 w-12"
             height={50}
             width={50}
           />
@@ -109,6 +140,7 @@ const Notification = ({
               message?.sender.profilePicture || "/images/default-profile.jpg"
             }
             alt="img"
+            className="rounded-full h-12 w-12"
             height={50}
             width={50}
           />
@@ -132,6 +164,7 @@ const Notification = ({
       <Image
         src={"/images/default-profile.jpg"}
         alt="img"
+        className="rounded-full h-12 w-12"
         height={50}
         width={50}
       />

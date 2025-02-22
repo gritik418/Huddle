@@ -125,9 +125,12 @@ interface NotificationData {
     | "NEW_MESSAGE"
     | "NEW_GROUP"
     | "FOLLOW_REQUEST"
+    | "NEW_MENTION"
     | "ACCEPTED_FOLLOW_REQUEST";
   followRequestReceiver?: Follower;
   chatRequest?: ChatRequest;
   message?: Message;
   followRequest?: FollowRequest;
+  creator?: Follower;
+  postId?: string;
 }

@@ -1,6 +1,7 @@
 import { SEND_MESSAGE } from "@/constants/events";
 import { useSocket } from "@/contexts/socket/SocketProvider";
 import { selectUser } from "@/features/user/userSlice";
+import { Textarea } from "@chakra-ui/react";
 import { ChangeEvent, useState } from "react";
 import { BsFillSendFill } from "react-icons/bs";
 import { useSelector } from "react-redux";
@@ -11,7 +12,7 @@ const MessageInput = ({ chatId, chat }: { chatId: string; chat: Chat }) => {
   const user: User | null = useSelector(selectUser);
   const [content, setContent] = useState<string>("");
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
   };
 
@@ -31,12 +32,12 @@ const MessageInput = ({ chatId, chat }: { chatId: string; chat: Chat }) => {
   return (
     <div className="h-20 bg-[#f2f2f2] flex items-start justify-center pt-2">
       <div className="flex h-14 bg-white w-full max-w-[90%] gap-2 pl-5 rounded-full items-center p-1 justify-between">
-        <input
-          type="text"
+        <Textarea
           placeholder="Type here..."
           onChange={handleChange}
+          autoFocus
           value={content}
-          className="flex-1 outline-none text-lg text-gray-500"
+          className="flex-1 p-3 h-14 hide-scrollbar resize-none outline-none text-lg text-gray-500"
         />
         <button
           onClick={handleSendMessage}
