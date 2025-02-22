@@ -33,17 +33,23 @@ const HomeSidebar = (): JSX.Element => {
         </p>
 
         <div className="flex justify-evenly w-full">
-          <div className="flex flex-col items-center text-gray-600">
+          <Link
+            href={"/profile/following"}
+            className="flex flex-col items-center text-gray-600"
+          >
             <p className="text-xs font-bold">Following</p>
             <p className="font-semibold text-xs">{user?.following.length}</p>
-          </div>
+          </Link>
 
           <div className="min-h-full border-[1px] border-gray-300"></div>
 
-          <div className="flex flex-col items-center text-gray-600">
+          <Link
+            href={"/profile/followers"}
+            className="flex flex-col items-center text-gray-600"
+          >
             <p className="text-xs font-bold">Followers</p>
             <p className="font-semibold text-xs">{user?.followers.length}</p>
-          </div>
+          </Link>
         </div>
       </div>
 

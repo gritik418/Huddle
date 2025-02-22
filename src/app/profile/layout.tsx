@@ -57,82 +57,96 @@ export default function Layout({
               </div>
 
               <div className="flex mt-4 space-x-6">
-                <div className="flex flex-col items-center">
+                <Link
+                  href={"/profile/posts"}
+                  className="flex flex-col items-center"
+                >
                   <span className="font-semibold">{user?.posts.length}</span>
                   <p className="text-gray-500 text-sm">Posts</p>
-                </div>
+                </Link>
 
-                <div className="flex flex-col items-center">
+                <Link
+                  href={"/profile/followers"}
+                  className="flex flex-col items-center"
+                >
                   <span className="font-semibold">
                     {user?.followers.length}
                   </span>
                   <p className="text-gray-500 text-sm">Followers</p>
-                </div>
+                </Link>
 
-                <div className="flex flex-col items-center">
+                <Link
+                  href={"/profile/following"}
+                  className="flex flex-col items-center"
+                >
                   <span className="font-semibold">
                     {user?.following.length}
                   </span>
                   <p className="text-gray-500 text-sm">Following</p>
-                </div>
+                </Link>
               </div>
             </div>
 
-            <div className="flex mt-8">
-              <ul className="flex gap-3">
-                <li className="flex items-center justify-center w-max h-max">
-                  <Link
-                    className={`p-1 px-4 rounded-full ${
-                      pathname === "/profile"
-                        ? "bg-[var(--secondary)] text-white font-bold"
-                        : "bg-gray-200"
-                    }`}
-                    href="/profile"
-                  >
-                    About
-                  </Link>
-                </li>
+            {pathname !== "/profile/followers" &&
+            pathname !== "/profile/following" ? (
+              <div className="flex mt-8">
+                <ul className="flex gap-3">
+                  <li className="flex items-center justify-center w-max h-max">
+                    <Link
+                      className={`p-1 px-4 rounded-full ${
+                        pathname === "/profile"
+                          ? "bg-[var(--secondary)] text-white font-bold"
+                          : "bg-gray-200"
+                      }`}
+                      href="/profile"
+                    >
+                      About
+                    </Link>
+                  </li>
 
-                <li className="flex items-center justify-center w-max h-max">
-                  <Link
-                    className={`p-1 px-4 rounded-full ${
-                      pathname === "/profile/posts"
-                        ? "bg-[var(--secondary)] text-white font-bold"
-                        : "bg-gray-200"
-                    }`}
-                    href="/profile/posts"
-                  >
-                    Posts
-                  </Link>
-                </li>
+                  <li className="flex items-center justify-center w-max h-max">
+                    <Link
+                      className={`p-1 px-4 rounded-full ${
+                        pathname === "/profile/posts"
+                          ? "bg-[var(--secondary)] text-white font-bold"
+                          : "bg-gray-200"
+                      }`}
+                      href="/profile/posts"
+                    >
+                      Posts
+                    </Link>
+                  </li>
 
-                <li className="flex items-center justify-center w-max h-max">
-                  <Link
-                    className={`p-1 px-4 rounded-full ${
-                      pathname === "/profile/channels"
-                        ? "bg-[var(--secondary)] text-white font-bold"
-                        : "bg-gray-200"
-                    }`}
-                    href="/profile/channels"
-                  >
-                    Channels
-                  </Link>
-                </li>
+                  <li className="flex items-center justify-center w-max h-max">
+                    <Link
+                      className={`p-1 px-4 rounded-full ${
+                        pathname === "/profile/channels"
+                          ? "bg-[var(--secondary)] text-white font-bold"
+                          : "bg-gray-200"
+                      }`}
+                      href="/profile/channels"
+                    >
+                      Channels
+                    </Link>
+                  </li>
 
-                <li className="flex items-center justify-center w-max h-max">
-                  <Link
-                    className={`p-1 px-4 rounded-full ${
-                      pathname === "/profile/pulse"
-                        ? "bg-[var(--secondary)] text-white font-bold"
-                        : "bg-gray-200"
-                    }`}
-                    href="/profile/pulse"
-                  >
-                    Pulse
-                  </Link>
-                </li>
-              </ul>
-            </div>
+                  <li className="flex items-center justify-center w-max h-max">
+                    <Link
+                      className={`p-1 px-4 rounded-full ${
+                        pathname === "/profile/pulse"
+                          ? "bg-[var(--secondary)] text-white font-bold"
+                          : "bg-gray-200"
+                      }`}
+                      href="/profile/pulse"
+                    >
+                      Pulse
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            ) : (
+              <div className="flex m-2"></div>
+            )}
           </div>
 
           {children}
