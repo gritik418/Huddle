@@ -4,6 +4,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Post from "../Post/Post";
 import Spinner from "../Spinner/Spinner";
 import Image from "next/image";
+import PostSkeleton from "../PostSkeleton/PostSkeleton";
 
 const Feed = (): JSX.Element => {
   const [page, setPage] = useState<number>(1);
@@ -38,8 +39,10 @@ const Feed = (): JSX.Element => {
 
   if (isLoading && page === 1) {
     return (
-      <div className="flex flex-col bg-white rounded-lg py-20 items-center justify-center">
-        <Spinner variant={"small"} />
+      <div className="flex flex-col rounded-lg gap-4">
+        <PostSkeleton />
+        <PostSkeleton />
+        <PostSkeleton />
       </div>
     );
   }

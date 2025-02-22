@@ -1,6 +1,6 @@
 "use client";
 import Post from "@/components/Post/Post";
-import Spinner from "@/components/Spinner/Spinner";
+import PostSkeleton from "@/components/PostSkeleton/PostSkeleton";
 import { useGetPostsByFollwingQuery } from "@/features/api/postApi";
 import Image from "next/image";
 import { JSX } from "react";
@@ -11,8 +11,11 @@ const Buddies = (): JSX.Element => {
   function renderContent(): JSX.Element {
     if (isLoading) {
       return (
-        <div className="flex text-xl bg-white rounded-lg w-full justify-center items-center">
-          <Spinner variant={"medium"} />
+        <div className="flex flex-col gap-4 text-xl rounded-lg w-full">
+          <PostSkeleton />
+          <PostSkeleton />
+          <PostSkeleton />
+          <PostSkeleton />
         </div>
       );
     }

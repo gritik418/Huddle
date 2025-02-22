@@ -1,14 +1,14 @@
 "use client";
-import React, { JSX, useEffect } from "react";
-import SearchedAccountItem from "../SearchedAccountItem/SearchedAccountItem";
+import { AppDispatch } from "@/app/store";
 import {
   searchAsync,
   selectSearchedAccounts,
   selectSearchLoading,
 } from "@/features/search/searchSlice";
+import { JSX, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "@/app/store";
-import Spinner from "../Spinner/Spinner";
+import SearchedAccountItem from "../SearchedAccountItem/SearchedAccountItem";
+import SearchedAccountsSkeleton from "../SearchedAccountsSkeleton/SearchedAccountsSkeleton";
 
 const SearchedAccounts = ({
   searchQuery,
@@ -29,17 +29,13 @@ const SearchedAccounts = ({
 
   function renderContent(): JSX.Element {
     if (loading) {
-      return (
-        <div className="flex items-center justify-center my-6">
-          <Spinner variant={"medium"} />
-        </div>
-      );
+      return <SearchedAccountsSkeleton />;
     }
 
     if (!accounts || accounts.length === 0) {
       return (
         <div className="flex items-center justify-center my-6">
-          <p>No accounts found.</p>
+          <p className="text-lg">No accounts found.</p>
         </div>
       );
     }
