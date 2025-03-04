@@ -3,9 +3,9 @@ import Image from "next/image";
 import { JSX } from "react";
 import { AiFillLike } from "react-icons/ai";
 import { FaRegCommentDots } from "react-icons/fa";
-import { HiDotsVertical } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import PostMedia from "../PostMedia/PostMedia";
+import ProfilePostOptions from "../ProfilePostOptions/ProfilePostOptions";
 
 type PropsType = {
   post: Post;
@@ -38,9 +38,7 @@ const ProfilePost = ({ post }: PropsType): JSX.Element => {
           </div>
         </div>
 
-        <div className="flex cursor-pointer">
-          <HiDotsVertical className="text-xl" />
-        </div>
+        <ProfilePostOptions />
       </div>
 
       <div className="flex my-4">

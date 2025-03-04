@@ -1,10 +1,10 @@
 import Image from "next/image";
+import Link from "next/link";
 import { JSX } from "react";
 import { AiFillLike } from "react-icons/ai";
 import { FaRegCommentDots } from "react-icons/fa";
-import { HiDotsVertical } from "react-icons/hi";
 import PostMedia from "../PostMedia/PostMedia";
-import Link from "next/link";
+import PostOptions from "../PostOptions/PostOptions";
 
 type PropsType = {
   post: Post;
@@ -38,9 +38,7 @@ const Post = ({ post }: PropsType): JSX.Element => {
           </div>
         </Link>
 
-        <div className="flex cursor-pointer">
-          <HiDotsVertical className="text-xl" />
-        </div>
+        <PostOptions />
       </div>
 
       <div className="flex p-3">
