@@ -4,19 +4,87 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { MdCommentsDisabled } from "react-icons/md";
 import { FaRegTrashAlt } from "react-icons/fa";
+import {
+  RemovePostApiResponse,
+  useRemovePostMutation,
+} from "@/features/api/postApi";
+import { Bounce, toast } from "react-toastify";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
-const ProfilePostOptions = () => {
+const ProfilePostOptions = ({ postId }: { postId: string }) => {
+  const [removePost] = useRemovePostMutation();
+
+  const handleRemovePost = async () => {
+    try {
+      const { data, error } = await removePost(postId);
+
+      if (error) {
+        const errorResponse = error as FetchBaseQueryError;
+        const parsedError = errorResponse?.data as RemovePostApiResponse;
+
+        if (parsedError?.message) {
+          toast.error(parsedError.message, {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+          return;
+        }
+      }
+
+      if (data?.success) {
+        if (data.message) {
+          toast.success(data.message, {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        }
+      } else {
+        if (data?.message)
+          toast.error(data.message, {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+      }
+    } catch (error) {
+      toast.error("Some error occured.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -26,7 +94,10 @@ const ProfilePostOptions = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-44">
         <DropdownMenuGroup>
-          <DropdownMenuItem className="cursor-pointer">
+          <DropdownMenuItem
+            onClick={handleRemovePost}
+            className="cursor-pointer"
+          >
             <FaRegTrashAlt className="text-xs" /> Remove Post
           </DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer">

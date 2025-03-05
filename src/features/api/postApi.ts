@@ -1,4 +1,3 @@
-import { PostData } from "@/validators/postSchema";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export type GetPostsByFollwingApiResponse = {
@@ -35,11 +34,17 @@ export type AddPostApiResponse = {
   };
 };
 
+export type RemovePostApiResponse = {
+  success: boolean;
+  message: string;
+};
+
 const postApi = createApi({
   reducerPath: "postApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/post`,
   }),
+  tagTypes: ["loggedInUserPosts"],
   endpoints: (build) => ({
     getPostsByFollwing: build.query<GetPostsByFollwingApiResponse, void>({
       query: () => ({
@@ -60,6 +65,7 @@ const postApi = createApi({
           "Content-Type": "application/json",
         },
       }),
+      providesTags: ["loggedInUserPosts"],
     }),
     getFeed: build.query<GetFeedApiResponse, GetFeedArgs>({
       query: (args: GetFeedArgs) => ({
@@ -79,14 +85,23 @@ const postApi = createApi({
         body: data,
       }),
     }),
+    removePost: build.mutation<RemovePostApiResponse, string>({
+      query: (postId: string) => ({
+        url: `/${postId}`,
+        method: "DELETE",
+        credentials: "include",
+      }),
+      invalidatesTags: ["loggedInUserPosts"],
+    }),
   }),
 });
 
 export const {
-  useGetPostsByFollwingQuery,
-  useGetLoggedInUserPostsQuery,
   useGetFeedQuery,
   useAddPostMutation,
+  useRemovePostMutation,
+  useGetPostsByFollwingQuery,
+  useGetLoggedInUserPostsQuery,
 } = postApi;
 
 export default postApi;

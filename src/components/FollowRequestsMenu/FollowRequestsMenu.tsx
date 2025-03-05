@@ -37,7 +37,11 @@ const FollowRequestsMenu = (): JSX.Element => {
           <div className="flex bg-gray-100 relative cursor-pointer h-10 w-10 items-center justify-center rounded-full">
             <IoIosPersonAdd className="text-xl text-gray-700" />
 
-            <span className="absolute h-2 w-2 bg-red-400 rounded-full right-1 top-1"></span>
+            {followRequests?.length > 0 && (
+              <span className="absolute p-[1px] text-[10px] h-4 w-4 flex items-center justify-center text-white bg-red-400 rounded-full right-0 top-0">
+                {followRequests.length > 9 ? "9+" : followRequests.length}
+              </span>
+            )}
           </div>
         </MenubarTrigger>
         <MenubarContent className="max-w-[500px] min-w-[300px]">

@@ -15,8 +15,8 @@ const ProfilePost = ({ post }: PropsType): JSX.Element => {
   const user: User | null = useSelector(selectUser);
 
   return (
-    <div className="bg-white shadow-lg border-t-2 border-gray-100 p-3 rounded-lg">
-      <div className="flex items-center justify-between">
+    <div className="bg-white shadow-lg border-t-2 border-gray-100 overflow-hidden rounded-lg">
+      <div className="flex bg-gray-100 p-3 items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="flex h-12 w-12 rounded-full gap-2">
             <Image
@@ -38,10 +38,10 @@ const ProfilePost = ({ post }: PropsType): JSX.Element => {
           </div>
         </div>
 
-        <ProfilePostOptions />
+        <ProfilePostOptions postId={post._id} />
       </div>
 
-      <div className="flex my-4">
+      <div className="flex p-3">
         <p>{post.content}</p>
       </div>
 
@@ -51,7 +51,7 @@ const ProfilePost = ({ post }: PropsType): JSX.Element => {
         </div>
       )}
 
-      <div className="flex mt-2 p-2 gap-3">
+      <div className="flex mt-2 p-3 gap-3">
         <div className="flex bg-gray-100 cursor-pointer p-2 rounded-lg">
           <AiFillLike className="text-xl text-red-400" />
         </div>

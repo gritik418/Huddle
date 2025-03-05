@@ -73,8 +73,6 @@ const AddPost = () => {
         const errorResponse = error as FetchBaseQueryError;
         const parsedError = errorResponse?.data as AddPostApiResponse;
 
-        console.log(parsedError);
-
         if (parsedError?.message) {
           toast.error(parsedError.message, {
             position: "top-right",
