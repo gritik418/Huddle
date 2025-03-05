@@ -1,11 +1,16 @@
 import { selectUser } from "@/features/user/userSlice";
 import Image from "next/image";
 import { JSX } from "react";
-import { AiFillLike } from "react-icons/ai";
+import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { FaRegCommentDots } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import PostMedia from "../PostMedia/PostMedia";
 import ProfilePostOptions from "../ProfilePostOptions/ProfilePostOptions";
+import { Bounce, toast } from "react-toastify";
+import {
+  useLikePostMutation,
+  useUnlikePostMutation,
+} from "@/features/api/postApi";
 
 type PropsType = {
   post: Post;
@@ -13,6 +18,44 @@ type PropsType = {
 
 const ProfilePost = ({ post }: PropsType): JSX.Element => {
   const user: User | null = useSelector(selectUser);
+  const [likePost] = useLikePostMutation();
+  const [unlikePost] = useUnlikePostMutation();
+
+  const handleLikePost = async () => {
+    try {
+      await likePost(post._id);
+    } catch (error) {
+      toast.error("Some error occured.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
+
+  const handleUnlikePost = async () => {
+    try {
+      await unlikePost(post._id);
+    } catch (error) {
+      toast.error("Some error occured.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
 
   return (
     <div className="bg-white shadow-lg border-t-2 border-gray-100 overflow-hidden rounded-lg">
@@ -52,9 +95,23 @@ const ProfilePost = ({ post }: PropsType): JSX.Element => {
       )}
 
       <div className="flex mt-2 p-3 gap-3">
-        <div className="flex bg-gray-100 cursor-pointer p-2 rounded-lg">
-          <AiFillLike className="text-xl text-red-400" />
+        <div className="flex bg-gray-100 p-2 items-center gap-2  rounded-lg">
+          {post.likes.includes(user?._id) ? (
+            <AiFillLike
+              onClick={handleUnlikePost}
+              className="text-xl cursor-pointer text-red-400"
+            />
+          ) : (
+            <AiOutlineLike
+              onClick={handleLikePost}
+              className="text-xl cursor-pointer text-red-400"
+            />
+          )}
+          {post.likes.length > 1 && (
+            <p className="text-xs text-gray-500">{post.likes.length} Likes</p>
+          )}
         </div>
+
         <div className="flex bg-gray-100 cursor-pointer p-2 rounded-lg">
           <FaRegCommentDots className="text-xl" />
         </div>

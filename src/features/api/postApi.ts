@@ -34,7 +34,7 @@ export type AddPostApiResponse = {
   };
 };
 
-export type RemovePostApiResponse = {
+export type PostApiResponse = {
   success: boolean;
   message: string;
 };
@@ -44,7 +44,7 @@ const postApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/post`,
   }),
-  tagTypes: ["loggedInUserPosts"],
+  tagTypes: ["loggedInUserPosts", "posts"],
   endpoints: (build) => ({
     getPostsByFollwing: build.query<GetPostsByFollwingApiResponse, void>({
       query: () => ({
@@ -55,6 +55,7 @@ const postApi = createApi({
           "Content-Type": "application/json",
         },
       }),
+      providesTags: ["posts"],
     }),
     getLoggedInUserPosts: build.query<GetPostsByFollwingApiResponse, void>({
       query: () => ({
@@ -65,7 +66,7 @@ const postApi = createApi({
           "Content-Type": "application/json",
         },
       }),
-      providesTags: ["loggedInUserPosts"],
+      providesTags: ["loggedInUserPosts", "posts"],
     }),
     getFeed: build.query<GetFeedApiResponse, GetFeedArgs>({
       query: (args: GetFeedArgs) => ({
@@ -76,6 +77,7 @@ const postApi = createApi({
           "Content-Type": "application/json",
         },
       }),
+      providesTags: ["posts"],
     }),
     addPost: build.mutation<AddPostApiResponse, FormData>({
       query: (data: FormData) => ({
@@ -85,7 +87,7 @@ const postApi = createApi({
         body: data,
       }),
     }),
-    removePost: build.mutation<RemovePostApiResponse, string>({
+    removePost: build.mutation<PostApiResponse, string>({
       query: (postId: string) => ({
         url: `/${postId}`,
         method: "DELETE",
@@ -93,12 +95,30 @@ const postApi = createApi({
       }),
       invalidatesTags: ["loggedInUserPosts"],
     }),
+    likePost: build.mutation<PostApiResponse, string>({
+      query: (postId: string) => ({
+        url: `/${postId}/like`,
+        method: "POST",
+        credentials: "include",
+      }),
+      invalidatesTags: ["posts"],
+    }),
+    unlikePost: build.mutation<PostApiResponse, string>({
+      query: (postId: string) => ({
+        url: `/${postId}/like`,
+        method: "DELETE",
+        credentials: "include",
+      }),
+      invalidatesTags: ["posts"],
+    }),
   }),
 });
 
 export const {
   useGetFeedQuery,
   useAddPostMutation,
+  useLikePostMutation,
+  useUnlikePostMutation,
   useRemovePostMutation,
   useGetPostsByFollwingQuery,
   useGetLoggedInUserPostsQuery,

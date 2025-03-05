@@ -8,10 +8,7 @@ import {
 } from "../ui/dropdown-menu";
 import { MdCommentsDisabled } from "react-icons/md";
 import { FaRegTrashAlt } from "react-icons/fa";
-import {
-  RemovePostApiResponse,
-  useRemovePostMutation,
-} from "@/features/api/postApi";
+import { PostApiResponse, useRemovePostMutation } from "@/features/api/postApi";
 import { Bounce, toast } from "react-toastify";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
@@ -24,7 +21,7 @@ const ProfilePostOptions = ({ postId }: { postId: string }) => {
 
       if (error) {
         const errorResponse = error as FetchBaseQueryError;
-        const parsedError = errorResponse?.data as RemovePostApiResponse;
+        const parsedError = errorResponse?.data as PostApiResponse;
 
         if (parsedError?.message) {
           toast.error(parsedError.message, {
