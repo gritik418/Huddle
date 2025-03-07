@@ -1,27 +1,38 @@
-import { useGetFeedQuery } from "@/features/api/postApi";
-import React, { JSX, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import Post from "../Post/Post";
-import Spinner from "../Spinner/Spinner";
+"use client";
+import { AppDispatch } from "@/app/store";
+import {
+  getFeedAsync,
+  selectFeed,
+  selectFeedLoading,
+  selectPagination,
+} from "@/features/post/postSlice";
 import Image from "next/image";
+import { JSX, useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useDispatch, useSelector } from "react-redux";
+import Post from "../Post/Post";
 import PostSkeleton from "../PostSkeleton/PostSkeleton";
+import Spinner from "../Spinner/Spinner";
 
 const Feed = (): JSX.Element => {
   const [page, setPage] = useState<number>(1);
-  const limit = 20;
+  const dispatch = useDispatch<AppDispatch>();
+  const loading: boolean = useSelector(selectFeedLoading);
+  const posts: Post[] = useSelector(selectFeed);
+  const pagination = useSelector(selectPagination);
 
-  const { error, data, isLoading, isFetching } = useGetFeedQuery({
-    limit,
-    page,
-  });
-
-  const fetchData = () => {
-    if (!isFetching) {
-      setPage((prevPage) => prevPage + 1);
+  const fetchData = async () => {
+    if (page >= 1) {
+      dispatch(getFeedAsync({ page: page + 1, limit: 3 }));
+      setPage(() => page + 1);
     }
   };
 
-  if (error) {
+  useEffect(() => {
+    dispatch(getFeedAsync({ page: page, limit: 3 }));
+  }, []);
+
+  if (!posts) {
     return (
       <div className="flex flex-col bg-white rounded-lg py-20 items-center justify-center">
         <Image
@@ -37,7 +48,7 @@ const Feed = (): JSX.Element => {
     );
   }
 
-  if (isLoading && page === 1) {
+  if (loading && page === 1) {
     return (
       <div className="flex flex-col rounded-lg gap-4">
         <PostSkeleton />
@@ -47,7 +58,7 @@ const Feed = (): JSX.Element => {
     );
   }
 
-  if (!data?.posts || data.posts.length === 0) {
+  if (!posts || posts.length === 0) {
     return (
       <div className="flex flex-col bg-white rounded-lg py-20 items-center justify-center">
         <Image
@@ -63,32 +74,23 @@ const Feed = (): JSX.Element => {
     );
   }
 
-  const posts = data?.posts || [];
-
   return (
-    <div>
-      <InfiniteScroll
-        dataLength={posts.length}
-        next={fetchData}
-        hasMore={data?.pagination?.totalPages! > page}
-        loader={<Spinner variant={null} />}
-        refreshFunction={() => setPage(1)}
-        pullDownToRefresh
-        pullDownToRefreshThreshold={50}
-        pullDownToRefreshContent={
-          <h3 style={{ textAlign: "center" }}>&#8595; Pull down to refresh</h3>
-        }
-        releaseToRefreshContent={
-          <h3 style={{ textAlign: "center" }}>&#8593; Release to refresh</h3>
-        }
-      >
-        <div className="flex gap-4 flex-col">
-          {posts &&
-            posts.length > 0 &&
-            posts.map((post: Post) => <Post key={post._id} post={post} />)}
+    <InfiniteScroll
+      dataLength={posts.length}
+      next={fetchData}
+      hasMore={pagination?.totalPages! > page}
+      loader={
+        <div className="flex items-center py-6 justify-center">
+          <Spinner variant={"small"} />
         </div>
-      </InfiniteScroll>
-    </div>
+      }
+    >
+      <div className="flex gap-4 flex-col">
+        {posts &&
+          posts.length > 0 &&
+          posts.map((post: Post) => <Post key={post._id} post={post} />)}
+      </div>
+    </InfiniteScroll>
   );
 };
 

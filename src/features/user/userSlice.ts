@@ -6,12 +6,14 @@ interface UserState {
   user: User | null;
   onlineMembers: string[];
   followings: Follower[];
+  followers: Follower[];
 }
 
 const initialState: UserState = {
   user: null,
   onlineMembers: [],
   followings: [],
+  followers: [],
 };
 
 const userSlice = createSlice({
@@ -53,10 +55,18 @@ const userSlice = createSlice({
         }
       )
       .addMatcher(
-        userApi.endpoints.getFollowing.matchFulfilled,
+        userApi.endpoints.getFollowings.matchFulfilled,
         (state, action) => {
           if (action.payload.success) {
             state.followings = action.payload.following || [];
+          }
+        }
+      )
+      .addMatcher(
+        userApi.endpoints.getFollowers.matchFulfilled,
+        (state, action) => {
+          if (action.payload.success) {
+            state.followers = action.payload.followers || [];
           }
         }
       );
@@ -66,6 +76,7 @@ const userSlice = createSlice({
 export const { addOnlineMember, removeOnlineMember } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user.user;
+export const selectFollowers = (state: RootState) => state.user.followers;
 export const selectFollowings = (state: RootState) => state.user.followings;
 export const selectOnlineMembers = (state: RootState) =>
   state.user.onlineMembers;

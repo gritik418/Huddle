@@ -13,6 +13,7 @@ import followRequestApi from "@/features/api/followRequestApi";
 import followRequestSlice from "@/features/followRequest/followRequestSlice";
 import groupApi from "@/features/api/groupApi";
 import postApi from "@/features/api/postApi";
+import postSlice from "@/features/post/postSlice";
 
 const store = configureStore({
   reducer: {
@@ -25,6 +26,7 @@ const store = configureStore({
     [chatRequestApi.reducerPath]: chatRequestApi.reducer,
     [followRequestApi.reducerPath]: followRequestApi.reducer,
     [userSlice.reducerPath]: userSlice.reducer,
+    [postSlice.reducerPath]: postSlice.reducer,
     [chatRequestSlice.reducerPath]: chatRequestSlice.reducer,
     [messageSlice.reducerPath]: messageSlice.reducer,
     [chatSlice.reducerPath]: chatSlice.reducer,

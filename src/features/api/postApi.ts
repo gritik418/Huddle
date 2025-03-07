@@ -6,22 +6,6 @@ export type GetPostsByFollwingApiResponse = {
   posts: Post[];
 };
 
-type GetFeedArgs = {
-  page: number;
-  limit: number;
-};
-
-type GetFeedApiResponse = {
-  success: boolean;
-  message?: string;
-  posts?: Post[];
-  pagination?: {
-    page: number;
-    limit: number;
-    totalPages: number;
-  };
-};
-
 export type AddPostApiResponse = {
   success: boolean;
   message?: string;
@@ -68,17 +52,6 @@ const postApi = createApi({
       }),
       providesTags: ["loggedInUserPosts", "posts"],
     }),
-    getFeed: build.query<GetFeedApiResponse, GetFeedArgs>({
-      query: (args: GetFeedArgs) => ({
-        url: `/feed?page=${args.page}&limit=${args.limit}`,
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }),
-      providesTags: ["posts"],
-    }),
     addPost: build.mutation<AddPostApiResponse, FormData>({
       query: (data: FormData) => ({
         url: "/",
@@ -115,7 +88,6 @@ const postApi = createApi({
 });
 
 export const {
-  useGetFeedQuery,
   useAddPostMutation,
   useLikePostMutation,
   useUnlikePostMutation,

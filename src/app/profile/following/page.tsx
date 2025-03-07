@@ -1,33 +1,66 @@
 "use client";
-import { useState } from "react";
-
-const followersData = [
-  { id: "1", name: "John Doe", username: "john_doe" },
-  { id: "2", name: "Jane Smith", username: "jane_smith" },
-  { id: "3", name: "Alice Johnson", username: "alice_j" },
-  { id: "4", name: "Bob Lee", username: "bob_lee" },
-  { id: "5", name: "Charlie Brown", username: "charlie_brown" },
-  // Add more followers for testing
-];
+import { selectFollowings } from "@/features/user/userSlice";
+import Image from "next/image";
+import { JSX, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Followings = () => {
-  const [followers, setFollowers] = useState(followersData);
+  const followings = useSelector(selectFollowings);
   const [searchQuery, setSearchQuery] = useState("");
-  const [following, setFollowing] = useState(new Set());
 
-  const handleFollow = (id: string) => {
-    const newFollowing = new Set(following);
-    if (newFollowing.has(id)) {
-      newFollowing.delete(id);
-    } else {
-      newFollowing.add(id);
+  function renderComponent(): JSX.Element {
+    if (!followings || followings.length === 0) {
+      return (
+        <div className="flex justify-center p-4">
+          <p>No followings.</p>
+        </div>
+      );
     }
-    setFollowing(newFollowing);
-  };
 
-  const filteredFollowers = followers.filter((follower) =>
-    follower.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+    const filteredFollowings = followings.filter((following) => {
+      const query = `${following.firstName}${following?.lastName || ""}${
+        following.username
+      }`;
+      return query.toLowerCase().includes(searchQuery.toLowerCase());
+    });
+
+    if (!filteredFollowings || filteredFollowings.length === 0) {
+      return (
+        <div className="flex justify-center p-4">
+          <p>No followings found for your search.</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex flex-col gap-3">
+        {filteredFollowings.map((following) => (
+          <div
+            key={following._id}
+            className="flex items-center justify-between p-4 shadow-sm bg-gray-50 rounded-lg"
+          >
+            <div className="flex items-center">
+              <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center text-lg font-semibold text-white mr-4">
+                <Image
+                  src={
+                    following.profilePicture || "/images/default-profile.jpg"
+                  }
+                  alt="avatar"
+                  className="rounded-full h-full w-full"
+                  height={60}
+                  width={60}
+                />
+              </div>
+              <div>
+                <p className="font-semibold">{following.firstName}</p>
+                <p className="text-sm text-gray-500">@{following.username}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-lg bg-white mt-8 p-6">
@@ -36,48 +69,14 @@ const Followings = () => {
       <div className="mb-6">
         <input
           type="text"
-          className="w-full p-2 border border-gray-300 rounded-lg"
-          placeholder="Search followers..."
+          className="w-full p-2 outline-none border-2 border-gray-400 rounded-lg"
+          placeholder="Search followings..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
 
-      <div className="space-y-4">
-        {filteredFollowers.map((follower) => (
-          <div
-            key={follower.id}
-            className="flex items-center justify-between p-4 border-b border-gray-300 rounded-lg"
-          >
-            <div className="flex items-center">
-              <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center text-lg font-semibold text-white mr-4">
-                {follower.name[0]}
-              </div>
-              <div>
-                <p className="font-semibold">{follower.name}</p>
-                <p className="text-sm text-gray-500">@{follower.username}</p>
-              </div>
-            </div>
-
-            <button
-              onClick={() => handleFollow(follower.id)}
-              className={`${
-                following.has(follower.id)
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-300 text-gray-700"
-              } px-4 py-2 rounded-lg`}
-            >
-              {following.has(follower.id) ? "Unfollow" : "Follow"}
-            </button>
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-6 text-center">
-        <button className="bg-blue-500 text-white px-6 py-2 rounded-full">
-          Load More
-        </button>
-      </div>
+      <div className="space-y-4">{renderComponent()}</div>
     </div>
   );
 };

@@ -12,6 +12,12 @@ type GetFollowingApiResponse = {
   following?: Follower[];
 };
 
+type GetFollowersApiResponse = {
+  success: boolean;
+  message?: string;
+  followers?: Follower[];
+};
+
 type GetActiveMembersApiResponse = {
   success: boolean;
   message?: string;
@@ -59,9 +65,19 @@ const userApi = createApi({
         },
       }),
     }),
-    getFollowing: build.query<GetFollowingApiResponse, void>({
+    getFollowings: build.query<GetFollowingApiResponse, void>({
       query: () => ({
         url: "/following",
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
+    getFollowers: build.query<GetFollowersApiResponse, void>({
+      query: () => ({
+        url: "/followers",
         method: "GET",
         credentials: "include",
         headers: {
@@ -93,10 +109,11 @@ const userApi = createApi({
 
 export const {
   useGetUserQuery,
-  useGetFollowingQuery,
+  useGetFollowersQuery,
+  useGetFollowingsQuery,
+  useUpdateUserMutation,
   useGetActiveMembersQuery,
   useGetUserByUsernameQuery,
-  useUpdateUserMutation,
 } = userApi;
 
 export default userApi;
