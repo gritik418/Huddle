@@ -102,9 +102,11 @@ const ProfileMenu = (): JSX.Element => {
               <FaUser /> Profile
             </MenubarItem>
           </Link>
-          <MenubarItem className="cursor-pointer gap-2">
-            <IoMdSettings /> Settings
-          </MenubarItem>
+          <Link href={"/settings"}>
+            <MenubarItem className="cursor-pointer gap-2">
+              <IoMdSettings /> Settings
+            </MenubarItem>
+          </Link>
           <MenubarSeparator />
           <MenubarItem onClick={handleLogout} className="cursor-pointer gap-2">
             <FiLogOut /> Logout

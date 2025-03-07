@@ -1,4 +1,5 @@
 "use client";
+import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 
 const AccountManagement = () => {
@@ -15,13 +16,15 @@ const AccountManagement = () => {
   };
 
   return (
-    <div className="mx-auto p-8 bg-white">
-      {/* Header */}
-      <h1 className="text-3xl font-semibold text-center text-gray-800 mb-10">
-        Account Management
-      </h1>
+    <div className="mx-auto pb-8 bg-white space-y-6">
+      <div>
+        <h3 className="text-lg font-medium">Account Management</h3>
+        <p className="text-sm text-muted-foreground">
+          You can deactivate your account temporarily or delete it permanently.
+        </p>
+      </div>
+      <Separator />
 
-      {/* Deactivate Account */}
       <div className="bg-gray-50 shadow rounded-lg p-6 mb-6">
         <h2 className="text-xl font-medium text-gray-700 mb-4">
           Deactivate Account
@@ -43,7 +46,6 @@ const AccountManagement = () => {
         </button>
       </div>
 
-      {/* Delete Account */}
       <div className="bg-gray-50 shadow rounded-lg p-6">
         <h2 className="text-xl font-medium text-gray-700 mb-4">
           Delete Account
@@ -59,7 +61,6 @@ const AccountManagement = () => {
         </button>
       </div>
 
-      {/* Delete Account Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">

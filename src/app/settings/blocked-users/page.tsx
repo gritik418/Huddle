@@ -1,4 +1,5 @@
 "use client";
+import { Separator } from "@/components/ui/separator";
 import React, { useState } from "react";
 
 const BlockedUsers = () => {
@@ -51,13 +52,16 @@ const BlockedUsers = () => {
   };
 
   return (
-    <div className="mx-auto p-6 bg-white">
-      {/* Header */}
-      <h1 className="text-3xl font-semibold text-center text-gray-800 mb-8">
-        Blocked Users
-      </h1>
+    <div className="mx-auto pb-6 bg-white space-y-6">
+      <div>
+        <h3 className="text-lg font-medium">Blocked Users</h3>
+        <p className="text-sm text-muted-foreground">
+          Blocked users won't be able to interact with you until you unblock
+          them.
+        </p>
+      </div>
+      <Separator />
 
-      {/* Search Box */}
       <div className="mb-6">
         <input
           type="text"
@@ -68,7 +72,6 @@ const BlockedUsers = () => {
         />
       </div>
 
-      {/* Blocked Users List */}
       <div className="overflow-x-auto">
         <table className="min-w-full table-auto">
           <thead>
@@ -107,7 +110,6 @@ const BlockedUsers = () => {
         </table>
       </div>
 
-      {/* Unblock User Modal */}
       {showUnblockModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">

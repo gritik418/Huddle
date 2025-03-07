@@ -20,17 +20,16 @@ const PrivacySettings = () => {
   };
 
   return (
-    <div className="mx-auto p-8 bg-white">
+    <div className="mx-auto pb-8 bg-white space-y-6">
       <div>
         <h3 className="text-lg font-medium">Privacy</h3>
-        <p className="text-gray-600 mb-6">
+        <p className="text-sm text-muted-foreground">
           Toggle this option to make your account private. When enabled, only
           approved followers can see your posts.
         </p>
       </div>
       <Separator />
 
-      {/* Private Account Section */}
       <div className="bg-gray-50 shadow rounded-lg p-6 my-6">
         <h2 className="text-xl font-medium text-gray-700 mb-4">
           Private Account
@@ -40,7 +39,6 @@ const PrivacySettings = () => {
           approved followers can see your posts.
         </p>
 
-        {/* Toggle Switch */}
         <div className="flex items-center justify-between">
           <span className="text-gray-700">Private Account</span>
           <button
@@ -63,7 +61,6 @@ const PrivacySettings = () => {
         </p>
       </div>
 
-      {/* Active Status Section */}
       <div className="bg-gray-50 shadow rounded-lg p-6 mb-6">
         <h2 className="text-xl font-medium text-gray-700 mb-4">
           Active Status
@@ -73,7 +70,6 @@ const PrivacySettings = () => {
           currently active.
         </p>
 
-        {/* Toggle Switch */}
         <div className="flex items-center justify-between">
           <span className="text-gray-700">Show Active Status</span>
           <button
@@ -96,7 +92,6 @@ const PrivacySettings = () => {
         </p>
       </div>
 
-      {/* Allow Mentions Section */}
       <div className="bg-gray-50 shadow rounded-lg p-6 mb-6">
         <h2 className="text-xl font-medium text-gray-700 mb-4">
           Allow Mentions
@@ -106,7 +101,6 @@ const PrivacySettings = () => {
           you in their posts or comments.
         </p>
 
-        {/* Toggle Switch */}
         <div className="flex items-center justify-between">
           <span className="text-gray-700">Allow Mentions</span>
           <button
@@ -129,7 +123,6 @@ const PrivacySettings = () => {
         </p>
       </div>
 
-      {/* Save Changes Button */}
       <div className="flex justify-end">
         <button
           onClick={() => alert("Settings Saved!")}
