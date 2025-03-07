@@ -20,7 +20,7 @@ const PostMedia = ({ postMedia }: { postMedia: string[] }): JSX.Element => {
       {postMedia.map((media: string, id: number) => (
         <SwiperSlide
           key={id}
-          className="max-h-[300px] w-full h-full object-cover flex items-center justify-center"
+          className="max-h-[300px] w-full min-h-[300px] h-full object-cover flex items-center justify-center"
         >
           <Image
             src={media}

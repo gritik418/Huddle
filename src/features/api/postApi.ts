@@ -28,7 +28,7 @@ const postApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/post`,
   }),
-  tagTypes: ["loggedInUserPosts", "posts"],
+  tagTypes: ["loggedInUserPosts"],
   endpoints: (build) => ({
     getPostsByFollwing: build.query<GetPostsByFollwingApiResponse, void>({
       query: () => ({
@@ -39,7 +39,6 @@ const postApi = createApi({
           "Content-Type": "application/json",
         },
       }),
-      providesTags: ["posts"],
     }),
     getLoggedInUserPosts: build.query<GetPostsByFollwingApiResponse, void>({
       query: () => ({
@@ -50,7 +49,7 @@ const postApi = createApi({
           "Content-Type": "application/json",
         },
       }),
-      providesTags: ["loggedInUserPosts", "posts"],
+      providesTags: ["loggedInUserPosts"],
     }),
     addPost: build.mutation<AddPostApiResponse, FormData>({
       query: (data: FormData) => ({
@@ -74,7 +73,6 @@ const postApi = createApi({
         method: "POST",
         credentials: "include",
       }),
-      invalidatesTags: ["posts"],
     }),
     unlikePost: build.mutation<PostApiResponse, string>({
       query: (postId: string) => ({
@@ -82,7 +80,6 @@ const postApi = createApi({
         method: "DELETE",
         credentials: "include",
       }),
-      invalidatesTags: ["posts"],
     }),
   }),
 });

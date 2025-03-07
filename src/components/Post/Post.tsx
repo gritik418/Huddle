@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { JSX } from "react";
+import { JSX, useState } from "react";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { FaRegCommentDots } from "react-icons/fa";
 import PostMedia from "../PostMedia/PostMedia";
@@ -21,10 +21,14 @@ const Post = ({ post }: PropsType): JSX.Element => {
   const [likePost] = useLikePostMutation();
   const [unlikePost] = useUnlikePostMutation();
   const user: User | null = useSelector(selectUser);
+  const [likes, setLikes] = useState<string[]>(post.likes);
 
   const handleLikePost = async () => {
     try {
       await likePost(post._id);
+      if (!likes.includes(user?._id)) {
+        setLikes((prev) => [...prev, user?._id]);
+      }
     } catch (error) {
       toast.error("Some error occured.", {
         position: "top-right",
@@ -43,6 +47,9 @@ const Post = ({ post }: PropsType): JSX.Element => {
   const handleUnlikePost = async () => {
     try {
       await unlikePost(post._id);
+      if (likes.includes(user?._id)) {
+        setLikes(likes.filter((id: string) => id !== user?._id));
+      }
     } catch (error) {
       toast.error("Some error occured.", {
         position: "top-right",
@@ -100,7 +107,7 @@ const Post = ({ post }: PropsType): JSX.Element => {
 
       <div className="flex p-3 gap-3">
         <div className="flex bg-gray-100 p-2 items-center gap-2  rounded-lg">
-          {post.likes.includes(user?._id) ? (
+          {likes.includes(user?._id.toString()) ? (
             <AiFillLike
               onClick={handleUnlikePost}
               className="text-xl cursor-pointer text-red-400"
@@ -111,8 +118,8 @@ const Post = ({ post }: PropsType): JSX.Element => {
               className="text-xl cursor-pointer text-red-400"
             />
           )}
-          {post.likes.length > 1 && (
-            <p className="text-xs text-gray-500">{post.likes.length} Likes</p>
+          {likes.length > 1 && (
+            <p className="text-xs text-gray-500">{likes.length} Likes</p>
           )}
         </div>
 

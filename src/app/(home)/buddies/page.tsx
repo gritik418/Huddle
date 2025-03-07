@@ -33,9 +33,8 @@ const Buddies = (): JSX.Element => {
         </div>
       );
     }
-
     return (
-      <div className="flex flex-col gap-4 w-full">
+      <div className="flex flex-col gap-3">
         {data.posts.map((post: Post) => (
           <Post key={post._id} post={post} />
         ))}
@@ -44,7 +43,7 @@ const Buddies = (): JSX.Element => {
   }
   return (
     <div className="flex flex-col w-full">
-      <div className="flex flex-1 w-full rounded-lg overflow-y-scroll hide-scrollbar">
+      <div className="flex flex-col flex-1 w-full rounded-lg overflow-y-scroll hide-scrollbar">
         {renderContent()}
       </div>
     </div>

@@ -1,14 +1,16 @@
+import { selectUser } from "@/features/user/userSlice";
 import Image from "next/image";
 import React, { JSX } from "react";
 import { FaPlus } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const AddStory = (): JSX.Element => {
+  const user: User | null = useSelector(selectUser);
+
   return (
     <div className="flex h-16 w-16 rounded-full relative cursor-pointer">
       <Image
-        src={
-          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"
-        }
+        src={user?.profilePicture || "/images/default-profile.jpg"}
         alt="avatar"
         height={40}
         width={40}
