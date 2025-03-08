@@ -1,7 +1,6 @@
 import { selectOnlineMembers, selectUser } from "@/features/user/userSlice";
 import Image from "next/image";
 import { JSX } from "react";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import ChatSenderDropDownMenu from "../ChatSenderDropDownMenu/ChatSenderDropDownMenu";
 import GroupOptionsDropDownMenu from "../GroupOptionsDropDownMenu/GroupOptionsDropDownMenu";
@@ -29,7 +28,7 @@ const MessageSectionHeader = ({ chat }: { chat: Chat }): JSX.Element => {
           </div>
         </div>
 
-        <GroupOptionsDropDownMenu />
+        <GroupOptionsDropDownMenu chatId={chat._id} />
       </div>
     );
   }

@@ -1,11 +1,12 @@
 "use client";
 import SelectGroupAdmins from "@/components/SelectGroupAdmins/SelectGroupAdmins";
 import SelectGroupMembers from "@/components/SelectGroupMembers/SelectGroupMembers";
+import Spinner from "@/components/Spinner/Spinner";
 import {
   CreateGroupApiResponse,
   useCreateGroupMutation,
 } from "@/features/api/groupApi";
-import groupSchema, { GroupData } from "@/validators/groupSchema";
+import groupSchema from "@/validators/groupSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
@@ -15,12 +16,20 @@ import { useForm } from "react-hook-form";
 import { FaCamera } from "react-icons/fa";
 import { Bounce, toast } from "react-toastify";
 
+type FormValues = {
+  groupName: string;
+  groupDescription: string;
+};
+
 const CreateGroup = (): JSX.Element => {
   const [adminsToBe, setAdminsToBe] = useState<Follower[]>([]);
   const [selectedAdmins, setSelectedAdmins] = useState<string[]>([]);
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
   const [memberError, setMemberError] = useState<string>("");
   const [createGroup] = useCreateGroupMutation();
+  const [groupIcon, setGroupIcon] = useState<File | null>(null);
+  const [groupIconPreview, setGroupIconPreview] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const {
@@ -28,16 +37,15 @@ const CreateGroup = (): JSX.Element => {
     register,
     setError,
     formState: { errors, touchedFields },
-  } = useForm({
+  } = useForm<FormValues>({
     defaultValues: {
       groupName: "",
       groupDescription: "",
-      groupIcon: "",
     },
     resolver: zodResolver(groupSchema),
   });
 
-  const handleCreateGroup = async (values: GroupData) => {
+  const handleCreateGroup = async (values: FormValues) => {
     if (selectedMembers.length < 2) {
       setMemberError("There must be at least two members.");
       toast.error("Select atleast two members.", {
@@ -54,12 +62,23 @@ const CreateGroup = (): JSX.Element => {
       return;
     }
     try {
-      const { data, error } = await createGroup({
-        admins: selectedAdmins,
-        groupDescription: values.groupDescription,
-        groupName: values.groupName,
-        members: selectedMembers,
+      const formData = new FormData();
+
+      formData.append("groupName", values.groupName);
+      formData.append("groupDescription", values.groupDescription);
+      if (groupIcon) formData.append("groupIcon", groupIcon);
+
+      selectedAdmins.forEach((admin: string) => {
+        formData.append("admins[]", admin);
       });
+
+      selectedMembers.forEach((member: string) => {
+        formData.append("members[]", member);
+      });
+
+      setLoading(true);
+      const { data, error } = await createGroup(formData);
+      setLoading(false);
 
       if (error) {
         const errorResponse = error as FetchBaseQueryError;
@@ -144,6 +163,14 @@ const CreateGroup = (): JSX.Element => {
     }
   };
 
+  const handleGroupIconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file: File | undefined = e.target.files?.[0];
+    if (file) {
+      setGroupIcon(file);
+      setGroupIconPreview(URL.createObjectURL(file));
+    }
+  };
+
   useEffect(() => {
     setMemberError("");
     if (selectedMembers.length < 2) {
@@ -161,23 +188,25 @@ const CreateGroup = (): JSX.Element => {
         <div className="flex h-full flex-1 items-center justify-center">
           <div className="relative rounded-full flex h-[200px] md:h-[300px] w-[200px] md:w-[300px]">
             <Image
-              className="h-full w-full"
-              src={"/images/default-group-icon.png"}
+              className="h-full w-full rounded-full"
+              src={groupIconPreview || "/images/default-group-icon.png"}
               alt="group icon"
               height={300}
               width={300}
             />
             <label
               htmlFor="group-icon"
-              className="absolute rounded-full flex items-center justify-center bottom-5 right-5 bg-[var(--secondary)] border-4 border-white w-14 h-14 text-white z-10"
+              className="absolute cursor-pointer rounded-full flex items-center justify-center bottom-1 right-1 bg-[var(--secondary)] border-4 border-white w-14 h-14 text-white z-10"
             >
               <FaCamera className="text-2xl" />
             </label>
             <input
-              {...register("groupIcon")}
+              accept="image/*"
+              multiple={false}
               className="hidden"
               type="file"
               id="group-icon"
+              onChange={handleGroupIconChange}
             />
           </div>
         </div>
@@ -243,9 +272,9 @@ const CreateGroup = (): JSX.Element => {
       <div className="flex container justify-end my-8 m-auto w-full">
         <button
           type="submit"
-          className="bg-[var(--secondary)] text-white p-2 rounded-lg font-semibold"
+          className="bg-[var(--secondary)] flex items-center justify-center text-white h-10 w-36 rounded-lg font-semibold"
         >
-          Create Group
+          {loading ? <Spinner variant={null} /> : "Create Group"}
         </button>
       </div>
     </form>

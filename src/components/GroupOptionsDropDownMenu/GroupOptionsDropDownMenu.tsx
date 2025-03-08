@@ -12,7 +12,11 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
-const GroupOptionsDropDownMenu = (): JSX.Element => {
+const GroupOptionsDropDownMenu = ({
+  chatId,
+}: {
+  chatId: string;
+}): JSX.Element => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -22,7 +26,7 @@ const GroupOptionsDropDownMenu = (): JSX.Element => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-44">
         <DropdownMenuGroup>
-          <Link href={`/`}>
+          <Link href={`/group/${chatId}`}>
             <DropdownMenuItem className="flex cursor-pointer text-xs font-medium items-center gap-2 w-full">
               <FaUsers className="text-gray-600" /> Group Information
             </DropdownMenuItem>

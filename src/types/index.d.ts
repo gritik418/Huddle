@@ -84,10 +84,30 @@ interface Chat {
   _id: string;
   isGroupChat: boolean;
   groupName?: string;
+  groupDescription?: string;
   groupIcon?: string;
   members: ChatMember[];
   admins?: Types.ObjectId[];
   lastMessage?: string;
+  groupStatus?: "active" | "deleted";
+  deletedAt?: Date;
+  deletedBy?: Types.ObjectId;
+  deletedFor: Types.ObjectId[];
+}
+
+interface Group {
+  _id: string;
+  isGroupChat: boolean;
+  groupName?: string;
+  groupIcon?: string;
+  members: ChatMember[];
+  admins: Types.ObjectId[];
+  lastMessage?: string;
+  groupDescription?: string;
+  groupStatus?: "active" | "deleted";
+  deletedAt?: Date;
+  deletedBy?: Types.ObjectId;
+  deletedFor: Types.ObjectId[];
 }
 
 interface ChatMember {
@@ -96,6 +116,7 @@ interface ChatMember {
   lastName?: string;
   username: string;
   profilePicture?: string;
+  coverImage?: string;
 }
 
 interface MessageSender {

@@ -13,30 +13,22 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
 
 const notificationsFormSchema = z.object({
-  type: z.enum(["all", "mentions", "none"], {
-    required_error: "You need to select a notification type.",
-  }),
+  chatNotifications: z.boolean().default(false),
+  followRequestNotifications: z.boolean().default(false),
+  chatRequestNotifications: z.boolean().default(false),
   mobile: z.boolean().default(false).optional(),
-  communication_emails: z.boolean().default(false).optional(),
-  social_emails: z.boolean().default(false).optional(),
-  marketing_emails: z.boolean().default(false).optional(),
-  security_emails: z.boolean(),
 });
 
 type NotificationsFormValues = z.infer<typeof notificationsFormSchema>;
 
-// This can come from your database or API.
 const defaultValues: Partial<NotificationsFormValues> = {
-  communication_emails: false,
-  marketing_emails: false,
-  social_emails: true,
-  security_emails: true,
+  chatNotifications: true,
+  followRequestNotifications: true,
+  chatRequestNotifications: true,
 };
 
 export function NotificationsForm() {
@@ -48,60 +40,19 @@ export function NotificationsForm() {
   return (
     <Form {...form}>
       <form className="space-y-8">
-        <FormField
-          control={form.control}
-          name="type"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel>Notify me about...</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex flex-col space-y-1"
-                >
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="all" />
-                    </FormControl>
-                    <FormLabel className="font-normal">
-                      All new messages
-                    </FormLabel>
-                  </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="mentions" />
-                    </FormControl>
-                    <FormLabel className="font-normal">
-                      Direct messages and mentions
-                    </FormLabel>
-                  </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="none" />
-                    </FormControl>
-                    <FormLabel className="font-normal">Nothing</FormLabel>
-                  </FormItem>
-                </RadioGroup>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <div>
-          <h3 className="mb-4 text-lg font-medium">Email Notifications</h3>
           <div className="space-y-4">
             <FormField
               control={form.control}
-              name="communication_emails"
+              name="chatNotifications"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                   <div className="space-y-0.5">
                     <FormLabel className="text-base">
-                      Communication emails
+                      Notification from Chat
                     </FormLabel>
                     <FormDescription>
-                      Receive emails about your account activity.
+                      Receive notifications when you get a new message.
                     </FormDescription>
                   </div>
                   <FormControl>
@@ -113,17 +64,19 @@ export function NotificationsForm() {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
-              name="marketing_emails"
+              name="followRequestNotifications"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                   <div className="space-y-0.5">
                     <FormLabel className="text-base">
-                      Marketing emails
+                      New Follow Request
                     </FormLabel>
                     <FormDescription>
-                      Receive emails about new products, features, and more.
+                      Receive notifications when someone sends you a follow
+                      request.
                     </FormDescription>
                   </div>
                   <FormControl>
@@ -135,43 +88,25 @@ export function NotificationsForm() {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
-              name="social_emails"
+              name="chatRequestNotifications"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                   <div className="space-y-0.5">
-                    <FormLabel className="text-base">Social emails</FormLabel>
+                    <FormLabel className="text-base">
+                      New Chat Request
+                    </FormLabel>
                     <FormDescription>
-                      Receive emails for friend requests, follows, and more.
+                      Receive notifications when someone sends you a new chat
+                      request.
                     </FormDescription>
                   </div>
                   <FormControl>
                     <Switch
                       checked={field.value}
                       onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="security_emails"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                  <div className="space-y-0.5">
-                    <FormLabel className="text-base">Security emails</FormLabel>
-                    <FormDescription>
-                      Receive emails about your account activity and security.
-                    </FormDescription>
-                  </div>
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                      disabled
-                      aria-readonly
                     />
                   </FormControl>
                 </FormItem>
@@ -179,6 +114,7 @@ export function NotificationsForm() {
             />
           </div>
         </div>
+
         <FormField
           control={form.control}
           name="mobile"
@@ -202,6 +138,7 @@ export function NotificationsForm() {
             </FormItem>
           )}
         />
+
         <button
           type="submit"
           className="p-2 rounded-lg text-white font-semibold bg-[var(--secondary)] hover:none"

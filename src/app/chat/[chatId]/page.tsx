@@ -13,13 +13,6 @@ import { JSX } from "react";
 
 const SelectedChat = (): JSX.Element => {
   const params: { chatId: string } = useParams();
-  if (!params) {
-    return (
-      <div className="flex items-center justify-center flex-1">
-        <Spinner variant="medium" />
-      </div>
-    );
-  }
 
   const { chatId } = params;
   const { isLoading, data, error } = useGetChatByIdQuery(chatId);
@@ -27,6 +20,7 @@ const SelectedChat = (): JSX.Element => {
   useGetMessagesQuery(chatId, {
     refetchOnMountOrArgChange: true,
   });
+
   if (isLoading) {
     return (
       <div className="flex h-screen flex-1 items-center justify-center">
