@@ -1,5 +1,5 @@
-import authApi from "@/features/api/authApi";
 import { configureStore } from "@reduxjs/toolkit";
+import authApi from "@/features/api/authApi";
 import chatRequestSlice from "@/features/chatRequest/chatRequestSlice";
 import chatRequestApi from "@/features/api/chatRequestApi";
 import chatApi from "@/features/api/chatApi";
