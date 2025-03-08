@@ -36,7 +36,7 @@ const followRequestSlice = createSlice({
     builder
       .addMatcher(
         followRequestApi.endpoints.getFollowRequests.matchPending,
-        (state, action) => {
+        (state) => {
           state.followRequestsLoading = true;
         }
       )
@@ -51,7 +51,7 @@ const followRequestSlice = createSlice({
       )
       .addMatcher(
         followRequestApi.endpoints.getFollowRequests.matchRejected,
-        (state, action) => {
+        (state) => {
           state.followRequestsLoading = false;
         }
       );

@@ -82,6 +82,7 @@ const SearchedUserForChatItem = (user: SearchedUserForChat): JSX.Element => {
         }
       }
     } catch (error) {
+      console.error(error);
       toast.error("Some error occured.", {
         position: "top-right",
         autoClose: 1500,

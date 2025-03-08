@@ -31,7 +31,7 @@ const postSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getFeedAsync.pending, (state, action) => {
+      .addCase(getFeedAsync.pending, (state) => {
         state.feedLoading = true;
       })
       .addCase(getFeedAsync.fulfilled, (state, action) => {
@@ -48,7 +48,7 @@ const postSlice = createSlice({
           state.pagination = action.payload.pagination;
         }
       })
-      .addCase(getFeedAsync.rejected, (state, action) => {
+      .addCase(getFeedAsync.rejected, (state) => {
         state.feedLoading = false;
       });
   },

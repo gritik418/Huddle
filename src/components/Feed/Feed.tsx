@@ -30,9 +30,9 @@ const Feed = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(getFeedAsync({ page: page, limit: 3 }));
-  }, []);
+  }, [dispatch, page]);
 
-  if (!posts) {
+  if (!posts || !pagination) {
     return (
       <div className="flex flex-col bg-white rounded-lg py-20 items-center justify-center">
         <Image
@@ -78,7 +78,7 @@ const Feed = (): JSX.Element => {
     <InfiniteScroll
       dataLength={posts.length}
       next={fetchData}
-      hasMore={pagination?.totalPages! > page}
+      hasMore={pagination.totalPages! > page}
       loader={
         <div className="flex items-center py-6 justify-center">
           <Spinner variant={"small"} />

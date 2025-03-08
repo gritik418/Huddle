@@ -66,8 +66,8 @@ const PrivacySettings = () => {
           Active Status
         </h2>
         <p className="text-gray-600 mb-6">
-          Toggle this option to control whether other users can see if you're
-          currently active.
+          Toggle this option to control whether other users can see if
+          you&apos;re currently active.
         </p>
 
         <div className="flex items-center justify-between">

@@ -49,7 +49,7 @@ const chatRequestSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(searchUsersForChatRequestAsync.pending, (state, action) => {
+      .addCase(searchUsersForChatRequestAsync.pending, (state) => {
         state.searchUserForChatRequestLoading = true;
         state.searchUserForChatRequestMessage = "";
         state.searchedUsersForChatRequest = [];
@@ -66,14 +66,14 @@ const chatRequestSlice = createSlice({
           }
         }
       })
-      .addCase(searchUsersForChatRequestAsync.rejected, (state, action) => {
+      .addCase(searchUsersForChatRequestAsync.rejected, (state) => {
         state.searchUserForChatRequestLoading = false;
         state.searchUserForChatRequestMessage =
           "We couldn't find any matching users.";
       })
       .addMatcher(
         chatRequestApi.endpoints.getChatRequests.matchPending,
-        (state, action) => {
+        (state) => {
           state.chatRequestsLoading = true;
         }
       )
@@ -88,7 +88,7 @@ const chatRequestSlice = createSlice({
       )
       .addMatcher(
         chatRequestApi.endpoints.getChatRequests.matchRejected,
-        (state, action) => {
+        (state) => {
           state.chatRequestsLoading = false;
           state.chatRequests = [];
         }

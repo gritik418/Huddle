@@ -31,7 +31,7 @@ const chatSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addMatcher(chatApi.endpoints.getChats.matchPending, (state, action) => {
+      .addMatcher(chatApi.endpoints.getChats.matchPending, (state) => {
         state.chatsLoading = true;
       })
       .addMatcher(
@@ -43,12 +43,9 @@ const chatSlice = createSlice({
           }
         }
       )
-      .addMatcher(
-        chatApi.endpoints.getChats.matchFulfilled,
-        (state, action) => {
-          state.chatsLoading = false;
-        }
-      );
+      .addMatcher(chatApi.endpoints.getChats.matchFulfilled, (state) => {
+        state.chatsLoading = false;
+      });
   },
 });
 

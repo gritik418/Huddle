@@ -30,6 +30,7 @@ const Post = ({ post }: PropsType): JSX.Element => {
         setLikes((prev) => [...prev, user?._id]);
       }
     } catch (error) {
+      console.error(error);
       toast.error("Some error occured.", {
         position: "top-right",
         autoClose: 1500,
@@ -51,6 +52,7 @@ const Post = ({ post }: PropsType): JSX.Element => {
         setLikes(likes.filter((id: string) => id !== user?._id));
       }
     } catch (error) {
+      console.error(error);
       toast.error("Some error occured.", {
         position: "top-right",
         autoClose: 1500,

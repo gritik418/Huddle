@@ -41,7 +41,9 @@ const SendChatRequestDialog = (): JSX.Element => {
       return <p className="text-sm">{message}</p>;
     }
     if ((!searchedUsers || searchedUsers.length) === 0) {
-      return <p className="text-sm">We couldn't find any matching users.</p>;
+      return (
+        <p className="text-sm">We couldn&apos;t find any matching users.</p>
+      );
     }
 
     return (

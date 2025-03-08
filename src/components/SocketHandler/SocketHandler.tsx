@@ -118,7 +118,7 @@ const SocketHandler = ({
         dispatch(removeOnlineMember({ userId: userId.toString() }));
       }
     },
-    []
+    [dispatch]
   );
 
   const acceptedFollowRequestHandler = useCallback(

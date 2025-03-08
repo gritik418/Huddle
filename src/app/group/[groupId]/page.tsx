@@ -40,7 +40,7 @@ const GroupInformation = () => {
   useEffect(() => {
     setValue("groupName", data?.group?.groupName || "");
     setValue("groupDescription", data?.group?.groupDescription || "");
-  }, [data?.group]);
+  }, [data?.group, setValue]);
 
   if (isLoading) {
     return (
@@ -60,7 +60,7 @@ const GroupInformation = () => {
           width={300}
         />
         <p className="text-xl text-center">
-          Oops! This group doesn't exist or has been deleted.
+          Oops! This group doesn&apos;t exist or has been deleted.
         </p>
       </div>
     );

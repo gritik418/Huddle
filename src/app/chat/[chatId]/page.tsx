@@ -39,7 +39,7 @@ const SelectedChat = (): JSX.Element => {
           width={300}
         />
         <p className="text-xl text-center">
-          Oops! This chat doesn't exist or has been removed.
+          Oops! This chat doesn&apos;t exist or has been removed.
         </p>
       </div>
     );

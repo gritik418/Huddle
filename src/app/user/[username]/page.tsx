@@ -23,14 +23,6 @@ const UserInfo = (): JSX.Element => {
   const [sendFollowRequest] = useSendFollowRequestMutation();
   const [loading, setLoading] = useState<boolean>(false);
 
-  if (!params) {
-    return (
-      <div className="flex items-center justify-center flex-1">
-        <Spinner variant="medium" />
-      </div>
-    );
-  }
-
   const { username } = params;
   const { data, isLoading, error } = useGetUserByUsernameQuery(username);
   const userId: string = data?.user?._id;
@@ -98,6 +90,7 @@ const UserInfo = (): JSX.Element => {
         }
       }
     } catch (error) {
+      console.error(error);
       toast.error("Some error occured.", {
         position: "top-right",
         autoClose: 1500,
@@ -132,9 +125,9 @@ const UserInfo = (): JSX.Element => {
             width={300}
           />
           <p className="text-center text-lg text-gray-600 max-w-[600px]">
-            Oops! We couldn't find the user you're looking for. Maybe the
-            username is misspelled or the user is no longer active. Please check
-            again or try another username.
+            Oops! We couldn&apos;t find the user you&apos;re looking for. Maybe
+            the username is misspelled or the user is no longer active. Please
+            check again or try another username.
           </p>
         </div>
       </div>

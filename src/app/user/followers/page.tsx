@@ -8,11 +8,10 @@ const followersData = [
   { id: "3", name: "Alice Johnson", username: "alice_j" },
   { id: "4", name: "Bob Lee", username: "bob_lee" },
   { id: "5", name: "Charlie Brown", username: "charlie_brown" },
-  // Add more followers for testing
 ];
 
 const FollowersPage = () => {
-  const [followers, setFollowers] = useState(followersData);
+  const [followers] = useState(followersData);
   const [searchQuery, setSearchQuery] = useState("");
   const [following, setFollowing] = useState(new Set());
 

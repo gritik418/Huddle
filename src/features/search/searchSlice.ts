@@ -29,7 +29,7 @@ const searchSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(searchAsync.pending, (state, action) => {
+      .addCase(searchAsync.pending, (state) => {
         state.loading = true;
       })
       .addCase(searchAsync.fulfilled, (state, action) => {
@@ -43,7 +43,7 @@ const searchSlice = createSlice({
           }
         }
       })
-      .addCase(searchAsync.rejected, (state, action) => {
+      .addCase(searchAsync.rejected, (state) => {
         state.loading = false;
       });
   },

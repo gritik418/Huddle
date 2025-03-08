@@ -1,7 +1,6 @@
 "use client";
-import React, { JSX, useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import ChatListItem from "../ChatListItem/ChatListItem";
-import Spinner from "../Spinner/Spinner";
 import { useSelector } from "react-redux";
 import { selectChats, selectChatsLoading } from "@/features/chat/chatSlice";
 import { selectUser } from "@/features/user/userSlice";
@@ -36,7 +35,7 @@ const ChatList = ({ chatId, searchQuery }: PropsType): JSX.Element => {
     } else {
       setFilteredChats(chats);
     }
-  }, [searchQuery, chats]);
+  }, [searchQuery, chats, user?._id]);
 
   const renderContent = () => {
     if (isLoading) {

@@ -25,7 +25,7 @@ const SearchedAccounts = ({
     }, 1000);
 
     return () => clearTimeout(timeOutId);
-  }, [searchQuery]);
+  }, [searchQuery, dispatch]);
 
   function renderContent(): JSX.Element {
     if (loading) {

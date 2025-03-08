@@ -25,13 +25,10 @@ const messageSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addMatcher(
-        messageApi.endpoints.getMessages.matchPending,
-        (state, action) => {
-          state.messagesLoading = true;
-          state.messages = [];
-        }
-      )
+      .addMatcher(messageApi.endpoints.getMessages.matchPending, (state) => {
+        state.messagesLoading = true;
+        state.messages = [];
+      })
       .addMatcher(
         messageApi.endpoints.getMessages.matchFulfilled,
         (state, action) => {
@@ -41,13 +38,10 @@ const messageSlice = createSlice({
           }
         }
       )
-      .addMatcher(
-        messageApi.endpoints.getMessages.matchRejected,
-        (state, action) => {
-          state.messagesLoading = false;
-          state.messages = [];
-        }
-      );
+      .addMatcher(messageApi.endpoints.getMessages.matchRejected, (state) => {
+        state.messagesLoading = false;
+        state.messages = [];
+      });
   },
 });
 

@@ -1,5 +1,6 @@
 "use client";
 import { AddPostApiResponse, useAddPostMutation } from "@/features/api/postApi";
+import { selectUser } from "@/features/user/userSlice";
 import postSchema, { PostData } from "@/validators/postSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
@@ -8,11 +9,10 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { GrAttachment } from "react-icons/gr";
 import { IoIosCloseCircle } from "react-icons/io";
+import { useSelector } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 import MentionsMenu from "../MentionsMenu/MentionsMenu";
 import Spinner from "../Spinner/Spinner";
-import { useSelector } from "react-redux";
-import { selectUser } from "@/features/user/userSlice";
 
 const AddPost = () => {
   const [selectedMentions, setSelectedMentions] = useState<string[]>([]);
@@ -61,7 +61,7 @@ const AddPost = () => {
       }
 
       if (values.media && values.media instanceof FileList) {
-        Array.from(values.media).forEach((file, index) => {
+        Array.from(values.media).forEach((file) => {
           const typedFile = file as File;
           formData.append("media", typedFile);
         });
@@ -123,6 +123,7 @@ const AddPost = () => {
           });
       }
     } catch (error) {
+      console.error(error);
       toast.error("Some error occured.", {
         position: "top-right",
         autoClose: 1500,
