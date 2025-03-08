@@ -4,7 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
 import Link from "next/link";
-import { LoginResponse, useUserLoginMutation } from "@/features/api/authApi";
+import {
+  LoginResponse,
+  useUserLoginMutation,
+} from "../../../features/api/authApi";
 import { useRouter } from "next/navigation";
 import { JSX, useState } from "react";
 import { useForm } from "react-hook-form";
