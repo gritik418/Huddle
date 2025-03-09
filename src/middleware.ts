@@ -9,13 +9,15 @@ export function middleware(request: NextRequest) {
   const isPublicPath: boolean =
     pathname.startsWith("/login") || pathname.startsWith("/signup");
 
-  if (token && token?.value && isPublicPath) {
+  if (token?.value && isPublicPath) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  if (!token && !isPublicPath) {
+  if (!token?.value && !isPublicPath) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
+
+  return NextResponse.next();
 }
 
 export const config = {
