@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
       {
         hostname: "localhost",
       },
+      {
+        hostname: "huddle-server.onrender.com",
+      },
     ],
   },
   experimental: {
