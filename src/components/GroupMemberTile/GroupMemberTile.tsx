@@ -14,11 +14,11 @@ const GroupMemberTile = ({
       className="flex bg-gray-100 p-3 rounded-lg gap-3 justify-between items-center"
     >
       <div className="flex gap-3">
-        <div className="flex">
+        <div className="flex h-12 w-12 rounded-full">
           <Image
             src={member.profilePicture || "/images/default-profile.jpg"}
             alt="avatar"
-            className="rounded-full"
+            className="rounded-full h-full w-full"
             height={50}
             width={50}
           />

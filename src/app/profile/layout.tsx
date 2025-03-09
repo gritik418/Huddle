@@ -46,7 +46,7 @@ export default function Layout({
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-32">
+            <div className="flex items-center justify-between pt-44">
               <div className="flex flex-col gap-1">
                 <p className="text-3xl font-semibold">
                   {user?.firstName} {user?.lastName}

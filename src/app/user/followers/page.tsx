@@ -38,7 +38,7 @@ const FollowersPage = () => {
         <div className="mb-6">
           <input
             type="text"
-            className="w-full p-2 border border-gray-300 rounded-lg"
+            className="w-full p-2 border bg-gray-50 border-gray-300 rounded-lg"
             placeholder="Search followers..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}

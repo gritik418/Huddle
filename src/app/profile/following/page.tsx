@@ -69,7 +69,7 @@ const Followings = () => {
       <div className="mb-6">
         <input
           type="text"
-          className="w-full p-2 outline-none border-2 border-gray-400 rounded-lg"
+          className="w-full p-2 bg-gray-50 outline-none border-2 border-gray-400 rounded-lg"
           placeholder="Search followings..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}

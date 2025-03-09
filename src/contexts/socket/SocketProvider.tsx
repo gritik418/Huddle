@@ -12,7 +12,7 @@ const SocketProvider = ({
 }): JSX.Element => {
   const socket: Socket = useMemo(
     () =>
-      io("ws://localhost:8080", {
+      io(process.env.NEXT_PUBLIC_API_BASE_URL, {
         withCredentials: true,
         transports: ["websocket"],
         reconnection: true,

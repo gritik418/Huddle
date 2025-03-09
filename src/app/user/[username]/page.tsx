@@ -164,7 +164,7 @@ const UserInfo = (): JSX.Element => {
             </div>
           </div>
 
-          <div className="flex justify-between items-center mt-24 mb-6">
+          <div className="flex justify-between items-center mt-36 mb-6">
             <div className="flex flex-col">
               <p className="text-3xl font-semibold">
                 {data.user.firstName} {data.user?.lastName}

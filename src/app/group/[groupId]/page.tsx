@@ -109,7 +109,7 @@ const GroupInformation = () => {
             <input
               {...register("groupName")}
               type="text"
-              className="border-2 p-2 rounded-lg"
+              className="border-2 p-2 rounded-lg bg-gray-50"
               placeholder="Group Name"
               id="groupName"
             />
@@ -127,7 +127,7 @@ const GroupInformation = () => {
             <label htmlFor="groupDescription">Group Description</label>
             <textarea
               {...register("groupDescription")}
-              className="border-2 p-2 resize-none rounded-lg h-20"
+              className="border-2 p-2 resize-none bg-gray-50 rounded-lg h-20"
               placeholder="Group Description"
               id="groupDescription"
             />

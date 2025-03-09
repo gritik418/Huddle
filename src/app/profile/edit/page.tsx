@@ -244,7 +244,7 @@ const EditUserInfo = (): JSX.Element => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 justify-center flex-col gap-4 pt-32">
+        <div className="grid grid-cols-1 md:grid-cols-2 justify-center flex-col gap-4 pt-44">
           <div className="flex rounded-lg flex-col p-2 gap-1">
             <label htmlFor="firstName" className="ml-2">
               First Name

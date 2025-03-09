@@ -59,7 +59,11 @@ const SelectMemberTile = ({
         </div>
       </div>
 
-      <input type="checkbox" onChange={handleSelect} className="h-6 w-6" />
+      <input
+        type="checkbox"
+        onChange={handleSelect}
+        className="h-6 w-6 bg-gray-50"
+      />
     </div>
   );
 };
