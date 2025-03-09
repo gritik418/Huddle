@@ -8,17 +8,28 @@ import {
 } from "@/features/api/userApi";
 import React, { JSX } from "react";
 import Spinner from "../Spinner/Spinner";
+import { redirect, usePathname } from "next/navigation";
 
 const UserProvider = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>): JSX.Element => {
-  const { isLoading } = useGetUserQuery();
+  const pathname: string = usePathname();
+
+  const { isLoading, error } = useGetUserQuery();
   useGetActiveMembersQuery();
   useGetFollowRequestsQuery();
   useGetFollowingsQuery();
   useGetFollowersQuery();
+
+  if (pathname === "/login" || pathname === "/signup") {
+    return <div>{children}</div>;
+  }
+
+  if (error) {
+    redirect("/login");
+  }
 
   if (isLoading) {
     return (
