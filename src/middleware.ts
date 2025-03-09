@@ -12,14 +12,8 @@ export function middleware(request: NextRequest) {
   if (token?.value && isPublicPath) {
     return NextResponse.redirect(new URL("/", request.url));
   }
-
-  if (!token?.value && !isPublicPath) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-
-  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/", "/login/:path*", "/signup/:path*", "/chat/:path*"],
+  matcher: ["/login/:path*", "/signup/:path*"],
 };
