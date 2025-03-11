@@ -11,6 +11,9 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/signup") ||
     pathname.startsWith("/verify-email");
 
+  console.log("Token:", token); // Debug: Check if the token exists
+  console.log("Pathname:", pathname);
+
   if (token?.value && isPublicPath) {
     return NextResponse.redirect(new URL("/", request.url));
   }
