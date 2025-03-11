@@ -23,7 +23,11 @@ const UserProvider = ({
   useGetFollowingsQuery();
   useGetFollowersQuery();
 
-  if (pathname === "/login" || pathname === "/signup") {
+  if (
+    pathname === "/login" ||
+    pathname === "/signup" ||
+    pathname === "/verify-email"
+  ) {
     return <div>{children}</div>;
   }
 

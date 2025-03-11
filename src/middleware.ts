@@ -7,7 +7,9 @@ export function middleware(request: NextRequest) {
   const pathname: string = request.nextUrl.pathname;
 
   const isPublicPath: boolean =
-    pathname.startsWith("/login") || pathname.startsWith("/signup");
+    pathname.startsWith("/login") ||
+    pathname.startsWith("/signup") ||
+    pathname.startsWith("/verify-email");
 
   if (token?.value && isPublicPath) {
     return NextResponse.redirect(new URL("/", request.url));
@@ -15,5 +17,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/login/:path*", "/signup/:path*"],
+  matcher: ["/login/:path*", "/signup/:path*", "/verify-email/:path*"],
 };

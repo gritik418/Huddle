@@ -15,6 +15,11 @@ export type SignupResponse = {
   };
 };
 
+export type VerifyEmailResponse = {
+  success: boolean;
+  message: string;
+};
+
 export type LoginResponse = {
   success: boolean;
   message?: string;
@@ -39,6 +44,20 @@ const authApi = createApi({
       query: (data) => ({
         url: "/signup",
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: data,
+      }),
+    }),
+    verifyUserEmail: build.mutation<
+      VerifyEmailResponse,
+      { email: string; otp: string }
+    >({
+      query: (data) => ({
+        url: "/verify-email",
+        method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -73,6 +92,7 @@ export const {
   useUserLoginMutation,
   useUserLogoutMutation,
   useUserSignupMutation,
+  useVerifyUserEmailMutation,
 } = authApi;
 
 export default authApi;

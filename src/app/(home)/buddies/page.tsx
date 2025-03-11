@@ -22,7 +22,7 @@ const Buddies = (): JSX.Element => {
 
     if (error || !data?.posts || data.posts.length === 0) {
       return (
-        <div className="flex flex-col bg-white rounded-lg w-full text-xl justify-center items-center">
+        <div className="flex flex-col h-full bg-white rounded-lg w-full text-xl justify-center items-center">
           <Image
             src={"/images/no-following-post.jpg"}
             alt="no-post"
@@ -33,6 +33,7 @@ const Buddies = (): JSX.Element => {
         </div>
       );
     }
+
     return (
       <div className="flex flex-col gap-3">
         {data.posts.map((post: Post) => (

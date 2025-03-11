@@ -1,5 +1,7 @@
 "use client";
+import { AppDispatch } from "@/app/store";
 import { SignupResponse, useUserSignupMutation } from "@/features/api/authApi";
+import { setSignupEmail } from "@/features/auth/authSlice";
 import signupSchema, { SignupData } from "@/validators/signupSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
@@ -12,11 +14,13 @@ import { FaAt, FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosLock } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
+import { useDispatch } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 
 const SignUp = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [userSignup] = useUserSignupMutation();
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
   const {
@@ -93,6 +97,7 @@ const SignUp = (): JSX.Element => {
       }
 
       if (data?.success) {
+        dispatch(setSignupEmail(values.email));
         toast.success(data.message, {
           position: "top-right",
           autoClose: 1500,
