@@ -67,50 +67,20 @@ const Login = (): JSX.Element => {
       }
 
       if (data?.success) {
-        if (data.message) {
-          toast.success(data.message, {
-            position: "top-right",
-            autoClose: 1500,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
-          setTimeout(() => {
-            router.push("/");
-          }, 1200);
-        }
-      } else {
-        if (data?.errors) {
-          if (data.errors?.password) {
-            setError("password", {
-              message: data.errors.password,
-            });
-          }
-          if (data.errors?.identifier) {
-            setError("identifier", {
-              message: data.errors.identifier,
-            });
-          }
-          return;
-        }
-        if (data?.message) {
-          toast.error(data.message, {
-            position: "top-right",
-            autoClose: 1500,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
-          return;
-        }
+        toast.success(data.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        setTimeout(() => {
+          router.push("/");
+        }, 1200);
       }
     } catch (error) {
       console.error(error);

@@ -1,5 +1,19 @@
 import { LoginData } from "@/validators/loginSchema";
+import { SignupData } from "@/validators/signupSchema";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+export type SignupResponse = {
+  success: boolean;
+  message?: string;
+  errors?: {
+    firstName?: string;
+    lastName?: string;
+    username?: string;
+    email?: string;
+    password?: string;
+    passwordConfirmation?: string;
+  };
+};
 
 export type LoginResponse = {
   success: boolean;
@@ -21,6 +35,16 @@ const authApi = createApi({
     baseUrl: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth`,
   }),
   endpoints: (build) => ({
+    userSignup: build.mutation<SignupResponse, SignupData>({
+      query: (data) => ({
+        url: "/signup",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: data,
+      }),
+    }),
     userLogin: build.mutation<LoginResponse, LoginData>({
       query: (data) => ({
         url: "/login",
@@ -45,6 +69,10 @@ const authApi = createApi({
   }),
 });
 
-export const { useUserLoginMutation, useUserLogoutMutation } = authApi;
+export const {
+  useUserLoginMutation,
+  useUserLogoutMutation,
+  useUserSignupMutation,
+} = authApi;
 
 export default authApi;
