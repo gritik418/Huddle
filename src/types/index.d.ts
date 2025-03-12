@@ -149,6 +149,7 @@ interface NotificationData {
     | "NEW_MESSAGE"
     | "NEW_GROUP"
     | "FOLLOW_REQUEST"
+    | "ADDED_TO_GROUP"
     | "NEW_MENTION"
     | "ACCEPTED_FOLLOW_REQUEST";
   followRequestReceiver?: Follower;

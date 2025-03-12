@@ -30,9 +30,9 @@ const SelectAdminTile = ({
         selectedAdmins.includes(user._id) ? "bg-green-100" : "bg-gray-100 "
       }`}
     >
-      <div className="flex">
+      <div className="flex h-12 w-12 rounded-full">
         <Image
-          className="rounded-full"
+          className="rounded-full h-full w-full"
           src={user?.profilePicture || "/images/default-profile.jpg"}
           alt="avatar"
           height={50}

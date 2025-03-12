@@ -6,7 +6,10 @@ import {
   MenuItem,
   MenuRoot,
 } from "../ui/menu";
-import { useDeleteMessageForMeMutation } from "@/features/api/messageApi";
+import {
+  useDeleteMessageForMeMutation,
+  useUnsendMessageMutation,
+} from "@/features/api/messageApi";
 import { Bounce, toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/store";
@@ -16,11 +19,34 @@ type PropsType = { isSent: boolean; message: Message };
 
 const MessageItem = ({ isSent, message }: PropsType): JSX.Element => {
   const [deleteForMe] = useDeleteMessageForMeMutation();
+  const [unsendMessage] = useUnsendMessageMutation();
   const dispatch = useDispatch<AppDispatch>();
 
   const handleDeleteForMe = async () => {
     try {
       const { data } = await deleteForMe(message._id);
+      if (data) {
+        dispatch(removeMessage(message._id));
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Server Error.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
+
+  const handleUnsendMessage = async () => {
+    try {
+      const { data } = await unsendMessage(message._id);
       if (data) {
         dispatch(removeMessage(message._id));
       }
@@ -57,7 +83,11 @@ const MessageItem = ({ isSent, message }: PropsType): JSX.Element => {
         >
           Delete for me
         </MenuItem>
-        <MenuItem className="text-xs" value="unsend">
+        <MenuItem
+          onClick={handleUnsendMessage}
+          className="text-xs"
+          value="unsend"
+        >
           Unsend
         </MenuItem>
       </MenuContent>

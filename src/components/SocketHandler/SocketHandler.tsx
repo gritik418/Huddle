@@ -2,6 +2,7 @@
 import { AppDispatch } from "@/app/store";
 import {
   ACCEPTED_FOLLOW_REQUEST,
+  ADDED_TO_GROUP,
   MESSAGE_SENT,
   NEW_CHAT,
   NEW_CHAT_REQUEST,
@@ -9,13 +10,14 @@ import {
   NEW_MENTION,
   NEW_MESSAGE,
   STATUS_UPDATE,
+  UNSEND_MESSAGE,
   USER_ONLINE,
 } from "@/constants/events";
 import { useSocket } from "@/contexts/socket/SocketProvider";
 import { addChat } from "@/features/chat/chatSlice";
 import { addChatRequest } from "@/features/chatRequest/chatRequestSlice";
 import { addFollowRequest } from "@/features/followRequest/followRequestSlice";
-import { addMessage } from "@/features/message/messageSlice";
+import { addMessage, removeMessage } from "@/features/message/messageSlice";
 import { addOnlineMember, removeOnlineMember } from "@/features/user/userSlice";
 import { usePathname } from "next/navigation";
 import React, { JSX, useCallback, useEffect } from "react";
@@ -158,7 +160,34 @@ const SocketHandler = ({
     []
   );
 
-  // ADDED_TO_GROUP, {chat,creator};
+  const unsendMessageHandler = useCallback(
+    ({ chatId, messageId }: { chatId: string; messageId: string }) => {
+      if (pathname.includes(chatId)) {
+        dispatch(removeMessage(messageId));
+      }
+    },
+    [dispatch, pathname]
+  );
+
+  const addedToGroupHandler = useCallback(
+    ({ chat, creator }: { chat: Chat; creator: Follower }) => {
+      if (chat._id) {
+        dispatch(addChat(chat));
+        toast(
+          Notification({
+            id: `${chat._id}+${creator._id}`,
+            type: "ADDED_TO_GROUP",
+            creator,
+            chat,
+          }),
+          {
+            hideProgressBar: true,
+          }
+        );
+      }
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     if (!socket) return;
@@ -181,6 +210,10 @@ const SocketHandler = ({
 
     socket.on(NEW_MENTION, newMentionHandler);
 
+    socket.on(UNSEND_MESSAGE, unsendMessageHandler);
+
+    socket.on(ADDED_TO_GROUP, addedToGroupHandler);
+
     return () => {
       socket.off(NEW_MESSAGE, newMessageHandler);
 
@@ -197,6 +230,10 @@ const SocketHandler = ({
       socket.off(ACCEPTED_FOLLOW_REQUEST, acceptedFollowRequestHandler);
 
       socket.off(NEW_MENTION, newMentionHandler);
+
+      socket.off(UNSEND_MESSAGE, unsendMessageHandler);
+
+      socket.off(ADDED_TO_GROUP, addedToGroupHandler);
     };
   }, [
     socket,
@@ -208,6 +245,8 @@ const SocketHandler = ({
     statusUpdateHandler,
     acceptedFollowRequestHandler,
     newMentionHandler,
+    unsendMessageHandler,
+    addedToGroupHandler,
   ]);
   return <div>{children}</div>;
 };

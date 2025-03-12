@@ -38,10 +38,10 @@ const SelectMemberTile = ({
 
   return (
     <div className="flex px-4 items-center justify-between gap-2 rounded-lg bg-gray-100 p-2">
-      <div className="flex">
-        <div className="flex">
+      <div className="flex gap-2 items-center">
+        <div className="flex h-12 w-12 rounded-full">
           <Image
-            className="rounded-full"
+            className="rounded-full h-full w-full"
             src={member?.profilePicture || "/images/default-profile.jpg"}
             alt="avatar"
             height={50}

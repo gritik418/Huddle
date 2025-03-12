@@ -197,6 +197,36 @@ const Notification = ({
     }
   }
 
+  if (type === "ADDED_TO_GROUP") {
+    return (
+      <div className="flex flex-col w-full">
+        <div className="flex items-center gap-2">
+          <Image
+            src={creator?.profilePicture || "/images/default-profile.jpg"}
+            alt="img"
+            className="rounded-full h-12 w-12"
+            height={50}
+            width={50}
+          />
+
+          <div className="flex flex-col">
+            <p className="text-sm font-bold">
+              {creator?.firstName} {creator?.lastName}
+            </p>
+            <p className="text-sm font-medium">{creator?.username}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between mt-2">
+          <p className="text-sm font-normal">
+            {creator?.firstName} added you to the group{" "}
+            <span className="font-bold">{chat?.groupName}</span>.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <Image

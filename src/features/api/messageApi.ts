@@ -37,10 +37,23 @@ const messageApi = createApi({
         },
       }),
     }),
+    unsendMessage: build.mutation<ApiResponse, string>({
+      query: (messageId: string) => ({
+        url: `/${messageId}/unsend`,
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetMessagesQuery, useDeleteMessageForMeMutation } =
-  messageApi;
+export const {
+  useGetMessagesQuery,
+  useUnsendMessageMutation,
+  useDeleteMessageForMeMutation,
+} = messageApi;
 
 export default messageApi;
