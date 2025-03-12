@@ -28,6 +28,13 @@ const chatSlice = createSlice({
         }
       }
     },
+    removeChat: (state, action) => {
+      if (action.payload.chatId) {
+        state.chats = state.chats.filter(
+          (chat: Chat) => chat._id !== action.payload.chatId
+        );
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -49,7 +56,7 @@ const chatSlice = createSlice({
   },
 });
 
-export const { addChat } = chatSlice.actions;
+export const { addChat, removeChat } = chatSlice.actions;
 
 export const selectChats = (state: RootState) => state.chat.chats;
 export const selectChatsLoading = (state: RootState) => state.chat.chatsLoading;

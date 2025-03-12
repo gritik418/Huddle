@@ -53,10 +53,24 @@ const chatApi = createApi({
         },
       }),
     }),
+    deleteChat: build.mutation<ApiResponse, string>({
+      query: (chatId: string) => ({
+        url: `/${chatId}/delete`,
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetChatsQuery, useGetChatByIdQuery, useClearChatMutation } =
-  chatApi;
+export const {
+  useGetChatsQuery,
+  useGetChatByIdQuery,
+  useClearChatMutation,
+  useDeleteChatMutation,
+} = chatApi;
 
 export default chatApi;

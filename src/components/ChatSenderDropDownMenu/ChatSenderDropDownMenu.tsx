@@ -12,11 +12,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { useClearChatMutation } from "@/features/api/chatApi";
+import {
+  useClearChatMutation,
+  useDeleteChatMutation,
+} from "@/features/api/chatApi";
 import { Bounce, toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/store";
 import { clearMessages } from "@/features/message/messageSlice";
+import { removeChat } from "@/features/chat/chatSlice";
+import { useRouter } from "next/navigation";
 
 type PropsType = {
   sender: Follower;
@@ -25,13 +30,38 @@ type PropsType = {
 
 const ChatSenderDropDownMenu = ({ sender, chatId }: PropsType): JSX.Element => {
   const [clearChat] = useClearChatMutation();
+  const [deleteChat] = useDeleteChatMutation();
   const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
 
   const handleClearChat = async () => {
     try {
       const { data } = await clearChat(chatId);
       if (data?.success) {
         dispatch(clearMessages());
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Server Error.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
+
+  const handleDeleteChat = async () => {
+    try {
+      const { data } = await deleteChat(chatId);
+      if (data?.success) {
+        dispatch(removeChat({ chatId }));
+        router.push("/chat");
       }
     } catch (error) {
       console.error(error);
@@ -70,7 +100,10 @@ const ChatSenderDropDownMenu = ({ sender, chatId }: PropsType): JSX.Element => {
             <GiBroom className="text-gray-600" /> Clear Chat
           </DropdownMenuItem>
 
-          <DropdownMenuItem className="text-xs gap-2 cursor-pointer font-medium">
+          <DropdownMenuItem
+            onClick={handleDeleteChat}
+            className="text-xs gap-2 cursor-pointer font-medium"
+          >
             <MdDelete className="text-gray-600" /> Delete Chat
           </DropdownMenuItem>
 
