@@ -30,6 +30,12 @@ type GetActiveMembersApiResponse = {
   activeMembers?: string[];
 };
 
+type GetUsersForMentionApiResponse = {
+  success: boolean;
+  message?: string;
+  users: Follower[];
+};
+
 export type UpdateUserApiResponse = {
   success: boolean;
   message?: string;
@@ -120,6 +126,16 @@ const userApi = createApi({
       }),
       invalidatesTags: ["user"],
     }),
+    getUsersForMention: build.query<GetUsersForMentionApiResponse, void>({
+      query: () => ({
+        url: "/mentions",
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
@@ -131,6 +147,7 @@ export const {
   useGetPostsByUserQuery,
   useGetActiveMembersQuery,
   useGetUserByUsernameQuery,
+  useGetUsersForMentionQuery,
 } = userApi;
 
 export default userApi;

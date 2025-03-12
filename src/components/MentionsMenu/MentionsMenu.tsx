@@ -5,11 +5,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { selectFollowings } from "@/features/user/userSlice";
+import { useGetUsersForMentionQuery } from "@/features/api/userApi";
 import { Dispatch, JSX, SetStateAction } from "react";
 import { VscMention } from "react-icons/vsc";
-import { useSelector } from "react-redux";
 import MentionItem from "../MentionItem/MentionItem";
+import Spinner from "../Spinner/Spinner";
 
 type PropsType = {
   selectedMentions: string[];
@@ -20,7 +20,38 @@ const MentionsMenu = ({
   selectedMentions,
   setSelectedMentions,
 }: PropsType): JSX.Element => {
-  const followings: Follower[] = useSelector(selectFollowings);
+  const { isLoading, data, error } = useGetUsersForMentionQuery();
+
+  function renderContent(): JSX.Element {
+    if (isLoading) {
+      return (
+        <div className="flex py-6 items-center justify-center">
+          <Spinner variant={"xs"} />
+        </div>
+      );
+    }
+
+    if (error || !data?.users || data.users.length === 0) {
+      return (
+        <div className="p-2 py-6 text-center text-gray-500 text-sm">
+          <p>No users to mention</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex flex-col w-full gap-1">
+        {data.users.map((following: Follower) => (
+          <MentionItem
+            key={following._id}
+            user={following}
+            selectedMentions={selectedMentions}
+            setSelectedMentions={setSelectedMentions}
+          />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <DropdownMenu>
@@ -36,20 +67,7 @@ const MentionsMenu = ({
       </DropdownMenuTrigger>
       <DropdownMenuContent className="min-w-[230px] max-w-[320px] gap-2 bg-white">
         <DropdownMenuLabel className="text-xs">Mention Users</DropdownMenuLabel>
-        {followings.length === 0 ? (
-          <div className="p-2 text-center text-gray-500 text-sm">
-            No users to mention
-          </div>
-        ) : (
-          followings.map((following: Follower) => (
-            <MentionItem
-              key={following._id}
-              user={following}
-              selectedMentions={selectedMentions}
-              setSelectedMentions={setSelectedMentions}
-            />
-          ))
-        )}
+        {renderContent()}
       </DropdownMenuContent>
     </DropdownMenu>
   );

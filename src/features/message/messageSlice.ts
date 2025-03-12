@@ -25,6 +25,13 @@ const messageSlice = createSlice({
     clearMessages: (state) => {
       state.messages = [];
     },
+    removeMessage: (state, action) => {
+      if (action.payload) {
+        state.messages = state.messages.filter(
+          (message: Message) => message._id !== action.payload
+        );
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -52,6 +59,7 @@ export const selectMessages = (state: RootState) => state.message.messages;
 export const selectMessagesLoading = (state: RootState) =>
   state.message.messagesLoading;
 
-export const { addMessage, clearMessages } = messageSlice.actions;
+export const { addMessage, clearMessages, removeMessage } =
+  messageSlice.actions;
 
 export default messageSlice;

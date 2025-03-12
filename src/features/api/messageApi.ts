@@ -6,6 +6,11 @@ type GetMessagesApiResponse = {
   messages?: [];
 };
 
+type ApiResponse = {
+  success: boolean;
+  message: string;
+};
+
 const messageApi = createApi({
   reducerPath: "messageApi",
   baseQuery: fetchBaseQuery({
@@ -22,9 +27,20 @@ const messageApi = createApi({
         },
       }),
     }),
+    deleteMessageForMe: build.mutation<ApiResponse, string>({
+      query: (messageId: string) => ({
+        url: `/${messageId}/delete-for-me`,
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetMessagesQuery } = messageApi;
+export const { useGetMessagesQuery, useDeleteMessageForMeMutation } =
+  messageApi;
 
 export default messageApi;
