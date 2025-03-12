@@ -1,5 +1,5 @@
 interface User {
-  _id: Types.ObjectId;
+  _id: string;
   firstName: string;
   lastName?: string;
   username: string;

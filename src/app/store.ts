@@ -15,6 +15,7 @@ import groupApi from "@/features/api/groupApi";
 import postApi from "@/features/api/postApi";
 import postSlice from "@/features/post/postSlice";
 import authSlice from "@/features/auth/authSlice";
+import accountSettingsApi from "@/features/api/accountSettingsApi";
 
 const store = configureStore({
   reducer: {
@@ -26,13 +27,14 @@ const store = configureStore({
     [messageApi.reducerPath]: messageApi.reducer,
     [chatRequestApi.reducerPath]: chatRequestApi.reducer,
     [followRequestApi.reducerPath]: followRequestApi.reducer,
+    [accountSettingsApi.reducerPath]: accountSettingsApi.reducer,
     [userSlice.reducerPath]: userSlice.reducer,
     [authSlice.reducerPath]: authSlice.reducer,
     [postSlice.reducerPath]: postSlice.reducer,
-    [chatRequestSlice.reducerPath]: chatRequestSlice.reducer,
-    [messageSlice.reducerPath]: messageSlice.reducer,
     [chatSlice.reducerPath]: chatSlice.reducer,
     [searchSlice.reducerPath]: searchSlice.reducer,
+    [messageSlice.reducerPath]: messageSlice.reducer,
+    [chatRequestSlice.reducerPath]: chatRequestSlice.reducer,
     [followRequestSlice.reducerPath]: followRequestSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -44,7 +46,8 @@ const store = configureStore({
       .concat(groupApi.middleware)
       .concat(messageApi.middleware)
       .concat(chatRequestApi.middleware)
-      .concat(followRequestApi.middleware),
+      .concat(followRequestApi.middleware)
+      .concat(accountSettingsApi.middleware),
 });
 
 export default store;

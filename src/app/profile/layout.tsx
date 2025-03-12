@@ -35,18 +35,18 @@ export default function Layout({
                 width={800}
                 className="w-full max-h-[260px] object-cover rounded-lg"
               />
-              <div className="flex overflow-hidden absolute top-1/2 left-16 translate-y-1/3 rounded-full h-[180px] w-[180px] border-8 border-white">
+              <div className="flex overflow-hidden absolute left-1/2 -translate-x-1/2 md:translate-x-0 top-1/2 md:left-16 translate-y-1/3 rounded-full h-[180px] w-[180px] border-8 border-white">
                 <Image
                   src={user?.profilePicture || "/images/default-profile.jpg"}
                   alt="profile"
-                  height={200}
-                  width={200}
-                  className="object-cover"
+                  height={120}
+                  width={120}
+                  className="object-cover h-full w-full"
                 />
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-44">
+            <div className="flex flex-col md:flex-row  md:items-center justify-between pt-44">
               <div className="flex flex-col gap-1">
                 <p className="text-3xl font-semibold">
                   {user?.firstName} {user?.lastName}
@@ -56,7 +56,7 @@ export default function Layout({
                 </p>
               </div>
 
-              <div className="flex mt-4 space-x-6">
+              <div className="flex mt-8 md:mt-4 space-x-6">
                 <Link
                   href={"/profile/posts"}
                   className="flex flex-col items-center"
@@ -90,10 +90,10 @@ export default function Layout({
             {pathname !== "/profile/followers" &&
             pathname !== "/profile/following" ? (
               <div className="flex mt-8">
-                <ul className="flex gap-3">
+                <ul className="flex gap-2 sm:gap-3">
                   <li className="flex items-center justify-center w-max h-max">
                     <Link
-                      className={`p-1 px-4 rounded-full ${
+                      className={`p-1 px-2 sm:px-4 rounded-full text-xs sm:text-lg ${
                         pathname === "/profile"
                           ? "bg-[var(--secondary)] text-white font-bold"
                           : "bg-gray-200"
@@ -106,7 +106,7 @@ export default function Layout({
 
                   <li className="flex items-center justify-center w-max h-max">
                     <Link
-                      className={`p-1 px-4 rounded-full ${
+                      className={`p-1 px-2 sm:px-4 rounded-full text-xs sm:text-lg ${
                         pathname === "/profile/posts"
                           ? "bg-[var(--secondary)] text-white font-bold"
                           : "bg-gray-200"
@@ -119,7 +119,7 @@ export default function Layout({
 
                   <li className="flex items-center justify-center w-max h-max">
                     <Link
-                      className={`p-1 px-4 rounded-full ${
+                      className={`p-1 px-2 sm:px-4 rounded-full text-xs sm:text-lg ${
                         pathname === "/profile/channels"
                           ? "bg-[var(--secondary)] text-white font-bold"
                           : "bg-gray-200"
@@ -132,7 +132,7 @@ export default function Layout({
 
                   <li className="flex items-center justify-center w-max h-max">
                     <Link
-                      className={`p-1 px-4 rounded-full ${
+                      className={`p-1 px-2 sm:px-4 rounded-full text-xs sm:text-lg ${
                         pathname === "/profile/pulse"
                           ? "bg-[var(--secondary)] text-white font-bold"
                           : "bg-gray-200"

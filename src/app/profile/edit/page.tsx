@@ -212,7 +212,7 @@ const EditUserInfo = (): JSX.Element => {
             {...register("coverImage")}
             onChange={handleCoverImageChange}
           />
-          <div className="flex absolute top-1/2 left-16 translate-y-1/3 rounded-full h-[180px] w-[180px] border-8 border-white">
+          <div className="flex absolute left-1/2 -translate-x-1/2 md:translate-x-0 top-1/2 md:left-16 translate-y-1/3 rounded-full h-[180px] w-[180px] border-8 border-white">
             <div className="flex relative rounded-full">
               <Image
                 src={

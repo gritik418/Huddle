@@ -1,15 +1,39 @@
 "use client";
 import { Separator } from "@/components/ui/separator";
+import { useToggleAccountPrivacyMutation } from "@/features/api/accountSettingsApi";
+import { selectUser, togglePrivacy } from "@/features/user/userSlice";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Bounce, toast } from "react-toastify";
+import { AppDispatch } from "../store";
 
 const PrivacySettings = () => {
-  const [isPrivateAccount, setIsPrivateAccount] = useState(false);
+  const user: User | null = useSelector(selectUser);
   const [isActiveStatus, setIsActiveStatus] = useState(true);
   const [allowMentions, setAllowMentions] = useState(true);
+  const [toggleAccountPrivacy] = useToggleAccountPrivacyMutation();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const handleTogglePrivateAccount = () => {
-    console.log(!isPrivateAccount);
-    setIsPrivateAccount((prevState) => !prevState);
+  const handleTogglePrivateAccount = async () => {
+    const value = !user?.isPrivate ? "private" : "public";
+    try {
+      const { data } = await toggleAccountPrivacy(value);
+      if (data) {
+        dispatch(togglePrivacy({ privacy: value }));
+      }
+    } catch (error) {
+      toast.error("Server Error.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
   };
 
   const handleToggleActiveStatus = () => {
@@ -45,18 +69,18 @@ const PrivacySettings = () => {
           <button
             onClick={handleTogglePrivateAccount}
             className={`${
-              isPrivateAccount ? "bg-green-600" : "bg-gray-300"
+              user?.isPrivate ? "bg-green-600" : "bg-gray-300"
             } relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none`}
           >
             <span
               className={`${
-                isPrivateAccount ? "translate-x-5" : "translate-x-0"
+                user?.isPrivate ? "translate-x-5" : "translate-x-0"
               } inline-block w-4 h-4 transform bg-white rounded-full transition-transform`}
             ></span>
           </button>
         </div>
         <p className="text-gray-500 text-sm mt-4">
-          {isPrivateAccount
+          {user?.isPrivate
             ? "Your account is private. Only approved followers can see your posts."
             : "Your account is public. Anyone can view your posts."}
         </p>

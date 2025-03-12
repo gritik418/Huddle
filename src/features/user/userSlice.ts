@@ -34,6 +34,16 @@ const userSlice = createSlice({
         (memberId: string) => memberId.toString() !== action.payload.userId
       );
     },
+    togglePrivacy: (state, action) => {
+      if (action.payload.privacy) {
+        if (action.payload.privacy === "public") {
+          state.user = { ...state.user!, isPrivate: false };
+        }
+        if (action.payload.privacy === "private") {
+          state.user = { ...state.user!, isPrivate: true };
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -73,7 +83,8 @@ const userSlice = createSlice({
   },
 });
 
-export const { addOnlineMember, removeOnlineMember } = userSlice.actions;
+export const { addOnlineMember, removeOnlineMember, togglePrivacy } =
+  userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user.user;
 export const selectFollowers = (state: RootState) => state.user.followers;

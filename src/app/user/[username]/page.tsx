@@ -26,7 +26,41 @@ const UserInfo = (): JSX.Element => {
 
   const { username } = params;
   const { data, isLoading, error } = useGetUserByUsernameQuery(username);
-  const userId: string = data?.user?._id;
+  const userId: string | undefined = data?.user?._id;
+
+  // Pending implementation
+  const handleUnfollow = () => {
+    console.log("Unfollow");
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center h-screen justify-center flex-1">
+        <Spinner variant="medium" />
+      </div>
+    );
+  }
+
+  if (!data?.user || !userId || error) {
+    return (
+      <div className="h-screen">
+        <Navbar />
+        <div className="p-3 flex flex-col h-[calc(100%-56px)] items-center justify-center">
+          <Image
+            src={"/images/no-user.jpg"}
+            alt="no-user"
+            height={300}
+            width={300}
+          />
+          <p className="text-center text-lg text-gray-600 max-w-[600px]">
+            Oops! We couldn&apos;t find the user you&apos;re looking for. Maybe
+            the username is misspelled or the user is no longer active. Please
+            check again or try another username.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const handleSendFollowRequest = async () => {
     try {
@@ -105,40 +139,6 @@ const UserInfo = (): JSX.Element => {
       });
     }
   };
-
-  // Pending implementation
-  const handleUnfollow = () => {
-    console.log("Unfollow");
-  };
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center h-screen justify-center flex-1">
-        <Spinner variant="medium" />
-      </div>
-    );
-  }
-
-  if (!data?.user || error) {
-    return (
-      <div className="h-screen">
-        <Navbar />
-        <div className="p-3 flex flex-col h-[calc(100%-56px)] items-center justify-center">
-          <Image
-            src={"/images/no-user.jpg"}
-            alt="no-user"
-            height={300}
-            width={300}
-          />
-          <p className="text-center text-lg text-gray-600 max-w-[600px]">
-            Oops! We couldn&apos;t find the user you&apos;re looking for. Maybe
-            the username is misspelled or the user is no longer active. Please
-            check again or try another username.
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -271,7 +271,8 @@ const UserInfo = (): JSX.Element => {
           <div className="flex mt-4">
             {activeTab === "posts" ? (
               <>
-                {data.user?.isPrivate ? (
+                {data.user?.isPrivate &&
+                !user?.following.includes(data.user._id) ? (
                   <PrivateAccount />
                 ) : (
                   <UserPosts user={data.user} />
