@@ -47,6 +47,9 @@ const userSlice = createSlice({
     toggleActiveStatus: (state, action) => {
       state.user = { ...state.user!, showActiveStatus: action.payload };
     },
+    toggleAllowMentions: (state, action) => {
+      state.user = { ...state.user!, allowMentions: action.payload };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -87,10 +90,11 @@ const userSlice = createSlice({
 });
 
 export const {
+  togglePrivacy,
   addOnlineMember,
   removeOnlineMember,
-  togglePrivacy,
   toggleActiveStatus,
+  toggleAllowMentions,
 } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user.user;

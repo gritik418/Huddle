@@ -64,7 +64,7 @@ const MessageSectionHeader = ({ chat }: { chat: Chat }): JSX.Element => {
         </div>
       </div>
 
-      <ChatSenderDropDownMenu sender={sender} />
+      <ChatSenderDropDownMenu chatId={chat._id} sender={sender} />
     </div>
   );
 };

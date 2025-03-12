@@ -139,6 +139,7 @@ interface Message {
   sentAt?: Date;
   readAt?: Date;
   status: "sent" | "delivered" | "read" | "failed";
+  deletedFor: Types.ObjectId[];
 }
 
 interface NotificationData {

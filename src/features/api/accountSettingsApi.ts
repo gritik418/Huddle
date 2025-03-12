@@ -33,11 +33,23 @@ const accountSettingsApi = createApi({
         body: { showActiveStatus },
       }),
     }),
+    toggleMentionsAllowance: build.mutation<ApiResponse, boolean>({
+      query: (allowMentions: boolean) => ({
+        url: "/allow-mentions",
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: { allowMentions },
+      }),
+    }),
   }),
 });
 
 export const {
   useToggleAccountPrivacyMutation,
+  useToggleMentionsAllowanceMutation,
   useToggleActiveStatusVisibilityMutation,
 } = accountSettingsApi;
 

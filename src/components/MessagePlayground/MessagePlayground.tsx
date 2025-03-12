@@ -26,13 +26,17 @@ const MessagePlayground = (): JSX.Element => {
 
   return (
     <div className="p-4 h-[calc(100%-64px-80px)] overflow-y-scroll pb-4 bg-[#f2f2f2] flex-col">
-      {messages?.map((message: Message) => (
-        <MessageItem
-          key={message._id}
-          message={message}
-          isSent={user?._id === message.sender._id}
-        />
-      ))}
+      {messages?.map((message: Message) => {
+        if (message?.deletedFor && message?.deletedFor.includes(user?._id))
+          return null;
+        return (
+          <MessageItem
+            key={message._id}
+            message={message}
+            isSent={user?._id === message.sender._id}
+          />
+        );
+      })}
       <div ref={messagesEndRef}></div>
     </div>
   );

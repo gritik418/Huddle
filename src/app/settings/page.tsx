@@ -3,21 +3,22 @@ import { Separator } from "@/components/ui/separator";
 import {
   useToggleAccountPrivacyMutation,
   useToggleActiveStatusVisibilityMutation,
+  useToggleMentionsAllowanceMutation,
 } from "@/features/api/accountSettingsApi";
 import {
   selectUser,
   toggleActiveStatus,
+  toggleAllowMentions,
   togglePrivacy,
 } from "@/features/user/userSlice";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 import { AppDispatch } from "../store";
 
 const PrivacySettings = () => {
   const user: User | null = useSelector(selectUser);
-  const [allowMentions, setAllowMentions] = useState(true);
   const [toggleAccountPrivacy] = useToggleAccountPrivacyMutation();
+  const [toggleMentionsAllowance] = useToggleMentionsAllowanceMutation();
   const [toggleActiveStatusVisibility] =
     useToggleActiveStatusVisibilityMutation();
   const dispatch = useDispatch<AppDispatch>();
@@ -69,8 +70,26 @@ const PrivacySettings = () => {
     }
   };
 
-  const handleToggleAllowMentions = () => {
-    setAllowMentions((prevState) => !prevState);
+  const handleToggleAllowMentions = async () => {
+    try {
+      const { data } = await toggleMentionsAllowance(!user?.allowMentions);
+      if (data) {
+        dispatch(toggleAllowMentions(!user?.allowMentions));
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Server Error.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
   };
 
   return (
@@ -160,18 +179,18 @@ const PrivacySettings = () => {
           <button
             onClick={handleToggleAllowMentions}
             className={`${
-              allowMentions ? "bg-green-600" : "bg-gray-300"
+              user?.allowMentions ? "bg-green-600" : "bg-gray-300"
             } relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none`}
           >
             <span
               className={`${
-                allowMentions ? "translate-x-5" : "translate-x-0"
+                user?.allowMentions ? "translate-x-5" : "translate-x-0"
               } inline-block w-4 h-4 transform bg-white rounded-full transition-transform`}
             ></span>
           </button>
         </div>
         <p className="text-gray-500 text-sm mt-4">
-          {allowMentions
+          {user?.allowMentions
             ? "Other users can mention you in their posts and comments."
             : "You cannot be mentioned by other users."}
         </p>

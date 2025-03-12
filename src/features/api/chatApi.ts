@@ -12,6 +12,11 @@ type GetChatByIdApiResponse = {
   chat?: Chat;
 };
 
+type ApiResponse = {
+  success: boolean;
+  message: string;
+};
+
 const chatApi = createApi({
   reducerPath: "chatApi",
   baseQuery: fetchBaseQuery({
@@ -38,9 +43,20 @@ const chatApi = createApi({
         },
       }),
     }),
+    clearChat: build.mutation<ApiResponse, string>({
+      query: (chatId: string) => ({
+        url: `/${chatId}/clear`,
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetChatsQuery, useGetChatByIdQuery } = chatApi;
+export const { useGetChatsQuery, useGetChatByIdQuery, useClearChatMutation } =
+  chatApi;
 
 export default chatApi;
