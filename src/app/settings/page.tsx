@@ -1,17 +1,25 @@
 "use client";
 import { Separator } from "@/components/ui/separator";
-import { useToggleAccountPrivacyMutation } from "@/features/api/accountSettingsApi";
-import { selectUser, togglePrivacy } from "@/features/user/userSlice";
-import React, { useState } from "react";
+import {
+  useToggleAccountPrivacyMutation,
+  useToggleActiveStatusVisibilityMutation,
+} from "@/features/api/accountSettingsApi";
+import {
+  selectUser,
+  toggleActiveStatus,
+  togglePrivacy,
+} from "@/features/user/userSlice";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 import { AppDispatch } from "../store";
 
 const PrivacySettings = () => {
   const user: User | null = useSelector(selectUser);
-  const [isActiveStatus, setIsActiveStatus] = useState(true);
   const [allowMentions, setAllowMentions] = useState(true);
   const [toggleAccountPrivacy] = useToggleAccountPrivacyMutation();
+  const [toggleActiveStatusVisibility] =
+    useToggleActiveStatusVisibilityMutation();
   const dispatch = useDispatch<AppDispatch>();
 
   const handleTogglePrivateAccount = async () => {
@@ -22,6 +30,7 @@ const PrivacySettings = () => {
         dispatch(togglePrivacy({ privacy: value }));
       }
     } catch (error) {
+      console.error(error);
       toast.error("Server Error.", {
         position: "top-right",
         autoClose: 1500,
@@ -36,8 +45,28 @@ const PrivacySettings = () => {
     }
   };
 
-  const handleToggleActiveStatus = () => {
-    setIsActiveStatus((prevState) => !prevState);
+  const handleToggleActiveStatus = async () => {
+    try {
+      const { data } = await toggleActiveStatusVisibility(
+        !user?.showActiveStatus
+      );
+      if (data) {
+        dispatch(toggleActiveStatus(!user?.showActiveStatus));
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Server Error.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
   };
 
   const handleToggleAllowMentions = () => {
@@ -100,18 +129,18 @@ const PrivacySettings = () => {
           <button
             onClick={handleToggleActiveStatus}
             className={`${
-              isActiveStatus ? "bg-green-600" : "bg-gray-300"
+              user?.showActiveStatus ? "bg-green-600" : "bg-gray-300"
             } relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none`}
           >
             <span
               className={`${
-                isActiveStatus ? "translate-x-5" : "translate-x-0"
+                user?.showActiveStatus ? "translate-x-5" : "translate-x-0"
               } inline-block w-4 h-4 transform bg-white rounded-full transition-transform`}
             ></span>
           </button>
         </div>
         <p className="text-gray-500 text-sm mt-4">
-          {isActiveStatus
+          {user?.showActiveStatus
             ? "Other users can see when you're online."
             : "Your active status is hidden."}
         </p>

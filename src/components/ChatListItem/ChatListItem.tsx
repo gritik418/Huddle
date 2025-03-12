@@ -93,7 +93,7 @@ const ChatListItem = ({ chat, chatId }: PropsType): JSX.Element => {
             height={48}
             width={48}
           />
-          {activeMembers.includes(sender?._id) && (
+          {user?.showActiveStatus && activeMembers.includes(sender?._id) && (
             <span className="absolute h-[10px] w-[10px] bg-green-500 bottom-0 right-1 rounded-full"></span>
           )}
         </div>

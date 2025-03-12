@@ -44,6 +44,9 @@ const userSlice = createSlice({
         }
       }
     },
+    toggleActiveStatus: (state, action) => {
+      state.user = { ...state.user!, showActiveStatus: action.payload };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -83,8 +86,12 @@ const userSlice = createSlice({
   },
 });
 
-export const { addOnlineMember, removeOnlineMember, togglePrivacy } =
-  userSlice.actions;
+export const {
+  addOnlineMember,
+  removeOnlineMember,
+  togglePrivacy,
+  toggleActiveStatus,
+} = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user.user;
 export const selectFollowers = (state: RootState) => state.user.followers;

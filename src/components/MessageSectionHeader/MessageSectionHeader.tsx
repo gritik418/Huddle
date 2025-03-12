@@ -54,7 +54,7 @@ const MessageSectionHeader = ({ chat }: { chat: Chat }): JSX.Element => {
           <p className="text-sm font-medium">
             {sender.firstName} {sender.lastName}
           </p>
-          {activeMembers.includes(sender._id) ? (
+          {user?.showActiveStatus && activeMembers.includes(sender._id) ? (
             <p className="text-xs text-green-600 font-semibold">Active</p>
           ) : (
             <p className="text-xs font-medium text-gray-400">

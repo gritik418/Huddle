@@ -22,9 +22,23 @@ const accountSettingsApi = createApi({
         body: { privacy },
       }),
     }),
+    toggleActiveStatusVisibility: build.mutation<ApiResponse, boolean>({
+      query: (showActiveStatus: boolean) => ({
+        url: "/active-status-visibility",
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: { showActiveStatus },
+      }),
+    }),
   }),
 });
 
-export const { useToggleAccountPrivacyMutation } = accountSettingsApi;
+export const {
+  useToggleAccountPrivacyMutation,
+  useToggleActiveStatusVisibilityMutation,
+} = accountSettingsApi;
 
 export default accountSettingsApi;
