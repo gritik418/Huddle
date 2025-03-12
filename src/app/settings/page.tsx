@@ -8,6 +8,7 @@ const PrivacySettings = () => {
   const [allowMentions, setAllowMentions] = useState(true);
 
   const handleTogglePrivateAccount = () => {
+    console.log(!isPrivateAccount);
     setIsPrivateAccount((prevState) => !prevState);
   };
 

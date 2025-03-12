@@ -18,7 +18,6 @@ const initialState: PostState = {
 export const getFeedAsync = createAsyncThunk(
   "post/getFeed",
   async ({ limit, page }: { limit: number; page: number }) => {
-    console.log(page, limit);
     const response = await getFeed(limit, page);
     return response;
   }

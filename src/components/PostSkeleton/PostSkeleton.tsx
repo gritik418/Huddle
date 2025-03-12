@@ -3,7 +3,7 @@ import { Skeleton } from "../ui/skeleton";
 
 const PostSkeleton = (): JSX.Element => {
   return (
-    <div className="bg-white rounded-lg">
+    <div className="bg-white rounded-lg w-full">
       <div className="flex items-center border-b-[1px] border-gray-100 p-3 justify-between">
         <div className="flex items-center gap-2">
           <div className="flex h-12 w-12 rounded-full gap-2">

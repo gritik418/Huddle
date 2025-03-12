@@ -1,5 +1,6 @@
 "use client";
 import Navbar from "@/components/Navbar/Navbar";
+import PrivateAccount from "@/components/PrivateAccount/PrivateAccount";
 import Spinner from "@/components/Spinner/Spinner";
 import UserChannels from "@/components/UserChannels/UserChannels";
 import UserPosts from "@/components/UserPosts/UserPosts";
@@ -105,6 +106,11 @@ const UserInfo = (): JSX.Element => {
     }
   };
 
+  // Pending implementation
+  const handleUnfollow = () => {
+    console.log("Unfollow");
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center h-screen justify-center flex-1">
@@ -205,8 +211,11 @@ const UserInfo = (): JSX.Element => {
 
           <div className="flex my-6 justify-end">
             {user?.following.includes(data.user._id.toString()) ? (
-              <button className="flex w-32 h-10 items-center justify-center text-[var(--secondary)] rounded-lg font-bold text-xl bg-gray-100">
-                Following
+              <button
+                onClick={handleUnfollow}
+                className="flex w-32 h-10 items-center justify-center text-[var(--secondary)] rounded-lg font-bold text-xl bg-gray-100"
+              >
+                Unfollow
               </button>
             ) : (
               <>
@@ -260,7 +269,17 @@ const UserInfo = (): JSX.Element => {
           </div>
 
           <div className="flex mt-4">
-            {activeTab === "posts" ? <UserPosts /> : <UserChannels />}
+            {activeTab === "posts" ? (
+              <>
+                {data.user?.isPrivate ? (
+                  <PrivateAccount />
+                ) : (
+                  <UserPosts user={data.user} />
+                )}
+              </>
+            ) : (
+              <UserChannels />
+            )}
           </div>
         </div>
       </div>

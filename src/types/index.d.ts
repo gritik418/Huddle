@@ -8,6 +8,9 @@ interface User {
   coverImage?: string;
   profilePicture?: string;
   bio?: string;
+  showActiveStatus: boolean;
+  allowMentions: boolean;
+  isPrivate: boolean;
   isVerified: boolean;
   isActive: boolean;
   provider: "credentials" | "google";
