@@ -12,6 +12,7 @@ import {
   useLikePostMutation,
   useUnlikePostMutation,
 } from "@/features/api/postApi";
+import { redirect } from "next/navigation";
 
 type PropsType = {
   post: Post;
@@ -22,6 +23,10 @@ const Post = ({ post }: PropsType): JSX.Element => {
   const [unlikePost] = useUnlikePostMutation();
   const user: User | null = useSelector(selectUser);
   const [likes, setLikes] = useState<string[]>(post.likes);
+
+  if (!user) {
+    redirect("/login");
+  }
 
   const handleLikePost = async () => {
     try {

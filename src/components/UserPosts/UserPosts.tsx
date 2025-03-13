@@ -27,7 +27,7 @@ const UserPosts = ({ user }: { user: User }): JSX.Element => {
             height={180}
             width={180}
           />
-          <p className="text-lg">The user hasn't posted anything yet.</p>
+          <p className="text-lg">The user hasn&apos;t posted anything yet.</p>
         </div>
       );
     }
