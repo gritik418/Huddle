@@ -91,11 +91,16 @@ interface Chat {
   groupIcon?: string;
   members: ChatMember[];
   admins?: Types.ObjectId[];
-  lastMessage?: string;
+  lastMessage?: {
+    _id: string;
+    content: string;
+    sender: string;
+  };
   groupStatus?: "active" | "deleted";
   deletedAt?: Date;
   deletedBy?: Types.ObjectId;
   deletedFor: Types.ObjectId[];
+  updatedAt: string;
 }
 
 interface Group {

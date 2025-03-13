@@ -46,13 +46,15 @@ const ChatListItem = ({ chat, chatId }: PropsType): JSX.Element => {
               {chat?.groupName}
             </p>
 
-            <p
-              className={`text-xs text-gray-400 font-medium ${
-                isSelected ? "text-gray-50" : "text-black"
-              }`}
-            >
-              {chat.lastMessage}
-            </p>
+            {chat.lastMessage && (
+              <p
+                className={`text-xs text-gray-400 font-medium ${
+                  isSelected ? "text-gray-50" : "text-black"
+                }`}
+              >
+                {chat.lastMessage?.content}
+              </p>
+            )}
           </div>
         </div>
 
@@ -107,13 +109,15 @@ const ChatListItem = ({ chat, chatId }: PropsType): JSX.Element => {
             {sender.firstName} {sender.lastName}
           </p>
 
-          <p
-            className={`text-xs text-gray-400 font-medium ${
-              isSelected ? "text-gray-50" : "text-black"
-            }`}
-          >
-            {chat.lastMessage}
-          </p>
+          {chat.lastMessage && (
+            <p
+              className={`text-xs text-gray-400 font-medium ${
+                isSelected ? "text-gray-50" : "text-black"
+              }`}
+            >
+              {chat.lastMessage?.content}
+            </p>
+          )}
         </div>
       </div>
 

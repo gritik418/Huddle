@@ -35,6 +35,32 @@ const chatSlice = createSlice({
         );
       }
     },
+    updateLastMessage: (state, action) => {
+      state.chats = state.chats.map((chat: Chat) => {
+        if (chat._id === action.payload.chatId) {
+          return {
+            ...chat,
+            lastMessage: action.payload.lastMessage,
+            updatedAt: new Date().toISOString(),
+          };
+        } else {
+          return chat;
+        }
+      });
+    },
+    removeLastMessage: (state, action) => {
+      state.chats = state.chats.map((chat: Chat) => {
+        if (chat._id === action.payload.chatId) {
+          if (chat.lastMessage?._id === action.payload.lastMessage._id) {
+            return { ...chat, lastMessage: undefined };
+          } else {
+            return chat;
+          }
+        } else {
+          return chat;
+        }
+      });
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -56,7 +82,8 @@ const chatSlice = createSlice({
   },
 });
 
-export const { addChat, removeChat } = chatSlice.actions;
+export const { addChat, removeChat, updateLastMessage, removeLastMessage } =
+  chatSlice.actions;
 
 export const selectChats = (state: RootState) => state.chat.chats;
 export const selectChatsLoading = (state: RootState) => state.chat.chatsLoading;

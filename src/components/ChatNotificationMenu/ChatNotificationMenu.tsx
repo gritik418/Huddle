@@ -41,7 +41,9 @@ const ChatNotificationMenu = (): JSX.Element => {
         >
           <div className="relative flex min-h-10 h-10 w-10 min-w-10 rounded-full items-center justify-center bg-gray-100">
             <IoIosNotifications />
-            <span className="absolute h-2 w-2 bg-red-400 rounded-full top-1 right-1"></span>
+            {chatRequests.length > 0 && (
+              <span className="absolute h-2 w-2 bg-red-400 rounded-full top-1 right-1"></span>
+            )}
           </div>
         </MenubarTrigger>
         <MenubarContent className="max-w-[500px] min-w-[300px]">

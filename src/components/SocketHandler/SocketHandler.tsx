@@ -14,7 +14,11 @@ import {
   USER_ONLINE,
 } from "@/constants/events";
 import { useSocket } from "@/contexts/socket/SocketProvider";
-import { addChat } from "@/features/chat/chatSlice";
+import {
+  addChat,
+  removeLastMessage,
+  updateLastMessage,
+} from "@/features/chat/chatSlice";
 import { addChatRequest } from "@/features/chatRequest/chatRequestSlice";
 import { addFollowRequest } from "@/features/followRequest/followRequestSlice";
 import { addMessage, removeMessage } from "@/features/message/messageSlice";
@@ -37,6 +41,16 @@ const SocketHandler = ({
 
   const newMessageHandler = useCallback(
     ({ message, chat }: { message: Message; chat: Chat }) => {
+      dispatch(
+        updateLastMessage({
+          chatId: message.chatId,
+          lastMessage: {
+            _id: message._id,
+            sender: message.sender._id,
+            content: message.content,
+          },
+        })
+      );
       if (pathname.includes(message.chatId.toString())) {
         dispatch(addMessage(message));
       } else {
@@ -61,6 +75,16 @@ const SocketHandler = ({
       if (pathname.includes(message.chatId)) {
         dispatch(addMessage(message));
       }
+      dispatch(
+        updateLastMessage({
+          chatId: message.chatId,
+          lastMessage: {
+            _id: message._id,
+            sender: message.sender._id,
+            content: message.content,
+          },
+        })
+      );
     },
     [pathname, dispatch]
   );
@@ -165,6 +189,15 @@ const SocketHandler = ({
       if (pathname.includes(chatId)) {
         dispatch(removeMessage(messageId));
       }
+
+      dispatch(
+        removeLastMessage({
+          chatId: chatId,
+          lastMessage: {
+            _id: messageId,
+          },
+        })
+      );
     },
     [dispatch, pathname]
   );

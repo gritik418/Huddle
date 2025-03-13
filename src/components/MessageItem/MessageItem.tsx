@@ -14,6 +14,7 @@ import { Bounce, toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/store";
 import { removeMessage } from "@/features/message/messageSlice";
+import { removeLastMessage } from "@/features/chat/chatSlice";
 
 type PropsType = { isSent: boolean; message: Message };
 
@@ -49,6 +50,14 @@ const MessageItem = ({ isSent, message }: PropsType): JSX.Element => {
       const { data } = await unsendMessage(message._id);
       if (data) {
         dispatch(removeMessage(message._id));
+        dispatch(
+          removeLastMessage({
+            chatId: message.chatId,
+            lastMessage: {
+              _id: message._id,
+            },
+          })
+        );
       }
     } catch (error) {
       console.error(error);

@@ -31,9 +31,19 @@ const ChatList = ({ chatId, searchQuery }: PropsType): JSX.Element => {
           return query.toLowerCase().includes(searchQuery.toLowerCase());
         }
       });
-      setFilteredChats(matchedChats);
+
+      const sortedChats = matchedChats.toSorted(
+        (a: Chat, b: Chat) =>
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      );
+      setFilteredChats(sortedChats);
     } else {
-      setFilteredChats(chats);
+      const sortedChats = chats.toSorted(
+        (a: Chat, b: Chat) =>
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      );
+
+      setFilteredChats(sortedChats);
     }
   }, [searchQuery, chats, user?._id]);
 
