@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export type GetPostsByFollwingApiResponse = {
+export type GetLoggedInUserPostsApiResponse = {
   success: boolean;
   message?: string;
   posts: Post[];
@@ -30,17 +30,7 @@ const postApi = createApi({
   }),
   tagTypes: ["loggedInUserPosts"],
   endpoints: (build) => ({
-    getPostsByFollwing: build.query<GetPostsByFollwingApiResponse, void>({
-      query: () => ({
-        url: "/following",
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }),
-    }),
-    getLoggedInUserPosts: build.query<GetPostsByFollwingApiResponse, void>({
+    getLoggedInUserPosts: build.query<GetLoggedInUserPostsApiResponse, void>({
       query: () => ({
         url: "/",
         method: "GET",
@@ -89,7 +79,6 @@ export const {
   useLikePostMutation,
   useUnlikePostMutation,
   useRemovePostMutation,
-  useGetPostsByFollwingQuery,
   useGetLoggedInUserPostsQuery,
 } = postApi;
 

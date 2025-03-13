@@ -23,13 +23,15 @@ const Feed = (): JSX.Element => {
 
   const fetchData = async () => {
     if (page >= 1) {
-      dispatch(getFeedAsync({ page: page + 1, limit: 3 }));
+      dispatch(getFeedAsync({ page: page + 1, limit: 5 }));
       setPage(() => page + 1);
     }
   };
 
   useEffect(() => {
-    dispatch(getFeedAsync({ page: page, limit: 3 }));
+    if (page === 1) {
+      dispatch(getFeedAsync({ page: page, limit: 5 }));
+    }
   }, [dispatch, page]);
 
   if (!posts || !pagination) {

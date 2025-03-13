@@ -73,7 +73,7 @@ const Post = ({ post }: PropsType): JSX.Element => {
   };
 
   return (
-    <div className="bg-white rounded-lg overflow-hidden">
+    <div className="bg-white w-full rounded-lg overflow-hidden">
       <div className="flex items-center border-b-[1px] border-gray-100 p-3 justify-between">
         <Link
           href={`/user/${post.userId.username}`}

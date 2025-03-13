@@ -8,9 +8,9 @@ import { JSX } from "react";
 
 const App = (): JSX.Element => {
   return (
-    <div>
+    <div className="min-h-screen">
       <Navbar />
-      <div className="flex bg-gray-100 pt-4 pb-7">
+      <div className="flex min-h-full bg-gray-100 pt-4 pb-7">
         <div className="sticky h-max top-[70px]">
           <HomeSidebar />
         </div>

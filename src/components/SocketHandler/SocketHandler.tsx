@@ -63,6 +63,7 @@ const SocketHandler = ({
           }),
           {
             hideProgressBar: true,
+            autoClose: 1000,
           }
         );
       }
@@ -101,6 +102,7 @@ const SocketHandler = ({
           }),
           {
             hideProgressBar: true,
+            autoClose: 1000,
           }
         );
       }
@@ -120,6 +122,7 @@ const SocketHandler = ({
           }),
           {
             hideProgressBar: true,
+            autoClose: 1000,
           }
         );
       }
@@ -158,6 +161,7 @@ const SocketHandler = ({
           }),
           {
             hideProgressBar: true,
+            autoClose: 1000,
           }
         );
       }
@@ -177,6 +181,7 @@ const SocketHandler = ({
           }),
           {
             hideProgressBar: true,
+            autoClose: 1000,
           }
         );
       }
@@ -215,6 +220,7 @@ const SocketHandler = ({
           }),
           {
             hideProgressBar: true,
+            autoClose: 1000,
           }
         );
       }

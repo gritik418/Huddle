@@ -17,7 +17,7 @@ const UserProvider = ({
 }>): JSX.Element => {
   const pathname: string = usePathname();
 
-  const { isLoading, error } = useGetUserQuery();
+  const { isLoading, error, data } = useGetUserQuery();
   useGetActiveMembersQuery();
   useGetFollowRequestsQuery();
   useGetFollowingsQuery();
@@ -31,16 +31,16 @@ const UserProvider = ({
     return <div>{children}</div>;
   }
 
-  if (error) {
-    redirect("/login");
-  }
-
   if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
         <Spinner variant="medium" loader={"bird"} />
       </div>
     );
+  }
+
+  if (error) {
+    return redirect("/login");
   }
 
   return <div>{children}</div>;
