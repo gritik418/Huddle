@@ -3,36 +3,36 @@ import { AppDispatch } from "@/app/store";
 import {
   clearSeach,
   searchAsync,
-  selectSearchedAccounts,
+  selectSearchedPosts,
   selectSearchLoading,
-  selectSearchPagination,
+  selectSearchPostsPagination,
 } from "@/features/search/searchSlice";
 import { JSX, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import SearchedAccountItem from "../SearchedAccountItem/SearchedAccountItem";
-import SearchedAccountsSkeleton from "../SearchedAccountsSkeleton/SearchedAccountsSkeleton";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useDispatch, useSelector } from "react-redux";
+import Post from "../Post/Post";
+import PostSkeleton from "../PostSkeleton/PostSkeleton";
 import Spinner from "../Spinner/Spinner";
 
-const SearchedAccounts = ({
+const SearchedHashtags = ({
   searchQuery,
 }: {
   searchQuery: string;
 }): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>();
   const [page, setPage] = useState<number>(1);
-  const accounts: SearchedUserForChat[] = useSelector(selectSearchedAccounts);
+  const posts: Post[] = useSelector(selectSearchedPosts);
   const loading: boolean = useSelector(selectSearchLoading);
-  const pagination = useSelector(selectSearchPagination);
+  const pagination = useSelector(selectSearchPostsPagination);
 
   const fetchData = async () => {
     if (page >= 1) {
       dispatch(
         searchAsync({
           searchQuery,
-          type: "accounts",
+          type: "hashtags",
           page: page + 1,
-          limit: 10,
+          limit: 5,
         })
       );
       setPage(() => page + 1);
@@ -44,7 +44,7 @@ const SearchedAccounts = ({
     const timeOutId = setTimeout(() => {
       dispatch(clearSeach());
       dispatch(
-        searchAsync({ searchQuery, type: "accounts", page: 1, limit: 10 })
+        searchAsync({ searchQuery, type: "hashtags", page: 1, limit: 5 })
       );
     }, 1000);
 
@@ -52,23 +52,30 @@ const SearchedAccounts = ({
   }, [searchQuery, dispatch]);
 
   function renderContent(): JSX.Element {
-    if (loading && page === 1) {
-      return <SearchedAccountsSkeleton />;
+    if (loading && !posts && page === 1) {
+      return (
+        <div className="flex flex-col gap-3">
+          <PostSkeleton />
+          <PostSkeleton />
+          <PostSkeleton />
+          <PostSkeleton />
+        </div>
+      );
     }
 
-    if (!accounts || accounts.length === 0 || !pagination) {
+    if (!posts || posts.length === 0 || !pagination) {
       return (
-        <div className="flex items-center justify-center my-6">
-          <p className="text-lg">No accounts found.</p>
+        <div className="flex items-center justify-center my-14">
+          <p className="text-lg">No posts found with this hashtag.</p>
         </div>
       );
     }
 
     return (
       <InfiniteScroll
-        dataLength={accounts.length}
+        dataLength={posts.length}
         next={fetchData}
-        hasMore={pagination?.totalPages! > page}
+        hasMore={pagination.totalPages! > page}
         loader={
           <div className="flex items-center py-6 justify-center">
             <Spinner variant={"small"} />
@@ -77,8 +84,10 @@ const SearchedAccounts = ({
         className="w-full"
       >
         <div className="flex flex-col gap-3">
-          {accounts.map((user) => (
-            <SearchedAccountItem key={user._id} user={user} />
+          {posts.map((post: Post) => (
+            <div className="flex border-b-2 border-b-gray-100" key={post._id}>
+              <Post post={post} />
+            </div>
           ))}
         </div>
       </InfiniteScroll>
@@ -88,4 +97,4 @@ const SearchedAccounts = ({
   return <div>{renderContent()}</div>;
 };
 
-export default SearchedAccounts;
+export default SearchedHashtags;

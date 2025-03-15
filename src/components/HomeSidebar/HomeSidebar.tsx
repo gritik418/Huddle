@@ -65,7 +65,7 @@ const HomeSidebar = (): JSX.Element => {
         </Link>
 
         <Link
-          href={"/explore"}
+          href={"/explore/accounts"}
           className={`flex items-center p-2 gap-2 rounded-lg ${
             pathname.startsWith("/explore")
               ? "bg-[var(--secondary)] text-white"

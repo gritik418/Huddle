@@ -53,10 +53,10 @@ const AddPost = () => {
           formData.append("mentions[]", mention);
         });
       }
-
+      console.log(hashtags);
       if (hashtags && hashtags.length > 0) {
         hashtags.forEach((hashtag) => {
-          formData.append("hashtags", hashtag);
+          formData.append("hashtags[]", hashtag);
         });
       }
 

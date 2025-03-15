@@ -4,16 +4,21 @@ import { RootState } from "@/app/store";
 
 interface SearchState {
   accounts: SearchedUserForChat[];
+  posts: Post[];
   channels: [];
   loading: boolean;
   userIds: string[];
+  postIds: string[];
   pagination?: { page: number; limit: number; totalPages: number };
+  postPagination?: { page: number; limit: number; totalPages: number };
 }
 
 const initialState: SearchState = {
   accounts: [],
   channels: [],
   userIds: [],
+  postIds: [],
+  posts: [],
   loading: false,
 };
 
@@ -39,7 +44,15 @@ const searchSlice = createSlice({
   name: "search",
   reducerPath: "search",
   initialState,
-  reducers: {},
+  reducers: {
+    clearSeach: (state) => {
+      state.postIds = [];
+      state.posts = [];
+      state.accounts = [];
+      state.userIds = [];
+      state.pagination = undefined;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(searchAsync.pending, (state) => {
@@ -55,12 +68,21 @@ const searchSlice = createSlice({
                 state.accounts.push(user);
               }
             });
-          }
-          if (action.payload.channels) {
-            state.channels = action.payload.channels;
-          }
-          if (action.payload.pagination) {
+
             state.pagination = action.payload.pagination;
+          }
+
+          if (action.payload.posts) {
+            action.payload.posts.forEach((post: Post) => {
+              if (!state.postIds.includes(post._id.toString())) {
+                state.postIds.push(post._id.toString());
+                state.posts.push(post);
+              }
+            });
+
+            if (action.payload.pagination) {
+              state.postPagination = action.payload.pagination;
+            }
           }
         }
       })
@@ -70,10 +92,15 @@ const searchSlice = createSlice({
   },
 });
 
+export const { clearSeach } = searchSlice.actions;
+
 export const selectSearchedAccounts = (state: RootState) =>
   state.search.accounts;
+export const selectSearchedPosts = (state: RootState) => state.search.posts;
 export const selectSearchLoading = (state: RootState) => state.search.loading;
 export const selectSearchPagination = (state: RootState) =>
   state.search.pagination;
+export const selectSearchPostsPagination = (state: RootState) =>
+  state.search.postPagination;
 
 export default searchSlice;
