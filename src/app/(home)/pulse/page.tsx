@@ -24,9 +24,9 @@ const Pulse = () => {
   const [pulses, setPulses] = useState(pulsesData);
 
   return (
-    <div className="flex flex-col w-full gap-5">
-      <div className="bg-white h-[100%] rounded-lg p-3">
-        <div className="mx-auto p-4">
+    <div className="flex flex-col w-full gap-5 min-h-[calc(100vh-56px-16px-24px)]">
+      <div className="h-[100%] rounded-lg">
+        <div className="mx-auto">
           <PulseInput />
 
           <PulseFeed pulses={pulses} />

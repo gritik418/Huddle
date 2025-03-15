@@ -15,7 +15,7 @@ const App = (): JSX.Element => {
           <HomeSidebar />
         </div>
 
-        <div className="flex bg-gray-100 w-[calc(100%-300px)] flex-col gap-3 flex-1 p-3">
+        <div className="flex min-h-[calc(100vh-56px-16px-24px)] bg-gray-100 w-[calc(100%-300px)] flex-col gap-3 flex-1 p-3">
           <StoriesContainer />
 
           <AddPost />

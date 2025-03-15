@@ -17,7 +17,7 @@ const UserProvider = ({
 }>): JSX.Element => {
   const pathname: string = usePathname();
 
-  const { isLoading, error, data } = useGetUserQuery();
+  const { isLoading, error } = useGetUserQuery();
   useGetActiveMembersQuery();
   useGetFollowRequestsQuery();
   useGetFollowingsQuery();

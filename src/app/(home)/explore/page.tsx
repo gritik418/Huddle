@@ -11,7 +11,7 @@ const Explore = (): JSX.Element => {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   return (
-    <div className="flex flex-col w-full gap-5">
+    <div className="flex flex-col min-h-[calc(100vh-56px-16px-24px)] w-full gap-5">
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
       <div className="bg-white rounded-lg p-3">

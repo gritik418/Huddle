@@ -1,9 +1,14 @@
 import axios from "axios";
 
-export const search = async (searchQuery: string, type: string) => {
+export const search = async (
+  searchQuery: string,
+  type: string,
+  page: number,
+  limit: number
+) => {
   try {
     const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/search?q=${searchQuery}&type=${type}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/search?q=${searchQuery}&type=${type}&page=${page}&limit=${limit}`,
       {
         withCredentials: true,
         headers: {
