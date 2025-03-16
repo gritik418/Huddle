@@ -27,7 +27,7 @@ const AddPost = () => {
     setValue,
     reset,
     clearErrors,
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting, errors, isValid, isValidating },
   } = useForm<PostData>({
     defaultValues: {
       content: "",
@@ -53,7 +53,7 @@ const AddPost = () => {
           formData.append("mentions[]", mention);
         });
       }
-      console.log(hashtags);
+
       if (hashtags && hashtags.length > 0) {
         hashtags.forEach((hashtag) => {
           formData.append("hashtags[]", hashtag);
@@ -201,6 +201,14 @@ const AddPost = () => {
             placeholder="What's happening?"
             {...register("content")}
           />
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Add a hashtag (e.g. #Travel)"
+              className="bg-gray-100 text-xs text-gray-500 p-2 rounded-lg w-full outline-none rounded-t-none"
+              onChange={handleHashtagChange}
+            />
+          </div>
 
           {mediaPreview.length > 0 && (
             <div className="flex my-3">
@@ -229,15 +237,6 @@ const AddPost = () => {
               </span>
             </div>
           )}
-
-          <div className="flex gap-2">
-            <input
-              type="text"
-              placeholder="Add a hashtag (e.g. #Travel)"
-              className="bg-gray-100 text-xs text-gray-500 p-2 rounded-lg w-full outline-none rounded-t-none"
-              onChange={handleHashtagChange}
-            />
-          </div>
 
           {hashtags && (
             <div className="flex flex-wrap gap-2 mt-2">
@@ -287,9 +286,9 @@ const AddPost = () => {
 
             <div className="flex">
               <button
-                disabled={isSubmitting}
+                disabled={!isValid || isSubmitting || isValidating}
                 type="submit"
-                className="w-20 h-10 flex items-center justify-center bg-[var(--secondary)] text-lg font-bold rounded-lg text-white"
+                className="w-20 h-10 disabled:bg-gray-400 flex items-center justify-center bg-[var(--secondary)] text-lg font-bold rounded-lg text-white"
               >
                 {isSubmitting ? <Spinner variant={null} /> : "Post"}
               </button>

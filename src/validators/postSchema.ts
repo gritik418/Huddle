@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const postSchema = z
   .object({
-    content: z.string().optional(),
+    content: z.string().min(1).optional(),
     location: z.string().optional(),
     media: z.any().optional(),
   })
