@@ -1,26 +1,53 @@
-const PulseFeed = ({ pulses }: any) => {
+"use client";
+import { AppDispatch } from "@/app/store";
+import {
+  getAllPulsesAsync,
+  selectPulses,
+  selectPulsesPagination,
+} from "@/features/pulse/pulseSlice";
+import { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useDispatch, useSelector } from "react-redux";
+import Spinner from "../Spinner/Spinner";
+import PulseItem from "../PulseItem/PulseItem";
+
+const PulseFeed = () => {
+  const [page, setPage] = useState<number>(1);
+  const dispatch = useDispatch<AppDispatch>();
+  const pulses: Pulse[] = useSelector(selectPulses);
+  const pagination = useSelector(selectPulsesPagination);
+
+  const fetchData = async () => {
+    if (page >= 1) {
+      dispatch(getAllPulsesAsync({ page: page + 1, limit: 5 }));
+      setPage(() => page + 1);
+    }
+  };
+
+  useEffect(() => {
+    if (page === 1) {
+      dispatch(getAllPulsesAsync({ page: page, limit: 5 }));
+    }
+  }, [dispatch, page]);
+
   return (
-    <div className="space-y-4">
-      {pulses.map((pulse: any, index: number) => (
-        <div key={index} className="bg-white p-4 rounded-lg shadow-md">
-          <div className="flex items-center space-x-3">
-            <img
-              src={pulse.userAvatar}
-              alt={pulse.userName}
-              className="w-10 h-10 rounded-full object-cover"
-            />
-            <div>
-              <p className="font-semibold">{pulse.userName}</p>
-              <p className="text-gray-500 text-sm">
-                {pulse.userName}@{pulse.userHandle}
-              </p>
-            </div>
-          </div>
-          <p className="mt-2">{pulse.text}</p>
-          <p className="text-gray-500 text-sm mt-2">{pulse.timestamp}</p>
+    <InfiniteScroll
+      dataLength={pulses.length}
+      next={fetchData}
+      hasMore={pagination?.totalPages! > page}
+      loader={
+        <div className="flex items-center py-6 justify-center">
+          <Spinner variant={"small"} />
         </div>
-      ))}
-    </div>
+      }
+      className="w-full"
+    >
+      <div className="flex flex-col min-w-full flex-1 gap-3">
+        {pulses.map((pulse: Pulse) => (
+          <PulseItem key={pulse._id} pulse={pulse} />
+        ))}
+      </div>
+    </InfiniteScroll>
   );
 };
 

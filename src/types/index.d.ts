@@ -147,6 +147,13 @@ interface Message {
   deletedFor: Types.ObjectId[];
 }
 
+interface Pulse {
+  _id: Types.ObjectId;
+  userId: Follower;
+  content: string;
+  createdAt: Date;
+}
+
 interface NotificationData {
   id: string;
   type:

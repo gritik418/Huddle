@@ -1,35 +1,99 @@
 "use client";
-import { useState } from "react";
+import { PulseApiResponse, useAddPulseMutation } from "@/features/api/pulseApi";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { JSX, useState } from "react";
+import { Bounce, toast } from "react-toastify";
+import Spinner from "../Spinner/Spinner";
 
-const PulseInput = () => {
-  const [pulseText, setPulseText] = useState("");
+const PulseInput = (): JSX.Element => {
+  const [pulseText, setPulseText] = useState<string>("");
+  const [addPulse] = useAddPulseMutation();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handlePulseChange = (e: any) => {
     setPulseText(e.target.value);
   };
 
-  const handlePulseSubmit = () => {
-    if (pulseText.trim()) {
-      // Logic to send pulse to backend
-      console.log("Pulse Sent: ", pulseText);
-      setPulseText(""); // Reset input after submit
+  const handlePulseSubmit = async (): Promise<void> => {
+    if (pulseText.length >= 10) {
+      setLoading(true);
+      const { data, error } = await addPulse({ content: pulseText });
+      setLoading(false);
+      if (data) {
+        if (data.success) {
+          toast.success(data.message, {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        } else {
+          toast.error(data.message, {
+            position: "top-right",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        }
+      } else {
+        const errorResponse = error as FetchBaseQueryError;
+        const parsedError = errorResponse?.data as PulseApiResponse;
+
+        toast.error(parsedError.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
+      setPulseText("");
+    } else {
+      toast.error("Please enter at least 10 characters.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md mb-4">
       <textarea
-        className="w-full p-2 border border-gray-300 rounded-lg resize-none"
+        autoCapitalize="on"
+        className="w-full p-2 border-2 focus:border-blue-400 border-gray-300 outline-none rounded-lg resize-none"
         placeholder="What's on your mind?"
         value={pulseText}
         onChange={handlePulseChange}
         rows={4}
       ></textarea>
+
       <button
+        disabled={pulseText.length <= 10}
         onClick={handlePulseSubmit}
-        className="mt-3 bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600"
+        className="mt-3 flex items-center justify-center h-10 w-20 disabled:bg-gray-400 bg-blue-500 transition-colors ease-in-out duration-300 text-white rounded-full hover:bg-blue-600"
       >
-        Pulse
+        {loading ? <Spinner variant={null} /> : "Pulse"}
       </button>
     </div>
   );

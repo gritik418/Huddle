@@ -16,6 +16,8 @@ import postApi from "@/features/api/postApi";
 import postSlice from "@/features/post/postSlice";
 import authSlice from "@/features/auth/authSlice";
 import accountSettingsApi from "@/features/api/accountSettingsApi";
+import pulseApi from "@/features/api/pulseApi";
+import pulseSlice from "@/features/pulse/pulseSlice";
 
 const store = configureStore({
   reducer: {
@@ -24,6 +26,7 @@ const store = configureStore({
     [chatApi.reducerPath]: chatApi.reducer,
     [postApi.reducerPath]: postApi.reducer,
     [groupApi.reducerPath]: groupApi.reducer,
+    [pulseApi.reducerPath]: pulseApi.reducer,
     [messageApi.reducerPath]: messageApi.reducer,
     [chatRequestApi.reducerPath]: chatRequestApi.reducer,
     [followRequestApi.reducerPath]: followRequestApi.reducer,
@@ -32,6 +35,7 @@ const store = configureStore({
     [authSlice.reducerPath]: authSlice.reducer,
     [postSlice.reducerPath]: postSlice.reducer,
     [chatSlice.reducerPath]: chatSlice.reducer,
+    [pulseSlice.reducerPath]: pulseSlice.reducer,
     [searchSlice.reducerPath]: searchSlice.reducer,
     [messageSlice.reducerPath]: messageSlice.reducer,
     [chatRequestSlice.reducerPath]: chatRequestSlice.reducer,
@@ -43,6 +47,7 @@ const store = configureStore({
       .concat(userApi.middleware)
       .concat(chatApi.middleware)
       .concat(postApi.middleware)
+      .concat(pulseApi.middleware)
       .concat(groupApi.middleware)
       .concat(messageApi.middleware)
       .concat(chatRequestApi.middleware)
