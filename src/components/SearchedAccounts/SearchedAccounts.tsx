@@ -68,7 +68,7 @@ const SearchedAccounts = ({
       <InfiniteScroll
         dataLength={accounts.length}
         next={fetchData}
-        hasMore={pagination?.totalPages! > page}
+        hasMore={pagination.totalPages! > page}
         loader={
           <div className="flex items-center py-6 justify-center">
             <Spinner variant={"small"} />

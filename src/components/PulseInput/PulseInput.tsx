@@ -1,7 +1,7 @@
 "use client";
 import { PulseApiResponse, useAddPulseMutation } from "@/features/api/pulseApi";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { JSX, useState } from "react";
+import { ChangeEvent, JSX, useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import Spinner from "../Spinner/Spinner";
 
@@ -10,7 +10,7 @@ const PulseInput = (): JSX.Element => {
   const [addPulse] = useAddPulseMutation();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handlePulseChange = (e: any) => {
+  const handlePulseChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setPulseText(e.target.value);
   };
 
