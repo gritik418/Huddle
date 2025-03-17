@@ -8,7 +8,8 @@ import {
 } from "@/features/api/userApi";
 import React, { JSX } from "react";
 import Spinner from "../Spinner/Spinner";
-import { redirect, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
+import NotLoggedIn from "../NotLoggedIn/NotLoggedIn";
 
 const UserProvider = ({
   children,
@@ -18,6 +19,7 @@ const UserProvider = ({
   const pathname: string = usePathname();
 
   const { isLoading, error } = useGetUserQuery();
+
   useGetActiveMembersQuery();
   useGetFollowRequestsQuery();
   useGetFollowingsQuery();
@@ -39,8 +41,8 @@ const UserProvider = ({
     );
   }
 
-  if (error) {
-    return redirect("/login");
+  if (error && !isLoading) {
+    return <NotLoggedIn />;
   }
 
   return <div>{children}</div>;

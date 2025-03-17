@@ -1,10 +1,12 @@
-import { NextResponse } from "next/server";
-import { NextRequest } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { HUDDLE_TOKEN } from "./constants/variables";
+import { parse } from "cookie";
 
 export async function middleware(request: NextRequest) {
   const pathname: string = request.nextUrl.pathname;
   const token = request.cookies.get(HUDDLE_TOKEN);
+  const cookies = parse(request.headers.get("cookie") || "");
+  console.log("cookies", cookies);
 
   const isPublicPath: boolean =
     pathname.startsWith("/login") ||
@@ -17,8 +19,6 @@ export async function middleware(request: NextRequest) {
   if (token?.value && isPublicPath) {
     return NextResponse.redirect(new URL("/", request.url));
   }
-
-  return NextResponse.next();
 }
 
 export const config = {

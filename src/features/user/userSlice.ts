@@ -50,6 +50,12 @@ const userSlice = createSlice({
     toggleAllowMentions: (state, action) => {
       state.user = { ...state.user!, allowMentions: action.payload };
     },
+    clearUser: (state) => {
+      state.user = null;
+      state.followers = [];
+      state.followings = [];
+      state.onlineMembers = [];
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -90,6 +96,7 @@ const userSlice = createSlice({
 });
 
 export const {
+  clearUser,
   togglePrivacy,
   addOnlineMember,
   removeOnlineMember,
