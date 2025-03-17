@@ -28,7 +28,6 @@ const UserInfo = (): JSX.Element => {
   const { data, isLoading, error } = useGetUserByUsernameQuery(username);
   const userId: string | undefined = data?.user?._id;
 
-  // Pending implementation
   const handleUnfollow = () => {
     console.log("Unfollow");
   };
@@ -157,7 +156,7 @@ const UserInfo = (): JSX.Element => {
               width={1000}
               className="max-h-[300px] h-full w-full object-cover rounded-lg"
             />
-            <div className="flex-shrink-0 absolute bottom-0 left-16 translate-y-1/2">
+            <div className="flex-shrink-0 absolute bottom-0 left-16 translate-y-1/2 h-[180px] w-[180px] border-4 border-white">
               <Image
                 src={
                   data?.user?.profilePicture || "/images/default-profile.jpg"
@@ -165,7 +164,7 @@ const UserInfo = (): JSX.Element => {
                 alt="avatar"
                 height={150}
                 width={150}
-                className="rounded-full border-4 border-white"
+                className="rounded-full h-full w-full"
               />
             </div>
           </div>

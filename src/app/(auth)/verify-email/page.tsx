@@ -58,22 +58,23 @@ const VerifyEmail = () => {
             return;
           }
         }
-
-        if (data?.success) {
-          toast.success(data.message, {
-            position: "top-right",
-            autoClose: 1500,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
-          setTimeout(() => {
-            router.push("/");
-          }, 1200);
+        if (data) {
+          if (data.success) {
+            toast.success(data.message, {
+              position: "top-right",
+              autoClose: 1500,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              transition: Bounce,
+            });
+            setTimeout(() => {
+              router.push("/");
+            }, 1200);
+          }
         }
       } catch (error) {
         console.error(error);

@@ -63,6 +63,19 @@ const SearchedHashtags = ({
       );
     }
 
+    if (
+      (!posts || posts.length === 0 || !pagination) &&
+      searchQuery.length === 0
+    ) {
+      return (
+        <div className="flex items-center justify-center my-14">
+          <p className="text-lg">
+            Type atleast 3 characters to find posts with hashtag.
+          </p>
+        </div>
+      );
+    }
+
     if (!posts || posts.length === 0 || !pagination) {
       return (
         <div className="flex items-center justify-center my-14">

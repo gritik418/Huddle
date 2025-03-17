@@ -76,7 +76,7 @@ const NavigationDrawer = (): JSX.Element => {
                 }`}
               >
                 <Link
-                  href={"/explore"}
+                  href={"/explore/accounts"}
                   className="flex gap-2 items-center text-xl font-medium"
                 >
                   <HiMiniMagnifyingGlass className="text-xl" /> Explore
