@@ -2,23 +2,25 @@
 import { AppDispatch } from "@/app/store";
 import { SignupResponse, useUserSignupMutation } from "@/features/api/authApi";
 import { setSignupEmail } from "@/features/auth/authSlice";
+import { selectUser } from "@/features/user/userSlice";
 import signupSchema, { SignupData } from "@/validators/signupSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { JSX, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaAt, FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosLock } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 
 const SignUp = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const user: User | null = useSelector(selectUser);
   const [userSignup] = useUserSignupMutation();
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
@@ -128,6 +130,10 @@ const SignUp = (): JSX.Element => {
       });
     }
   };
+
+  if (user && user._id) {
+    redirect("/");
+  }
   return (
     <div className="flex justify-center items-center border-2 min-h-screen py-16 bg-gray-100">
       <div className="flex bg-white max-w-[600px] w-[90%] flex-col items-center justify-center px-2 py-4 sm:p-8 rounded-lg">

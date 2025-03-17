@@ -1,22 +1,26 @@
 "use client";
+import { LoginResponse, useUserLoginMutation } from "@/features/api/authApi";
+import { selectUser } from "@/features/user/userSlice";
 import loginSchema, { LoginData } from "@/validators/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
 import Link from "next/link";
-import { LoginResponse, useUserLoginMutation } from "@/features/api/authApi";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { JSX, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosLock } from "react-icons/io";
+import { useSelector } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 
 const Login = (): JSX.Element => {
   const router = useRouter();
+  const user: User | null = useSelector(selectUser);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [userLogin] = useUserLoginMutation();
+
   const {
     register,
     handleSubmit,
@@ -97,6 +101,10 @@ const Login = (): JSX.Element => {
       });
     }
   };
+
+  if (user) {
+    redirect("/");
+  }
 
   return (
     <div className="flex justify-center items-center border-2 min-h-screen py-16 bg-gray-100">

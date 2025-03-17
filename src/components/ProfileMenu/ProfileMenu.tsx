@@ -1,11 +1,11 @@
-import { selectUser } from "@/features/user/userSlice";
+import { clearUser, selectUser } from "@/features/user/userSlice";
 import Image from "next/image";
 import Link from "next/link";
 import { JSX } from "react";
 import { FaUser } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { IoMdSettings } from "react-icons/io";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Menubar,
   MenubarContent,
@@ -18,15 +18,18 @@ import { LogoutResponse, useUserLogoutMutation } from "@/features/api/authApi";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { Bounce, toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { AppDispatch } from "@/app/store";
 
 const ProfileMenu = (): JSX.Element => {
   const user: User | null = useSelector(selectUser);
   const [userLogout] = useUserLogoutMutation();
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
   const handleLogout = async () => {
     try {
       const { data, error } = await userLogout();
+      dispatch(clearUser());
 
       if (error) {
         const errorResponse = error as FetchBaseQueryError;

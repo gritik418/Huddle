@@ -156,7 +156,7 @@ const UserInfo = (): JSX.Element => {
               width={1000}
               className="max-h-[300px] h-full w-full object-cover rounded-lg"
             />
-            <div className="flex-shrink-0 absolute bottom-0 left-16 translate-y-1/2 h-[180px] w-[180px] border-4 border-white">
+            <div className="flex-shrink-0 rounded-full absolute bottom-0 left-16 translate-y-1/2 h-[180px] w-[180px] border-4 border-white">
               <Image
                 src={
                   data?.user?.profilePicture || "/images/default-profile.jpg"

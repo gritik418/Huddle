@@ -10,6 +10,7 @@ import {
   VerifyEmailResponse,
 } from "@/features/api/authApi";
 import { selectSignupEmail } from "@/features/auth/authSlice";
+import { selectUser } from "@/features/user/userSlice";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import Image from "next/image";
@@ -25,6 +26,11 @@ const VerifyEmail = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const email = useSelector(selectSignupEmail);
   const router = useRouter();
+  const user: User | null = useSelector(selectUser);
+
+  if (user) {
+    redirect("/");
+  }
 
   if (!email) {
     redirect("/signup");
