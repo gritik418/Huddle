@@ -6,6 +6,11 @@ export type PulseApiResponse = {
   savedPulse?: Pulse;
 };
 
+export type DeletePulseApiResponse = {
+  success: boolean;
+  message: string;
+};
+
 const pulseApi = createApi({
   reducerPath: "pulseApi",
   baseQuery: fetchBaseQuery({
@@ -20,9 +25,19 @@ const pulseApi = createApi({
         body: data,
       }),
     }),
+    deletePulse: build.mutation<DeletePulseApiResponse, string>({
+      query: (pulseId: string) => ({
+        url: `/${pulseId}`,
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useAddPulseMutation } = pulseApi;
+export const { useAddPulseMutation, useDeletePulseMutation } = pulseApi;
 
 export default pulseApi;

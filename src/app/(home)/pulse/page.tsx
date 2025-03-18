@@ -1,5 +1,6 @@
 import PulseFeed from "@/components/PulseFeed/PulseFeed";
 import PulseInput from "@/components/PulseInput/PulseInput";
+import UserPulses from "@/components/UserPulses/UserPulses";
 import { Tabs } from "@chakra-ui/react";
 import { FaUser, FaUsers } from "react-icons/fa";
 
@@ -32,7 +33,7 @@ const Pulse = () => {
               <PulseFeed />
             </Tabs.Content>
             <Tabs.Content value="me">
-              <PulseFeed />
+              <UserPulses />
             </Tabs.Content>
           </Tabs.Root>
         </div>

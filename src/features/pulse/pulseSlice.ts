@@ -55,6 +55,29 @@ const pulseSlice = createSlice({
         }
       }
     },
+    deleteUserPulse: (state, action) => {
+      if (action.payload) {
+        if (state.pulseIds.includes(action.payload)) {
+          state.pulseIds = state.pulseIds.filter(
+            (pulseId) => pulseId !== action.payload
+          );
+
+          state.pulses = state.pulses.filter(
+            (pulse: Pulse) => pulse._id !== action.payload
+          );
+        }
+
+        if (state.userPulseIds.includes(action.payload)) {
+          state.userPulseIds = state.userPulseIds.filter(
+            (pulseId) => pulseId !== action.payload
+          );
+
+          state.userPulses = state.userPulses.filter(
+            (pulse: Pulse) => pulse._id !== action.payload
+          );
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -103,7 +126,7 @@ const pulseSlice = createSlice({
   },
 });
 
-export const { addNewPulse } = pulseSlice.actions;
+export const { addNewPulse, deleteUserPulse } = pulseSlice.actions;
 
 export const selectPulses = (state: RootState) => state.pulse.pulses;
 export const selectPulsesPagination = (state: RootState) =>
