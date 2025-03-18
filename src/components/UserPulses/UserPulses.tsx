@@ -1,34 +1,34 @@
 "use client";
 import { AppDispatch } from "@/app/store";
-import {
-  getAllPulsesAsync,
-  selectPulses,
-  selectPulsesLoading,
-  selectPulsesPagination,
-} from "@/features/pulse/pulseSlice";
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../Spinner/Spinner";
-import PulseItem from "../PulseItem/PulseItem";
+import {
+  getUserPulsesAsync,
+  selectUserPulses,
+  selectUserPulsesLoading,
+  selectUserPulsesPagination,
+} from "@/features/pulse/pulseSlice";
+import UserPulseItem from "../UserPulseItem/UserPulseItem";
 
-const PulseFeed = () => {
+const UserPulses = (): JSX.Element => {
   const [page, setPage] = useState<number>(1);
   const dispatch = useDispatch<AppDispatch>();
-  const pulses: Pulse[] = useSelector(selectPulses);
-  const pagination = useSelector(selectPulsesPagination);
-  const loading: boolean = useSelector(selectPulsesLoading);
+  const pulses: Pulse[] = useSelector(selectUserPulses);
+  const pagination = useSelector(selectUserPulsesPagination);
+  const loading: boolean = useSelector(selectUserPulsesLoading);
 
   const fetchData = async () => {
     if (page >= 1) {
-      dispatch(getAllPulsesAsync({ page: page + 1, limit: 20 }));
+      dispatch(getUserPulsesAsync({ page: page + 1, limit: 10 }));
       setPage(() => page + 1);
     }
   };
 
   useEffect(() => {
     if (page === 1) {
-      dispatch(getAllPulsesAsync({ page: page, limit: 20 }));
+      dispatch(getUserPulsesAsync({ page: page, limit: 10 }));
     }
   }, [dispatch, page]);
 
@@ -62,11 +62,11 @@ const PulseFeed = () => {
     >
       <div className="flex flex-col min-w-full flex-1 gap-3">
         {pulses.map((pulse: Pulse) => (
-          <PulseItem key={pulse._id} pulse={pulse} />
+          <UserPulseItem key={pulse._id} pulse={pulse} />
         ))}
       </div>
     </InfiniteScroll>
   );
 };
 
-export default PulseFeed;
+export default UserPulses;

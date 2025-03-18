@@ -4,15 +4,17 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { ChangeEvent, JSX, useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import Spinner from "../Spinner/Spinner";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/app/store";
 import { addNewPulse } from "@/features/pulse/pulseSlice";
+import { selectUser } from "@/features/user/userSlice";
 
 const PulseInput = (): JSX.Element => {
   const [pulseText, setPulseText] = useState<string>("");
   const [addPulse] = useAddPulseMutation();
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
+  const user: User = useSelector(selectUser) as User;
 
   const handlePulseChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setPulseText(e.target.value);
@@ -26,7 +28,19 @@ const PulseInput = (): JSX.Element => {
       if (data) {
         if (data.success) {
           if (data.savedPulse) {
-            dispatch(addNewPulse(data.savedPulse));
+            dispatch(
+              addNewPulse({
+                ...data.savedPulse,
+                userId: {
+                  _id: user._id,
+                  firstName: user.firstName,
+                  lastName: user.lastName || "",
+                  username: user.username,
+                  profilePicture: user.profilePicture || "",
+                  coverImage: user.coverImage || "",
+                },
+              })
+            );
           }
         } else {
           toast.error(data.message, {
