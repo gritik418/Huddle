@@ -1,14 +1,17 @@
 "use client";
 import { AppDispatch } from "@/app/store";
 import { useUserLogoutMutation } from "@/features/api/authApi";
+import { useGetUserQuery } from "@/features/api/userApi";
 import { clearUser } from "@/features/user/userSlice";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
+import Spinner from "../Spinner/Spinner";
 
 const NotLoggedIn = () => {
   const [userLogout] = useUserLogoutMutation();
   const dispatch = useDispatch<AppDispatch>();
+  const { isLoading, data } = useGetUserQuery();
   const router = useRouter();
 
   const handleLogin = async () => {
@@ -16,6 +19,20 @@ const NotLoggedIn = () => {
     dispatch(clearUser());
     router.push("/login");
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Spinner variant="medium" loader={"bird"} />
+      </div>
+    );
+  }
+
+  if (data) {
+    if (data.success && data.user) {
+      redirect("/");
+    }
+  }
 
   return (
     <div className="flex items-center justify-center h-screen">

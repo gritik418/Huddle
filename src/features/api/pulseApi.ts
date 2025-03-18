@@ -3,13 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export type PulseApiResponse = {
   success: boolean;
   message: string;
-};
-
-export type GetAllPulsesApiResponse = {
-  success: boolean;
-  message?: string;
-  pulses?: Pulse[];
-  pagination?: { page: number; limit: number; totalPages: number };
+  savedPulse?: Pulse;
 };
 
 const pulseApi = createApi({

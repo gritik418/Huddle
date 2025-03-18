@@ -11,7 +11,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { JSX } from "react";
-import { FaHamburger } from "react-icons/fa";
+import { FaBroadcastTower, FaHamburger, FaUserFriends } from "react-icons/fa";
+import { HiLightningBolt } from "react-icons/hi";
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import { IoChatbubblesSharp, IoHome } from "react-icons/io5";
 
@@ -26,7 +27,7 @@ const NavigationDrawer = (): JSX.Element => {
           <FaHamburger className="text-xl" />
         </div>
       </DrawerTrigger>
-      <DrawerContent className="">
+      <DrawerContent className="bg-white">
         <DrawerHeader>
           <DrawerTitle>
             <Link href={"/"}>
@@ -51,7 +52,7 @@ const NavigationDrawer = (): JSX.Element => {
                   href={"/"}
                   className="flex gap-2 items-center text-xl font-medium"
                 >
-                  <IoHome className="text-xl" /> Home
+                  <IoHome className="text-lg" /> Home
                 </Link>
               </li>
 
@@ -64,7 +65,7 @@ const NavigationDrawer = (): JSX.Element => {
                   href={"/chat"}
                   className="flex gap-2 items-center text-xl font-medium"
                 >
-                  <IoChatbubblesSharp className="text-xl" /> Chats
+                  <IoChatbubblesSharp className="text-lg" /> Chats
                 </Link>
               </li>
 
@@ -79,7 +80,50 @@ const NavigationDrawer = (): JSX.Element => {
                   href={"/explore/accounts"}
                   className="flex gap-2 items-center text-xl font-medium"
                 >
-                  <HiMiniMagnifyingGlass className="text-xl" /> Explore
+                  <HiMiniMagnifyingGlass className="text-lg" /> Explore
+                </Link>
+              </li>
+
+              <li
+                className={`${
+                  pathname.startsWith("/pulse") ? "text-[var(--secondary)]" : ""
+                }`}
+              >
+                <Link
+                  href={"/pulse"}
+                  className="flex gap-2 items-center text-xl font-medium"
+                >
+                  <HiLightningBolt className="text-lg" /> Pulse
+                </Link>
+              </li>
+
+              <li
+                className={`${
+                  pathname.startsWith("/buddies")
+                    ? "text-[var(--secondary)]"
+                    : ""
+                }`}
+              >
+                <Link
+                  href={"/buddies"}
+                  className="flex gap-2 items-center text-xl font-medium"
+                >
+                  <FaUserFriends className="text-lg" /> Buddies
+                </Link>
+              </li>
+
+              <li
+                className={`${
+                  pathname.startsWith("/channels")
+                    ? "text-[var(--secondary)]"
+                    : ""
+                }`}
+              >
+                <Link
+                  href={"/channels"}
+                  className="flex gap-2 items-center text-xl font-medium"
+                >
+                  <FaBroadcastTower className="text-lg" /> Channels
                 </Link>
               </li>
             </ul>

@@ -12,7 +12,7 @@ import { useGetUserByUsernameQuery } from "@/features/api/userApi";
 import { selectUser } from "@/features/user/userSlice";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import { JSX, useState } from "react";
 import { useSelector } from "react-redux";
 import { Bounce, toast } from "react-toastify";
@@ -138,6 +138,10 @@ const UserInfo = (): JSX.Element => {
       });
     }
   };
+
+  if (data.user && data.user._id.toString() === user?._id.toString()) {
+    redirect("/profile");
+  }
 
   return (
     <div className="min-h-screen bg-gray-100">

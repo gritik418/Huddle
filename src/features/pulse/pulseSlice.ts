@@ -27,7 +27,16 @@ const pulseSlice = createSlice({
   name: "pulse",
   reducerPath: "pulse",
   initialState,
-  reducers: {},
+  reducers: {
+    addNewPulse: (state, action) => {
+      if (action.payload._id) {
+        if (!state.pulseIds.includes(action.payload._id)) {
+          state.pulseIds.unshift(action.payload._id);
+          state.pulses.unshift(action.payload);
+        }
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllPulsesAsync.pending, (state) => {
@@ -53,6 +62,8 @@ const pulseSlice = createSlice({
       });
   },
 });
+
+export const { addNewPulse } = pulseSlice.actions;
 
 export const selectPulses = (state: RootState) => state.pulse.pulses;
 export const selectPulsesPagination = (state: RootState) =>

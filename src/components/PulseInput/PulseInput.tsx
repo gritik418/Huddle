@@ -4,11 +4,15 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { ChangeEvent, JSX, useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import Spinner from "../Spinner/Spinner";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/app/store";
+import { addNewPulse } from "@/features/pulse/pulseSlice";
 
 const PulseInput = (): JSX.Element => {
   const [pulseText, setPulseText] = useState<string>("");
   const [addPulse] = useAddPulseMutation();
   const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   const handlePulseChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setPulseText(e.target.value);
@@ -21,17 +25,9 @@ const PulseInput = (): JSX.Element => {
       setLoading(false);
       if (data) {
         if (data.success) {
-          toast.success(data.message, {
-            position: "top-right",
-            autoClose: 1500,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
+          if (data.savedPulse) {
+            dispatch(addNewPulse(data.savedPulse));
+          }
         } else {
           toast.error(data.message, {
             position: "top-right",
@@ -81,7 +77,7 @@ const PulseInput = (): JSX.Element => {
     <div className="bg-white p-4 rounded-lg shadow-md mb-4">
       <textarea
         autoCapitalize="on"
-        className="w-full p-2 border-2 focus:border-blue-400 border-gray-300 outline-none rounded-lg resize-none"
+        className="w-full p-2 border-2 focus:border-blue-400 border-gray-300 bg-gray-50 outline-none rounded-lg resize-none"
         placeholder="What's on your mind?"
         value={pulseText}
         onChange={handlePulseChange}

@@ -1,15 +1,13 @@
 "use client";
+import { selectUser } from "@/features/user/userSlice";
 import Image from "next/image";
 import Link from "next/link";
-import { JSX } from "react";
-import { HiMiniMagnifyingGlass } from "react-icons/hi2";
-import { FaStream, FaUserFriends } from "react-icons/fa";
 import { usePathname } from "next/navigation";
-import { FaBroadcastTower } from "react-icons/fa";
+import { JSX } from "react";
+import { FaBroadcastTower, FaStream, FaUserFriends } from "react-icons/fa";
 import { HiLightningBolt } from "react-icons/hi";
-import { FaPeopleGroup } from "react-icons/fa6";
+import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import { useSelector } from "react-redux";
-import { selectUser } from "@/features/user/userSlice";
 
 const HomeSidebar = (): JSX.Element => {
   const pathname: string = usePathname();
@@ -110,18 +108,6 @@ const HomeSidebar = (): JSX.Element => {
         >
           <FaBroadcastTower className="text-lg" />
           <p className="text-sm font-bold">Channels</p>
-        </Link>
-
-        <Link
-          href={"/communities"}
-          className={`flex items-center p-2 gap-2 rounded-lg ${
-            pathname.startsWith("/communities")
-              ? "bg-[var(--secondary)] text-white"
-              : ""
-          }`}
-        >
-          <FaPeopleGroup className="text-lg" />
-          <p className="text-sm font-bold">Communities</p>
         </Link>
       </div>
     </div>
