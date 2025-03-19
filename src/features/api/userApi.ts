@@ -6,6 +6,11 @@ type GetUserApiResponse = {
   user?: User;
 };
 
+type ApiResponse = {
+  success: boolean;
+  message: string;
+};
+
 type GetFollowingApiResponse = {
   success: boolean;
   message?: string;
@@ -136,14 +141,25 @@ const userApi = createApi({
         },
       }),
     }),
+    unfollow: build.mutation<ApiResponse, string>({
+      query: (followingId: string) => ({
+        url: `/${followingId}/unfollow`,
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
 export const {
   useGetUserQuery,
+  useUnfollowMutation,
   useGetFollowersQuery,
-  useGetFollowingsQuery,
   useUpdateUserMutation,
+  useGetFollowingsQuery,
   useGetPostsByUserQuery,
   useGetActiveMembersQuery,
   useGetUserByUsernameQuery,

@@ -195,15 +195,6 @@ const PrivacySettings = () => {
             : "You cannot be mentioned by other users."}
         </p>
       </div>
-
-      <div className="flex justify-end">
-        <button
-          onClick={() => alert("Settings Saved!")}
-          className="bg-[var(--secondary)] text-white py-2 px-4 rounded-md transition duration-150"
-        >
-          Save Changes
-        </button>
-      </div>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 "use client";
+import { AppDispatch } from "@/app/store";
 import Navbar from "@/components/Navbar/Navbar";
 import PrivateAccount from "@/components/PrivateAccount/PrivateAccount";
 import Spinner from "@/components/Spinner/Spinner";
@@ -8,13 +9,16 @@ import {
   SendFollowRequestApiResponse,
   useSendFollowRequestMutation,
 } from "@/features/api/followRequestApi";
-import { useGetUserByUsernameQuery } from "@/features/api/userApi";
-import { selectUser } from "@/features/user/userSlice";
+import {
+  useGetUserByUsernameQuery,
+  useUnfollowMutation,
+} from "@/features/api/userApi";
+import { removeFromFollowing, selectUser } from "@/features/user/userSlice";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
 import { redirect, useParams } from "next/navigation";
 import { JSX, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 
 const UserInfo = (): JSX.Element => {
@@ -23,14 +27,12 @@ const UserInfo = (): JSX.Element => {
   const [activeTab, setActiveTab] = useState<"posts" | "channels">("posts");
   const [sendFollowRequest] = useSendFollowRequestMutation();
   const [loading, setLoading] = useState<boolean>(false);
-
+  const [unfollowLoading, setUnfollowLoading] = useState<boolean>(false);
+  const [unfollow] = useUnfollowMutation();
   const { username } = params;
   const { data, isLoading, error } = useGetUserByUsernameQuery(username);
   const userId: string | undefined = data?.user?._id;
-
-  const handleUnfollow = () => {
-    console.log("Unfollow");
-  };
+  const dispatch = useDispatch<AppDispatch>();
 
   if (isLoading) {
     return (
@@ -40,7 +42,7 @@ const UserInfo = (): JSX.Element => {
     );
   }
 
-  if (!data?.user || !userId || error) {
+  if (!data || !data.user || !userId || error) {
     return (
       <div className="h-screen">
         <Navbar />
@@ -139,6 +141,18 @@ const UserInfo = (): JSX.Element => {
     }
   };
 
+  const handleUnfollow = async (): Promise<void> => {
+    if (!data.user?._id) return;
+    setUnfollowLoading(true);
+    const { data: res } = await unfollow(data.user._id);
+    setUnfollowLoading(false);
+    if (res) {
+      if (res.success) {
+        dispatch(removeFromFollowing(data.user._id));
+      }
+    }
+  };
+
   if (data.user && data.user._id.toString() === user?._id.toString()) {
     redirect("/profile");
   }
@@ -216,9 +230,9 @@ const UserInfo = (): JSX.Element => {
             {user?.following.includes(data.user._id.toString()) ? (
               <button
                 onClick={handleUnfollow}
-                className="flex w-32 h-10 items-center justify-center text-[var(--secondary)] rounded-lg font-bold text-xl bg-gray-100"
+                className="flex w-32 h-10 items-center justify-center text-[var(--secondary)] rounded-lg font-bold text-xl bg-gray-200"
               >
-                Unfollow
+                {unfollowLoading ? <Spinner variant={"xs"} /> : "Unfollow"}
               </button>
             ) : (
               <>

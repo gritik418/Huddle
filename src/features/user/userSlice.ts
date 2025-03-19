@@ -56,6 +56,19 @@ const userSlice = createSlice({
       state.followings = [];
       state.onlineMembers = [];
     },
+    removeFromFollowing: (state, action) => {
+      if (action.payload) {
+        state.followings = state.followings.filter(
+          (following: Follower) => following._id !== action.payload
+        );
+
+        if (state.user && state.user.following) {
+          state.user.following = state.user.following.filter(
+            (id: string) => id !== action.payload
+          );
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -102,6 +115,7 @@ export const {
   removeOnlineMember,
   toggleActiveStatus,
   toggleAllowMentions,
+  removeFromFollowing,
 } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user.user;

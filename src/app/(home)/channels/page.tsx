@@ -54,7 +54,7 @@ const Channels = () => {
       {/* Header */}
       <div className="bg-gradient-to-r rounded-lg from-blue-400 to-purple-500 text-white text-center p-6">
         <h1 className="text-3xl font-bold">Channels</h1>
-        <p className="mt-2 text-sm">
+        <p className="mt-2 text-sm font-semibold">
           Join a channel or create your own to start a conversation!
         </p>
       </div>
