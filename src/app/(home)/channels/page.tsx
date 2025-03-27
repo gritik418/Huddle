@@ -1,10 +1,9 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // Assuming you are using Next.js for routing
+import { useRouter } from "next/navigation";
 
 const Channels = () => {
-  // Sample channels data
-  const [channels, setChannels] = useState([
+  const [channels] = useState([
     {
       id: 1,
       name: "Tech Talk",
@@ -31,18 +30,14 @@ const Channels = () => {
     },
   ]);
 
-  // Search state to manage the search query
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Initialize router for navigation
   const router = useRouter();
 
-  // Handle navigating to the "Create Channel" page
   const handleCreateChannelPage = () => {
-    router.push("/create-channel"); // Navigate to the create channel page (you can update this to match your routing logic)
+    router.push("/channels/create");
   };
 
-  // Filter channels based on the search query
   const filteredChannels = channels.filter(
     (channel) =>
       channel.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -51,7 +46,6 @@ const Channels = () => {
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-56px-16px-24px)] w-full gap-3">
-      {/* Header */}
       <div className="bg-gradient-to-r rounded-lg from-blue-400 to-purple-500 text-white text-center p-6">
         <h1 className="text-3xl font-bold">Channels</h1>
         <p className="mt-2 text-sm font-semibold">
@@ -60,16 +54,14 @@ const Channels = () => {
       </div>
 
       <div className="w-full bg-white flex flex-col p-3 rounded-lg">
-        {/* Channel List Section */}
         <div className="mx-auto w-full p-6 items-center">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-semibold">Browse Channels</h2>
 
-            {/* Full-Width Search Input */}
             <div className="text-center">
               <button
                 onClick={handleCreateChannelPage}
-                className="bg-[var(--secondary)] text-white px-6 py-3 rounded-md hover:bg-green-600"
+                className="bg-[var(--primary)] transition-colors ease-in-out duration-300 text-white px-6 py-3 rounded-md hover:bg-[var(--secondary)]"
               >
                 Create a New Channel
               </button>
@@ -86,7 +78,6 @@ const Channels = () => {
             />
           </div>
 
-          {/* Displaying filtered channels */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredChannels.length > 0 ? (
               filteredChannels.map((channel) => (

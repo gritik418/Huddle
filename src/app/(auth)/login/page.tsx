@@ -102,7 +102,7 @@ const Login = (): JSX.Element => {
     }
   };
 
-  if (user) {
+  if (user && user._id) {
     redirect("/");
   }
 

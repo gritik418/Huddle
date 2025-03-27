@@ -28,7 +28,7 @@ const VerifyEmail = () => {
   const router = useRouter();
   const user: User | null = useSelector(selectUser);
 
-  if (user) {
+  if (user && user._id) {
     redirect("/");
   }
 
