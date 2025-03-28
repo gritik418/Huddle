@@ -1,6 +1,7 @@
 "use client";
 import { selectFollowings } from "@/features/user/userSlice";
 import Image from "next/image";
+import Link from "next/link";
 import { JSX, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -35,7 +36,8 @@ const Followings = () => {
     return (
       <div className="flex flex-col gap-3">
         {filteredFollowings.map((following) => (
-          <div
+          <Link
+            href={`/user/${following.username}`}
             key={following._id}
             className="flex items-center justify-between p-4 shadow-sm bg-gray-50 rounded-lg"
           >
@@ -56,7 +58,7 @@ const Followings = () => {
                 <p className="text-sm text-gray-500">@{following.username}</p>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     );

@@ -72,7 +72,7 @@ const Channels = () => {
             <input
               type="text"
               placeholder="Search Channels"
-              className="border border-gray-300 outline-blue-400 p-4 rounded-md w-full"
+              className="border bg-gray-50 border-gray-300 outline-blue-400 p-4 rounded-md w-full"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />

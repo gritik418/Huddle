@@ -12,7 +12,7 @@ import {
 
 export function SelectChannelType() {
   return (
-    <Select>
+    <Select defaultValue="public">
       <SelectTrigger className="w-[240px]">
         <SelectValue placeholder="Select Channel Type" />
       </SelectTrigger>

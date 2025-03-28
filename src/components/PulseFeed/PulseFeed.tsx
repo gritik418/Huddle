@@ -21,14 +21,14 @@ const PulseFeed = () => {
 
   const fetchData = async () => {
     if (page >= 1) {
-      dispatch(getAllPulsesAsync({ page: page + 1, limit: 20 }));
+      dispatch(getAllPulsesAsync({ page: page + 1, limit: 5 }));
       setPage(() => page + 1);
     }
   };
 
   useEffect(() => {
     if (page === 1) {
-      dispatch(getAllPulsesAsync({ page: page, limit: 20 }));
+      dispatch(getAllPulsesAsync({ page: page, limit: 5 }));
     }
   }, [dispatch, page]);
 
