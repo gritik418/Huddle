@@ -11,6 +11,7 @@ const blockUserApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user`,
   }),
+  tagTypes: ["block"],
   endpoints: (build) => ({
     getBlockedUsers: build.query<GetBlockedUsersApiResponse, void>({
       query: () => ({
@@ -21,10 +22,22 @@ const blockUserApi = createApi({
           "Content-Type": "application/json",
         },
       }),
+      providesTags: ["block"],
+    }),
+    unblockUser: build.mutation<void, string>({
+      query: (userId: string) => ({
+        url: `/${userId}/unblock`,
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+      invalidatesTags: ["block"],
     }),
   }),
 });
 
-export const { useGetBlockedUsersQuery } = blockUserApi;
+export const { useGetBlockedUsersQuery, useUnblockUserMutation } = blockUserApi;
 
 export default blockUserApi;

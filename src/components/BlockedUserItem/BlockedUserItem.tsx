@@ -1,9 +1,35 @@
 "use client";
 import Image from "next/image";
 import { JSX, useState } from "react";
+import Spinner from "@/components/Spinner/Spinner";
+import { useUnblockUserMutation } from "@/features/api/blockUserApi";
+import { Bounce, toast } from "react-toastify";
 
 const BlockedUserItem = ({ user }: { user: Follower }): JSX.Element => {
   const [showUnblockModal, setShowUnblockModal] = useState<boolean>(false);
+  const [unblock] = useUnblockUserMutation();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleUnblock = async () => {
+    try {
+      setLoading(true);
+      await unblock(user._id);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      toast.error("Some error occured.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
 
   return (
     <div className="flex bg-gray-100 w-full p-2 justify-between items-center rounded-lg">
@@ -29,7 +55,10 @@ const BlockedUserItem = ({ user }: { user: Follower }): JSX.Element => {
         </div>
       </div>
 
-      <div className="flex hover:bg-[var(--secondary)] p-1 px-2 rounded-md font-medium cursor-pointer bg-[var(--primary)] transition-colors ease-in-out duration-300 text-white">
+      <div
+        onClick={() => setShowUnblockModal(true)}
+        className="flex p-2 hover:bg-[var(--secondary)] items-center justify-center rounded-md font-medium cursor-pointer bg-[var(--primary)] transition-colors ease-in-out duration-300 text-white"
+      >
         Unblock
       </div>
 
@@ -49,15 +78,15 @@ const BlockedUserItem = ({ user }: { user: Follower }): JSX.Element => {
             <div className="flex justify-end gap-4">
               <button
                 onClick={() => setShowUnblockModal(false)}
-                className="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400"
+                className="bg-gray-300 text-gray-700 h-10 px-4 rounded-md hover:bg-gray-400"
               >
                 Cancel
               </button>
               <button
-                // onClick={confirmUnblock}
-                className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md"
+                onClick={handleUnblock}
+                className="bg-red-600 hover:bg-red-700 w-32 text-white h-10 rounded-md flex items-center justify-center"
               >
-                Yes, Unblock
+                {loading ? <Spinner variant={null} /> : "Yes, Unblock"}
               </button>
             </div>
           </div>
