@@ -51,7 +51,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
           </p>
         </div>
         <Separator className="my-6" />
-        <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
+        <div className="flex flex-col space-y-8 gap-8 lg:flex-row lg:space-x-4 lg:space-y-0">
           <aside className="-mx-4 hidden lg:flex lg:w-1/5">
             <SettingsSidebar items={sidebarNavItems} />
           </aside>

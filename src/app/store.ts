@@ -18,6 +18,7 @@ import authSlice from "@/features/auth/authSlice";
 import accountSettingsApi from "@/features/api/accountSettingsApi";
 import pulseApi from "@/features/api/pulseApi";
 import pulseSlice from "@/features/pulse/pulseSlice";
+import blockUserApi from "@/features/api/blockUserApi";
 
 const store = configureStore({
   reducer: {
@@ -28,6 +29,7 @@ const store = configureStore({
     [groupApi.reducerPath]: groupApi.reducer,
     [pulseApi.reducerPath]: pulseApi.reducer,
     [messageApi.reducerPath]: messageApi.reducer,
+    [blockUserApi.reducerPath]: blockUserApi.reducer,
     [chatRequestApi.reducerPath]: chatRequestApi.reducer,
     [followRequestApi.reducerPath]: followRequestApi.reducer,
     [accountSettingsApi.reducerPath]: accountSettingsApi.reducer,
@@ -50,6 +52,7 @@ const store = configureStore({
       .concat(pulseApi.middleware)
       .concat(groupApi.middleware)
       .concat(messageApi.middleware)
+      .concat(blockUserApi.middleware)
       .concat(chatRequestApi.middleware)
       .concat(followRequestApi.middleware)
       .concat(accountSettingsApi.middleware),
