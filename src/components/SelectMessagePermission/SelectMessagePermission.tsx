@@ -8,8 +8,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
+import { ChannelData } from "@/validators/channelSchema";
 
-const SelectMessagePermission = () => {
+type PropsType = {
+  setValue: UseFormSetValue<ChannelData>;
+  getValues: UseFormGetValues<ChannelData>;
+};
+
+const SelectMessagePermission = ({ getValues, setValue }: PropsType) => {
   const [messagePermission, setMessagePermission] = useState<
     "creator" | "members" | "everyone"
   >("creator");
@@ -21,14 +28,17 @@ const SelectMessagePermission = () => {
   };
 
   const handleChange = (permission: typeof messagePermission) => {
-    console.log(messagePermission, permission);
     setMessagePermission(permission);
+    setValue("sendMessagePermission", permission);
   };
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col">
-        <Select defaultValue="creator" onValueChange={handleChange}>
+        <Select
+          defaultValue={getValues("sendMessagePermission")}
+          onValueChange={handleChange}
+        >
           <SelectTrigger className="w-[240px]">
             <SelectValue placeholder="Select Message Permission" />
           </SelectTrigger>

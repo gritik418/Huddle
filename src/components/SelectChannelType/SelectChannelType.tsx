@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import {
   Select,
   SelectContent,
@@ -9,10 +7,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
+import { ChannelData } from "@/validators/channelSchema";
 
-export function SelectChannelType() {
+type PropsType = {
+  setValue: UseFormSetValue<ChannelData>;
+  getValues: UseFormGetValues<ChannelData>;
+};
+
+export function SelectChannelType({ getValues, setValue }: PropsType) {
+  const handleChange = (value: "public" | "private" | "invite-only") => {
+    setValue("type", value);
+  };
   return (
-    <Select defaultValue="public">
+    <Select defaultValue={getValues("type")} onValueChange={handleChange}>
       <SelectTrigger className="w-[240px]">
         <SelectValue placeholder="Select Channel Type" />
       </SelectTrigger>

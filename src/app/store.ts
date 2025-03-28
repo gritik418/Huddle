@@ -19,6 +19,7 @@ import accountSettingsApi from "@/features/api/accountSettingsApi";
 import pulseApi from "@/features/api/pulseApi";
 import pulseSlice from "@/features/pulse/pulseSlice";
 import blockUserApi from "@/features/api/blockUserApi";
+import channelApi from "@/features/api/channelApi";
 
 const store = configureStore({
   reducer: {
@@ -28,6 +29,7 @@ const store = configureStore({
     [postApi.reducerPath]: postApi.reducer,
     [groupApi.reducerPath]: groupApi.reducer,
     [pulseApi.reducerPath]: pulseApi.reducer,
+    [channelApi.reducerPath]: channelApi.reducer,
     [messageApi.reducerPath]: messageApi.reducer,
     [blockUserApi.reducerPath]: blockUserApi.reducer,
     [chatRequestApi.reducerPath]: chatRequestApi.reducer,
@@ -51,6 +53,7 @@ const store = configureStore({
       .concat(postApi.middleware)
       .concat(pulseApi.middleware)
       .concat(groupApi.middleware)
+      .concat(channelApi.middleware)
       .concat(messageApi.middleware)
       .concat(blockUserApi.middleware)
       .concat(chatRequestApi.middleware)
