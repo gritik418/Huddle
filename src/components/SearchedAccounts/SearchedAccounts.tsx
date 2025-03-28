@@ -27,14 +27,16 @@ const SearchedAccounts = ({
 
   const fetchData = async () => {
     if (page >= 1) {
-      dispatch(
-        searchAsync({
-          searchQuery,
-          type: "accounts",
-          page: page + 1,
-          limit: 10,
-        })
-      );
+      if (searchQuery.length > 2) {
+        dispatch(
+          searchAsync({
+            searchQuery,
+            type: "accounts",
+            page: page + 1,
+            limit: 10,
+          })
+        );
+      }
       setPage(() => page + 1);
     }
   };
@@ -43,9 +45,11 @@ const SearchedAccounts = ({
     setPage(1);
     const timeOutId = setTimeout(() => {
       dispatch(clearSeach());
-      dispatch(
-        searchAsync({ searchQuery, type: "accounts", page: 1, limit: 10 })
-      );
+      if (searchQuery.length > 2) {
+        dispatch(
+          searchAsync({ searchQuery, type: "accounts", page: 1, limit: 10 })
+        );
+      }
     }, 1000);
 
     return () => clearTimeout(timeOutId);
@@ -54,6 +58,14 @@ const SearchedAccounts = ({
   function renderContent(): JSX.Element {
     if (loading && page === 1) {
       return <SearchedAccountsSkeleton />;
+    }
+
+    if (searchQuery.length < 3) {
+      return (
+        <div className="flex items-center justify-center my-14">
+          <p className="text-lg">Type atleast 3 characters to find users.</p>
+        </div>
+      );
     }
 
     if (!accounts || accounts.length === 0 || !pagination) {

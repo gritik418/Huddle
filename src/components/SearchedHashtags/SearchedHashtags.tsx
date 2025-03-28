@@ -27,14 +27,16 @@ const SearchedHashtags = ({
 
   const fetchData = async () => {
     if (page >= 1) {
-      dispatch(
-        searchAsync({
-          searchQuery,
-          type: "hashtags",
-          page: page + 1,
-          limit: 5,
-        })
-      );
+      if (searchQuery.length > 2) {
+        dispatch(
+          searchAsync({
+            searchQuery,
+            type: "hashtags",
+            page: page + 1,
+            limit: 5,
+          })
+        );
+      }
       setPage(() => page + 1);
     }
   };
@@ -43,9 +45,11 @@ const SearchedHashtags = ({
     setPage(1);
     const timeOutId = setTimeout(() => {
       dispatch(clearSeach());
-      dispatch(
-        searchAsync({ searchQuery, type: "hashtags", page: 1, limit: 5 })
-      );
+      if (searchQuery.length > 2) {
+        dispatch(
+          searchAsync({ searchQuery, type: "hashtags", page: 1, limit: 5 })
+        );
+      }
     }, 1000);
 
     return () => clearTimeout(timeOutId);
@@ -65,7 +69,7 @@ const SearchedHashtags = ({
 
     if (
       (!posts || posts.length === 0 || !pagination) &&
-      searchQuery.length === 0
+      searchQuery.length < 3
     ) {
       return (
         <div className="flex items-center justify-center my-14">
