@@ -68,24 +68,12 @@ const authApi = createApi({
       query: (data) => ({
         url: "/login",
         method: "POST",
-        mode: "cors",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
         body: data,
       }),
-      async onQueryStarted(args, { queryFulfilled }) {
-        try {
-          const { meta } = await queryFulfilled;
-          console.log(
-            "🔥 Authorization:",
-            meta?.response?.headers.get("Authorization")
-          ); // ✅ Check if it comes in response
-        } catch (error) {
-          console.error("🔥 Login Error:", error);
-        }
-      },
     }),
     userLogout: build.mutation<LogoutResponse, void>({
       query: () => ({

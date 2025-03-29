@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { HUDDLE_TOKEN } from "./constants/variables";
 
