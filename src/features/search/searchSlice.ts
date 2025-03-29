@@ -5,7 +5,8 @@ import { RootState } from "@/app/store";
 interface SearchState {
   accounts: SearchedUserForChat[];
   posts: Post[];
-  channels: [];
+  channels: Channel[];
+  channelIds: string[];
   loading: boolean;
   userIds: string[];
   postIds: string[];
@@ -20,6 +21,7 @@ const initialState: SearchState = {
   postIds: [],
   posts: [],
   loading: false,
+  channelIds: [],
 };
 
 export const searchAsync = createAsyncThunk(
@@ -45,12 +47,14 @@ const searchSlice = createSlice({
   reducerPath: "search",
   initialState,
   reducers: {
-    clearSeach: (state) => {
+    clearSearch: (state) => {
       state.postIds = [];
       state.posts = [];
       state.accounts = [];
       state.userIds = [];
       state.pagination = undefined;
+      state.channelIds = [];
+      state.channels = [];
     },
   },
   extraReducers: (builder) => {
@@ -84,6 +88,17 @@ const searchSlice = createSlice({
               state.postPagination = action.payload.pagination;
             }
           }
+
+          if (action.payload.channels) {
+            action.payload.channels.forEach((channel: Channel) => {
+              if (!state.channelIds.includes(channel._id.toString())) {
+                state.channelIds.push(channel._id.toString());
+                state.channels.push(channel);
+              }
+            });
+
+            state.pagination = action.payload.pagination;
+          }
         }
       })
       .addCase(searchAsync.rejected, (state) => {
@@ -92,11 +107,13 @@ const searchSlice = createSlice({
   },
 });
 
-export const { clearSeach } = searchSlice.actions;
+export const { clearSearch } = searchSlice.actions;
 
 export const selectSearchedAccounts = (state: RootState) =>
   state.search.accounts;
 export const selectSearchedPosts = (state: RootState) => state.search.posts;
+export const selectSearchedChannels = (state: RootState) =>
+  state.search.channels;
 export const selectSearchLoading = (state: RootState) => state.search.loading;
 export const selectSearchPagination = (state: RootState) =>
   state.search.pagination;

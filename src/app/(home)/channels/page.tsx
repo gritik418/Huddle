@@ -1,36 +1,56 @@
 "use client";
-import { useState } from "react";
+import { AppDispatch } from "@/app/store";
+import Spinner from "@/components/Spinner/Spinner";
+import {
+  clearSearch,
+  searchAsync,
+  selectSearchedChannels,
+  selectSearchLoading,
+  selectSearchPagination,
+} from "@/features/search/searchSlice";
+import { selectUser } from "@/features/user/userSlice";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { JSX, useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useDispatch, useSelector } from "react-redux";
 
-const Channels = () => {
-  const [channels] = useState([
-    {
-      id: 1,
-      name: "Tech Talk",
-      description: "Discuss the latest in tech!",
-      members: 120,
-    },
-    {
-      id: 2,
-      name: "Gaming World",
-      description: "Join for daily gaming discussions.",
-      members: 150,
-    },
-    {
-      id: 3,
-      name: "Music Lovers",
-      description: "Share and discover music.",
-      members: 80,
-    },
-    {
-      id: 4,
-      name: "Travel Adventures",
-      description: "Talk about your favorite destinations.",
-      members: 65,
-    },
-  ]);
-
+const Channels = (): JSX.Element => {
   const [searchQuery, setSearchQuery] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
+  const [page, setPage] = useState<number>(1);
+  const channels: Channel[] = useSelector(selectSearchedChannels);
+  const loading: boolean = useSelector(selectSearchLoading);
+  const pagination = useSelector(selectSearchPagination);
+  const user: User = useSelector(selectUser)!;
+
+  const fetchData = async () => {
+    if (page >= 1) {
+      dispatch(
+        searchAsync({
+          searchQuery,
+          type: "channels",
+          page: page + 1,
+          limit: 10,
+        })
+      );
+
+      setPage(() => page + 1);
+    }
+  };
+
+  useEffect(() => {
+    setPage(1);
+    const timeOutId = setTimeout(() => {
+      dispatch(clearSearch());
+
+      dispatch(
+        searchAsync({ searchQuery, type: "channels", page: 1, limit: 10 })
+      );
+    }, 600);
+
+    return () => clearTimeout(timeOutId);
+  }, [searchQuery, dispatch]);
 
   const router = useRouter();
 
@@ -38,11 +58,73 @@ const Channels = () => {
     router.push("/channels/create");
   };
 
-  const filteredChannels = channels.filter(
-    (channel) =>
-      channel.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      channel.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  function renderContent(): JSX.Element {
+    if (loading && page === 1) {
+      return (
+        <div className="flex justify-center py-8 items-center w-full">
+          <Spinner variant={"small"} />
+        </div>
+      );
+    }
+
+    if (!channels || channels.length === 0 || !pagination) {
+      return (
+        <div className="flex items-center justify-center my-6">
+          <p className="text-lg">No channels found.</p>
+        </div>
+      );
+    }
+
+    return (
+      <InfiniteScroll
+        dataLength={channels.length}
+        next={fetchData}
+        hasMore={pagination.totalPages! > page}
+        loader={
+          <div className="flex items-center py-6 justify-center">
+            <Spinner variant={"small"} />
+          </div>
+        }
+        className="w-full"
+      >
+        <div className="grid w-full min-w-full grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+          {channels.map((channel: Channel) => (
+            <div
+              key={channel._id}
+              className="bg-gray-50 w-full flex-col flex flex-1 p-4 rounded-lg shadow-lg hover:shadow-lg transition"
+            >
+              <h3 className="text-xl font-semibold">{channel.name}</h3>
+              <p className="text-sm text-gray-600">{channel.description}</p>
+              <div className="mt-8 flex justify-between items-center">
+                <span className="text-sm text-gray-500">
+                  {channel.members.length} members
+                </span>
+
+                <div className="flex gap-2">
+                  <Link
+                    href={`/channels/${channel._id}`}
+                    className="border-blue-500 text-blue-500 border-2 font-semibold px-3 box-border py-1 rounded-md"
+                  >
+                    View
+                  </Link>
+
+                  {channel.members.includes(user._id) ? (
+                    <button className="bg-red-400 text-white px-3 py-1 rounded-md hover:bg-red-500">
+                      Leave
+                    </button>
+                  ) : (
+                    <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
+                      Join
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </InfiniteScroll>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-56px-16px-24px)] w-full gap-3">
@@ -53,7 +135,7 @@ const Channels = () => {
         </p>
       </div>
 
-      <div className="w-full bg-white flex flex-col p-3 rounded-lg">
+      <div className="w-full bg-white min-h-[calc(100vh-56px-16px-24px-130px)] flex flex-col p-3 rounded-lg">
         <div className="mx-auto w-full p-6 items-center">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-semibold">Browse Channels</h2>
@@ -78,29 +160,7 @@ const Channels = () => {
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredChannels.length > 0 ? (
-              filteredChannels.map((channel) => (
-                <div
-                  key={channel.id}
-                  className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition"
-                >
-                  <h3 className="text-xl font-semibold">{channel.name}</h3>
-                  <p className="text-sm text-gray-600">{channel.description}</p>
-                  <div className="mt-4 flex justify-between items-center">
-                    <span className="text-sm text-gray-500">
-                      {channel.members} members
-                    </span>
-                    <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
-                      Join
-                    </button>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="text-center text-gray-600">No channels found.</p>
-            )}
-          </div>
+          <div className="flex mt-6 w-full flex-col">{renderContent()}</div>
         </div>
       </div>
     </div>

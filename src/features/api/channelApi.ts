@@ -4,6 +4,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export type CreateChannelApiResponse = {
   success: boolean;
   message: string;
+  channel?: Channel;
   errors?: Partial<ChannelData>;
 };
 

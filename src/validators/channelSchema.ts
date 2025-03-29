@@ -8,7 +8,7 @@ const ChannelSchema = z.object({
   description: z
     .string()
     .min(10, "Description must be atleast 10 characters long.")
-    .max(200, "Description can't exceed 200 characters."),
+    .max(60, "Description can't exceed 60 characters."),
   sendMessagePermission: z.enum(["creator", "members", "everyone"], {
     message: "Expected 'creator', 'members' or 'everyone'.",
   }),

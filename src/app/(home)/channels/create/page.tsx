@@ -16,11 +16,13 @@ import {
 import ChannelSchema, { ChannelData } from "@/validators/channelSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Bounce, toast } from "react-toastify";
 
 const CreateChannelPage = () => {
   const [createChannel] = useCreateChannelMutation();
+  const router = useRouter();
 
   const {
     register,
@@ -98,6 +100,10 @@ const CreateChannelPage = () => {
           theme: "light",
           transition: Bounce,
         });
+
+        if (data.channel) {
+          router.push(`/channels/${data.channel._id}`);
+        }
       }
     } catch (error) {
       console.error(error);

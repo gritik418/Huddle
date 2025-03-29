@@ -1,17 +1,17 @@
 "use client";
 import { AppDispatch } from "@/app/store";
 import {
-  clearSeach,
+  clearSearch,
   searchAsync,
   selectSearchedAccounts,
   selectSearchLoading,
   selectSearchPagination,
 } from "@/features/search/searchSlice";
 import { JSX, useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import SearchedAccountItem from "../SearchedAccountItem/SearchedAccountItem";
 import SearchedAccountsSkeleton from "../SearchedAccountsSkeleton/SearchedAccountsSkeleton";
-import InfiniteScroll from "react-infinite-scroll-component";
 import Spinner from "../Spinner/Spinner";
 
 const SearchedAccounts = ({
@@ -44,7 +44,7 @@ const SearchedAccounts = ({
   useEffect(() => {
     setPage(1);
     const timeOutId = setTimeout(() => {
-      dispatch(clearSeach());
+      dispatch(clearSearch());
       if (searchQuery.length > 2) {
         dispatch(
           searchAsync({ searchQuery, type: "accounts", page: 1, limit: 10 })

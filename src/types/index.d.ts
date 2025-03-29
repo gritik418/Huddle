@@ -154,6 +154,17 @@ interface Pulse {
   createdAt: Date;
 }
 
+interface Channel {
+  _id: Types.ObjectId;
+  name: string;
+  description: string;
+  type: "public" | "private" | "invite-only";
+  creatorId: Types.ObjectId;
+  members: Types.ObjectId[];
+  isActive: boolean;
+  sendMessagePermission: "creator" | "members" | "everyone";
+}
+
 interface NotificationData {
   id: string;
   type:

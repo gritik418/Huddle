@@ -1,7 +1,7 @@
 "use client";
 import { AppDispatch } from "@/app/store";
 import {
-  clearSeach,
+  clearSearch,
   searchAsync,
   selectSearchedPosts,
   selectSearchLoading,
@@ -44,7 +44,7 @@ const SearchedHashtags = ({
   useEffect(() => {
     setPage(1);
     const timeOutId = setTimeout(() => {
-      dispatch(clearSeach());
+      dispatch(clearSearch());
       if (searchQuery.length > 2) {
         dispatch(
           searchAsync({ searchQuery, type: "hashtags", page: 1, limit: 5 })
