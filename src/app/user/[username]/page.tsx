@@ -1,19 +1,22 @@
 "use client";
-import { AppDispatch } from "@/app/store";
-import Navbar from "@/components/Navbar/Navbar";
-import PrivateAccount from "@/components/PrivateAccount/PrivateAccount";
-import Spinner from "@/components/Spinner/Spinner";
-import UserChannels from "@/components/UserChannels/UserChannels";
-import UserPosts from "@/components/UserPosts/UserPosts";
+import { AppDispatch } from "../../../app/store";
+import Navbar from "../../../components/Navbar/Navbar";
+import PrivateAccount from "../../../components/PrivateAccount/PrivateAccount";
+import Spinner from "../../../components/Spinner/Spinner";
+import UserChannels from "../../../components/UserChannels/UserChannels";
+import UserPosts from "../../../components/UserPosts/UserPosts";
 import {
   SendFollowRequestApiResponse,
   useSendFollowRequestMutation,
-} from "@/features/api/followRequestApi";
+} from "../../../features/api/followRequestApi";
 import {
   useGetUserByUsernameQuery,
   useUnfollowMutation,
-} from "@/features/api/userApi";
-import { removeFromFollowing, selectUser } from "@/features/user/userSlice";
+} from "../../../features/api/userApi";
+import {
+  removeFromFollowing,
+  selectUser,
+} from "../../../features/user/userSlice";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
 import { redirect, useParams } from "next/navigation";

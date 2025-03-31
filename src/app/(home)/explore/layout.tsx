@@ -1,4 +1,4 @@
-import ExploreTabs from "@/components/ExploreTabs/ExploreTabs";
+import ExploreTabs from "../../../components/ExploreTabs/ExploreTabs";
 
 export default function Layout({
   children,

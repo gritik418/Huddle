@@ -2,7 +2,7 @@ import { Dispatch, JSX, SetStateAction } from "react";
 import ChatNotificationMenu from "../ChatNotificationMenu/ChatNotificationMenu";
 import ChatSearchBar from "../ChatSearchBar/ChatSearchBar";
 import SendChatRequestDialog from "../SendChatRequestDialog/SendChatRequestDialog";
-import { useGetChatRequestsQuery } from "@/features/api/chatRequestApi";
+import { useGetChatRequestsQuery } from "../../features/api/chatRequestApi";
 
 type PropsType = {
   setSearchQuery: Dispatch<SetStateAction<string>>;

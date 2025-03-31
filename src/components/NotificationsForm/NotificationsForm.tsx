@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Checkbox } from "@/components/ui/checkbox";
+import { Checkbox } from "../../components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -13,8 +13,9 @@ import {
   FormField,
   FormItem,
   FormLabel,
-} from "@/components/ui/form";
-import { Switch } from "@/components/ui/switch";
+} from "../../components/ui/form";
+import { Switch } from "../../components/ui/switch";
+import { JSX } from "react";
 
 const notificationsFormSchema = z.object({
   chatNotifications: z.boolean().default(false),
@@ -31,7 +32,7 @@ const defaultValues: Partial<NotificationsFormValues> = {
   chatRequestNotifications: true,
 };
 
-export function NotificationsForm() {
+export function NotificationsForm(): JSX.Element {
   const form = useForm<NotificationsFormValues>({
     resolver: zodResolver(notificationsFormSchema),
     defaultValues,

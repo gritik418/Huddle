@@ -159,8 +159,8 @@ interface Channel {
   name: string;
   description: string;
   type: "public" | "private" | "invite-only";
-  creatorId: Types.ObjectId;
-  members: Types.ObjectId[];
+  creatorId: string;
+  members: string[];
   isActive: boolean;
   sendMessagePermission: "creator" | "members" | "everyone";
 }

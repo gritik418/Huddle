@@ -1,12 +1,12 @@
 "use client";
-import SelectGroupAdmins from "@/components/SelectGroupAdmins/SelectGroupAdmins";
-import SelectGroupMembers from "@/components/SelectGroupMembers/SelectGroupMembers";
-import Spinner from "@/components/Spinner/Spinner";
+import SelectGroupAdmins from "../../../components/SelectGroupAdmins/SelectGroupAdmins";
+import SelectGroupMembers from "../../../components/SelectGroupMembers/SelectGroupMembers";
+import Spinner from "../../../components/Spinner/Spinner";
 import {
   CreateGroupApiResponse,
   useCreateGroupMutation,
-} from "@/features/api/groupApi";
-import groupSchema from "@/validators/groupSchema";
+} from "../../../features/api/groupApi";
+import groupSchema from "../../../validators/groupSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";

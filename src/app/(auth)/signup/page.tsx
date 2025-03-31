@@ -1,9 +1,12 @@
 "use client";
 import { AppDispatch } from "@/app/store";
-import { SignupResponse, useUserSignupMutation } from "@/features/api/authApi";
-import { setSignupEmail } from "@/features/auth/authSlice";
-import { selectUser } from "@/features/user/userSlice";
-import signupSchema, { SignupData } from "@/validators/signupSchema";
+import {
+  SignupResponse,
+  useUserSignupMutation,
+} from "../../../features/api/authApi";
+import { setSignupEmail } from "../../../features/auth/authSlice";
+import { selectUser } from "../../../features/user/userSlice";
+import signupSchema, { SignupData } from "../../../validators/signupSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";

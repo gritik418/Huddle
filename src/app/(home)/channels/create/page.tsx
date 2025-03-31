@@ -1,28 +1,37 @@
 "use client";
-import CreatorInfo from "@/components/CreatorInfo/CreatorInfo";
-import { SelectChannelType } from "@/components/SelectChannelType/SelectChannelType";
-import SelectMessagePermission from "@/components/SelectMessagePermission/SelectMessagePermission";
-import Spinner from "@/components/Spinner/Spinner";
+import CreatorInfo from "../../../../components/CreatorInfo/CreatorInfo";
+import { SelectChannelType } from "../../../../components/SelectChannelType/SelectChannelType";
+import SelectMessagePermission from "../../../../components/SelectMessagePermission/SelectMessagePermission";
+import Spinner from "../../../../components/Spinner/Spinner";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "../../../../components/ui/tooltip";
 import {
   CreateChannelApiResponse,
   useCreateChannelMutation,
-} from "@/features/api/channelApi";
-import ChannelSchema, { ChannelData } from "@/validators/channelSchema";
+} from "../../../../features/api/channelApi";
+import ChannelSchema, {
+  ChannelData,
+} from "../../../../validators/channelSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Bounce, toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../../../features/user/userSlice";
+import { JSX } from "react";
+import NotLoggedIn from "../../../../components/NotLoggedIn/NotLoggedIn";
 
-const CreateChannelPage = () => {
+const CreateChannelPage = (): JSX.Element => {
   const [createChannel] = useCreateChannelMutation();
+  const user = useSelector(selectUser);
   const router = useRouter();
+
+  if (!user) return <NotLoggedIn />;
 
   const {
     register,
@@ -132,7 +141,7 @@ const CreateChannelPage = () => {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <CreatorInfo />
+              <CreatorInfo user={user} />
             </TooltipTrigger>
             <TooltipContent>
               <p>Creator</p>

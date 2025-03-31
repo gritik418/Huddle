@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { JSX, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -7,16 +7,19 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "../../components/ui/select";
 import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
-import { ChannelData } from "@/validators/channelSchema";
+import { ChannelData } from "../../validators/channelSchema";
 
 type PropsType = {
   setValue: UseFormSetValue<ChannelData>;
   getValues: UseFormGetValues<ChannelData>;
 };
 
-const SelectMessagePermission = ({ getValues, setValue }: PropsType) => {
+const SelectMessagePermission = ({
+  getValues,
+  setValue,
+}: PropsType): JSX.Element => {
   const [messagePermission, setMessagePermission] = useState<
     "creator" | "members" | "everyone"
   >("creator");

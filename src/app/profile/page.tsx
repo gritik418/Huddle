@@ -1,5 +1,5 @@
 "use client";
-import { selectUser } from "@/features/user/userSlice";
+import { selectUser } from "../../features/user/userSlice";
 import { Input, Textarea } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { JSX } from "react";

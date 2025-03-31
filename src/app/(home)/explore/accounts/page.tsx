@@ -1,6 +1,6 @@
 "use client";
-import SearchBar from "@/components/SearchBar/SearchBar";
-import SearchedAccounts from "@/components/SearchedAccounts/SearchedAccounts";
+import SearchBar from "../../../../components/SearchBar/SearchBar";
+import SearchedAccounts from "../../../../components/SearchedAccounts/SearchedAccounts";
 import React, { useState } from "react";
 
 const ExploreAccounts = () => {

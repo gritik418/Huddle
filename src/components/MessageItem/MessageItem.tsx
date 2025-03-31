@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { JSX } from "react";
+import { JSX } from "react";
 import {
   MenuContent,
   MenuContextTrigger,
@@ -9,12 +9,12 @@ import {
 import {
   useDeleteMessageForMeMutation,
   useUnsendMessageMutation,
-} from "@/features/api/messageApi";
+} from "../../features/api/messageApi";
 import { Bounce, toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/app/store";
-import { removeMessage } from "@/features/message/messageSlice";
-import { removeLastMessage } from "@/features/chat/chatSlice";
+import { AppDispatch } from "../../app/store";
+import { removeMessage } from "../../features/message/messageSlice";
+import { removeLastMessage } from "../../features/chat/chatSlice";
 
 type PropsType = { isSent: boolean; message: Message };
 

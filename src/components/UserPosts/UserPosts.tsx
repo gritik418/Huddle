@@ -1,4 +1,4 @@
-import { useGetPostsByUserQuery } from "@/features/api/userApi";
+import { useGetPostsByUserQuery } from "../../features/api/userApi";
 import { JSX } from "react";
 import PostSkeleton from "../PostSkeleton/PostSkeleton";
 import Image from "next/image";

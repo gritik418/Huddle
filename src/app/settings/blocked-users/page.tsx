@@ -1,8 +1,8 @@
 "use client";
-import BlockedUserItem from "@/components/BlockedUserItem/BlockedUserItem";
-import Spinner from "@/components/Spinner/Spinner";
-import { Separator } from "@/components/ui/separator";
-import { useGetBlockedUsersQuery } from "@/features/api/blockUserApi";
+import BlockedUserItem from "../../../components/BlockedUserItem/BlockedUserItem";
+import Spinner from "../../../components/Spinner/Spinner";
+import { Separator } from "../../../components/ui/separator";
+import { useGetBlockedUsersQuery } from "../../../features/api/blockUserApi";
 import React, { JSX, useState } from "react";
 
 const BlockedUsers = (): JSX.Element => {

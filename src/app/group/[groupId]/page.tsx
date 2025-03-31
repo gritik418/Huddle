@@ -1,8 +1,8 @@
 "use client";
-import GroupMemberTile from "@/components/GroupMemberTile/GroupMemberTile";
-import Spinner from "@/components/Spinner/Spinner";
-import { useGetGroupByIdQuery } from "@/features/api/groupApi";
-import groupSchema from "@/validators/groupSchema";
+import GroupMemberTile from "../../../components/GroupMemberTile/GroupMemberTile";
+import Spinner from "../../../components/Spinner/Spinner";
+import { useGetGroupByIdQuery } from "../../../features/api/groupApi";
+import groupSchema from "../../../validators/groupSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useParams } from "next/navigation";

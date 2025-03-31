@@ -1,19 +1,19 @@
-import React from "react";
 import {
   MenuContent,
   MenuItem,
   MenuRoot,
   MenuTrigger,
-} from "@/components/ui/menu";
+} from "../../components/ui/menu";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { NavItems } from "@/app/settings/layout";
+import { NavItems } from "../../app/settings/layout";
 import Link from "next/link";
+import { JSX } from "react";
 
 type PropsTypes = {
   items: NavItems[];
 };
 
-const SettingsOptionsMenu = ({ items }: PropsTypes) => {
+const SettingsOptionsMenu = ({ items }: PropsTypes): JSX.Element => {
   return (
     <MenuRoot>
       <MenuTrigger asChild>

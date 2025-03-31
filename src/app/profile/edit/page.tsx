@@ -1,11 +1,11 @@
 "use client";
-import Spinner from "@/components/Spinner/Spinner";
+import Spinner from "../../../components/Spinner/Spinner";
 import {
   UpdateUserApiResponse,
   useUpdateUserMutation,
-} from "@/features/api/userApi";
-import { selectUser } from "@/features/user/userSlice";
-import updateUserSchema from "@/validators/updateUserSchema";
+} from "../../../features/api/userApi";
+import { selectUser } from "../../../features/user/userSlice";
+import updateUserSchema from "../../../validators/updateUserSchema";
 import { Input, Textarea } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";

@@ -1,4 +1,4 @@
-import { selectFollowRequests } from "@/features/followRequest/followRequestSlice";
+import { selectFollowRequests } from "../../features/followRequest/followRequestSlice";
 import { JSX } from "react";
 import { IoIosPersonAdd } from "react-icons/io";
 import { useSelector } from "react-redux";

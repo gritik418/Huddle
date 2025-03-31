@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
 import { JSX, useState } from "react";
-import Spinner from "@/components/Spinner/Spinner";
-import { useUnblockUserMutation } from "@/features/api/blockUserApi";
+import Spinner from "../../components/Spinner/Spinner";
+import { useUnblockUserMutation } from "../../features/api/blockUserApi";
 import { Bounce, toast } from "react-toastify";
 
 const BlockedUserItem = ({ user }: { user: Follower }): JSX.Element => {

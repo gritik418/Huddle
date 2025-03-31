@@ -1,13 +1,16 @@
 "use client";
-import { PulseApiResponse, useAddPulseMutation } from "@/features/api/pulseApi";
+import {
+  PulseApiResponse,
+  useAddPulseMutation,
+} from "../../features/api/pulseApi";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { ChangeEvent, JSX, useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import Spinner from "../Spinner/Spinner";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "@/app/store";
-import { addNewPulse } from "@/features/pulse/pulseSlice";
-import { selectUser } from "@/features/user/userSlice";
+import { AppDispatch } from "../../app/store";
+import { addNewPulse } from "../../features/pulse/pulseSlice";
+import { selectUser } from "../../features/user/userSlice";
 
 const PulseInput = (): JSX.Element => {
   const [pulseText, setPulseText] = useState<string>("");

@@ -1,7 +1,10 @@
 "use client";
-import { LoginResponse, useUserLoginMutation } from "@/features/api/authApi";
-import { selectUser } from "@/features/user/userSlice";
-import loginSchema, { LoginData } from "@/validators/loginSchema";
+import {
+  LoginResponse,
+  useUserLoginMutation,
+} from "../../../features/api/authApi";
+import { selectUser } from "../../../features/user/userSlice";
+import loginSchema, { LoginData } from "../../../validators/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";

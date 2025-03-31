@@ -1,7 +1,7 @@
 "use client";
-import { AppDispatch } from "@/app/store";
-import { searchUsersForChatRequestAsync } from "@/features/chatRequest/chatRequestSlice";
-import React, { ChangeEvent, JSX, useEffect, useState } from "react";
+import { AppDispatch } from "../../app/store";
+import { searchUsersForChatRequestAsync } from "../../features/chatRequest/chatRequestSlice";
+import { ChangeEvent, JSX, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 const SearchBarForChatRequest = (): JSX.Element => {

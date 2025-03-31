@@ -6,7 +6,7 @@ import {
   DrawerRoot,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer";
+} from "../../components/ui/drawer";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

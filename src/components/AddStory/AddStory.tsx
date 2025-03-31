@@ -1,6 +1,6 @@
-import { selectUser } from "@/features/user/userSlice";
+import { selectUser } from "../../features/user/userSlice";
 import Image from "next/image";
-import React, { JSX } from "react";
+import { JSX } from "react";
 import { FaPlus } from "react-icons/fa";
 import { useSelector } from "react-redux";
 

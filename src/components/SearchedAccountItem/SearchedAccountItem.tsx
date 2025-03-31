@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { JSX } from "react";
+import { JSX } from "react";
 
 type PropsType = {
   user: {

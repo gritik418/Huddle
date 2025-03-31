@@ -1,18 +1,18 @@
 "use client";
-import { AppDispatch } from "@/app/store";
+import { AppDispatch } from "../../app/store";
 import {
   getAllPulsesAsync,
   selectPulses,
   selectPulsesLoading,
   selectPulsesPagination,
-} from "@/features/pulse/pulseSlice";
-import { useEffect, useState } from "react";
+} from "../../features/pulse/pulseSlice";
+import { JSX, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../Spinner/Spinner";
 import PulseItem from "../PulseItem/PulseItem";
 
-const PulseFeed = () => {
+const PulseFeed = (): JSX.Element => {
   const [page, setPage] = useState<number>(1);
   const dispatch = useDispatch<AppDispatch>();
   const pulses: Pulse[] = useSelector(selectPulses);

@@ -1,11 +1,11 @@
 "use client";
-import { useGetFollowRequestsQuery } from "@/features/api/followRequestApi";
+import { useGetFollowRequestsQuery } from "../../features/api/followRequestApi";
 import {
   useGetActiveMembersQuery,
   useGetFollowersQuery,
   useGetFollowingsQuery,
   useGetUserQuery,
-} from "@/features/api/userApi";
+} from "../../features/api/userApi";
 import React, { JSX } from "react";
 import Spinner from "../Spinner/Spinner";
 import { usePathname } from "next/navigation";

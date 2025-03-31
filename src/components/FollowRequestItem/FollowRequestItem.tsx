@@ -1,10 +1,10 @@
-import { AppDispatch } from "@/app/store";
+import { AppDispatch } from "../../app/store";
 import {
   FollowRequestApiResponse,
   useAcceptFollowRequestMutation,
   useDeclineFollowRequestMutation,
-} from "@/features/api/followRequestApi";
-import { removeFollowRequest } from "@/features/followRequest/followRequestSlice";
+} from "../../features/api/followRequestApi";
+import { removeFollowRequest } from "../../features/followRequest/followRequestSlice";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
 import Link from "next/link";

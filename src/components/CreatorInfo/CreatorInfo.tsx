@@ -1,17 +1,7 @@
-"use client";
-import { selectUser } from "@/features/user/userSlice";
 import Image from "next/image";
-import React from "react";
-import { useSelector } from "react-redux";
-import NotLoggedIn from "../NotLoggedIn/NotLoggedIn";
+import { JSX } from "react";
 
-const CreatorInfo = () => {
-  const user: User | null = useSelector(selectUser);
-
-  if (!user) {
-    return <NotLoggedIn />;
-  }
-
+const CreatorInfo = ({ user }: { user: Follower }): JSX.Element => {
   return (
     <div className="flex bg-gray-100 p-3 rounded-lg gap-3 items-start justify-between">
       <div className="flex gap-3 items-center">
@@ -25,7 +15,7 @@ const CreatorInfo = () => {
           />
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col items-start">
           <p className="text-xl font-normal">
             {user.firstName} {user?.lastName}
           </p>

@@ -1,5 +1,5 @@
 "use client";
-import Navbar from "@/components/Navbar/Navbar";
+import Navbar from "../../../../components/Navbar/Navbar";
 import { useState } from "react";
 
 const followersData = [

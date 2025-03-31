@@ -3,7 +3,7 @@ import {
   selectSearchedUsersForChatRequest,
   selectSearchUserForChatRequestLoading,
   selectSearchUserForChatRequestMessage,
-} from "@/features/chatRequest/chatRequestSlice";
+} from "../../features/chatRequest/chatRequestSlice";
 import { JSX } from "react";
 import { FiPlus } from "react-icons/fi";
 import { MdGroups2 } from "react-icons/md";

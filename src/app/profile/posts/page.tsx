@@ -1,8 +1,8 @@
 "use client";
-import AddPost from "@/components/AddPost/AddPost";
-import ProfilePost from "@/components/ProfilePost/ProfilePost";
-import Spinner from "@/components/Spinner/Spinner";
-import { useGetLoggedInUserPostsQuery } from "@/features/api/postApi";
+import AddPost from "../../../components/AddPost/AddPost";
+import ProfilePost from "../../../components/ProfilePost/ProfilePost";
+import Spinner from "../../../components/Spinner/Spinner";
+import { useGetLoggedInUserPostsQuery } from "../../../features/api/postApi";
 import React, { JSX } from "react";
 
 const Posts = (): JSX.Element => {

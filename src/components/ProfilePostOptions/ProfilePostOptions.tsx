@@ -8,11 +8,15 @@ import {
 } from "../ui/dropdown-menu";
 import { MdCommentsDisabled } from "react-icons/md";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { PostApiResponse, useRemovePostMutation } from "@/features/api/postApi";
+import {
+  PostApiResponse,
+  useRemovePostMutation,
+} from "../../features/api/postApi";
 import { Bounce, toast } from "react-toastify";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { JSX } from "react";
 
-const ProfilePostOptions = ({ postId }: { postId: string }) => {
+const ProfilePostOptions = ({ postId }: { postId: string }): JSX.Element => {
   const [removePost] = useRemovePostMutation();
 
   const handleRemovePost = async () => {

@@ -12,8 +12,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+} from "../../components/ui/form";
+import { RadioGroup, RadioGroupItem } from "../../components/ui/radio-group";
+import { JSX } from "react";
 
 const appearanceFormSchema = z.object({
   theme: z.enum(["light", "dark"], {
@@ -27,7 +28,7 @@ const defaultValues: Partial<AppearanceFormValues> = {
   theme: "light",
 };
 
-export function AppearanceForm() {
+export function AppearanceForm(): JSX.Element {
   const form = useForm<AppearanceFormValues>({
     resolver: zodResolver(appearanceFormSchema),
     defaultValues,

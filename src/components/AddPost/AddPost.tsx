@@ -1,11 +1,14 @@
 "use client";
-import { AddPostApiResponse, useAddPostMutation } from "@/features/api/postApi";
-import { selectUser } from "@/features/user/userSlice";
-import postSchema, { PostData } from "@/validators/postSchema";
+import {
+  AddPostApiResponse,
+  useAddPostMutation,
+} from "../../features/api/postApi";
+import { selectUser } from "../../features/user/userSlice";
+import postSchema, { PostData } from "../../validators/postSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { GrAttachment } from "react-icons/gr";
 import { IoIosCloseCircle } from "react-icons/io";
@@ -14,7 +17,7 @@ import { Bounce, toast } from "react-toastify";
 import MentionsMenu from "../MentionsMenu/MentionsMenu";
 import Spinner from "../Spinner/Spinner";
 
-const AddPost = () => {
+const AddPost = (): JSX.Element => {
   const [selectedMentions, setSelectedMentions] = useState<string[]>([]);
   const [mediaPreview, setMediaPreview] = useState<string[]>([]);
   const [hashtags, setHashtags] = useState<string[]>([]);

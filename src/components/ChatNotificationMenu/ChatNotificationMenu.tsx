@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import {
   selectChatRequests,
   selectChatRequestsLoading,
-} from "@/features/chatRequest/chatRequestSlice";
+} from "../../features/chatRequest/chatRequestSlice";
 import { JSX } from "react";
 
 const ChatNotificationMenu = (): JSX.Element => {

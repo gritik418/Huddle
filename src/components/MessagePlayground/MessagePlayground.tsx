@@ -2,8 +2,8 @@
 import {
   selectMessages,
   selectMessagesLoading,
-} from "@/features/message/messageSlice";
-import { selectUser } from "@/features/user/userSlice";
+} from "../../features/message/messageSlice";
+import { selectUser } from "../../features/user/userSlice";
 import { JSX, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import MessageItem from "../MessageItem/MessageItem";

@@ -1,4 +1,4 @@
-import UserPulses from "@/components/UserPulses/UserPulses";
+import UserPulses from "../../../components/UserPulses/UserPulses";
 import React from "react";
 
 const ProfilePulse = () => {

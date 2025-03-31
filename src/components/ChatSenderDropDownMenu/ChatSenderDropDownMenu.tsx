@@ -15,12 +15,12 @@ import {
 import {
   useClearChatMutation,
   useDeleteChatMutation,
-} from "@/features/api/chatApi";
+} from "../../features/api/chatApi";
 import { Bounce, toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/app/store";
-import { clearMessages } from "@/features/message/messageSlice";
-import { removeChat } from "@/features/chat/chatSlice";
+import { AppDispatch } from "../../app/store";
+import { clearMessages } from "../../features/message/messageSlice";
+import { removeChat } from "../../features/chat/chatSlice";
 import { useRouter } from "next/navigation";
 
 type PropsType = {

@@ -1,10 +1,10 @@
 "use client";
-import { AppDispatch } from "@/app/store";
+import { AppDispatch } from "../../app/store";
 import {
   DeletePulseApiResponse,
   useDeletePulseMutation,
-} from "@/features/api/pulseApi";
-import { deleteUserPulse } from "@/features/pulse/pulseSlice";
+} from "../../features/api/pulseApi";
+import { deleteUserPulse } from "../../features/pulse/pulseSlice";
 import { Menu, Portal } from "@chakra-ui/react";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";

@@ -1,5 +1,5 @@
 "use client";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "../../../components/ui/separator";
 import { useState } from "react";
 
 const AccountManagement = () => {

@@ -1,11 +1,11 @@
 "use client";
-import { AppDispatch } from "@/app/store";
+import { AppDispatch } from "../../app/store";
 import {
   getFeedAsync,
   selectFeed,
   selectFeedLoading,
   selectPagination,
-} from "@/features/post/postSlice";
+} from "../../features/post/postSlice";
 import Image from "next/image";
 import { JSX, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";

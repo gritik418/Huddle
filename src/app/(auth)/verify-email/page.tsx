@@ -1,16 +1,16 @@
 "use client";
-import Spinner from "@/components/Spinner/Spinner";
+import Spinner from "../../../components/Spinner/Spinner";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
-} from "@/components/ui/input-otp";
+} from "../../../components/ui/input-otp";
 import {
   useVerifyUserEmailMutation,
   VerifyEmailResponse,
-} from "@/features/api/authApi";
-import { selectSignupEmail } from "@/features/auth/authSlice";
-import { selectUser } from "@/features/user/userSlice";
+} from "../../../features/api/authApi";
+import { selectSignupEmail } from "../../../features/auth/authSlice";
+import { selectUser } from "../../../features/user/userSlice";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import Image from "next/image";

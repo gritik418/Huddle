@@ -1,4 +1,4 @@
-import { selectUser } from "@/features/user/userSlice";
+import { selectUser } from "../../features/user/userSlice";
 import Image from "next/image";
 import { JSX, useState } from "react";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
@@ -10,7 +10,7 @@ import { Bounce, toast } from "react-toastify";
 import {
   useLikePostMutation,
   useUnlikePostMutation,
-} from "@/features/api/postApi";
+} from "../../features/api/postApi";
 import { redirect } from "next/navigation";
 
 type PropsType = {

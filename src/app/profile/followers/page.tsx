@@ -1,5 +1,5 @@
 "use client";
-import { selectFollowers } from "@/features/user/userSlice";
+import { selectFollowers } from "../../../features/user/userSlice";
 import Image from "next/image";
 import Link from "next/link";
 import { JSX, useState } from "react";

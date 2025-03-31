@@ -1,7 +1,7 @@
-import Navbar from "@/components/Navbar/Navbar";
-import { SettingsSidebar } from "@/components/SettingsSidebar/SettingsSidebar";
-import { Separator } from "@/components/ui/separator";
-import SettingsOptionsMenu from "@/components/SettingsOptionsMenu/SettingsOptionsMenu";
+import Navbar from "../../components/Navbar/Navbar";
+import { SettingsSidebar } from "../../components/SettingsSidebar/SettingsSidebar";
+import { Separator } from "../../components/ui/separator";
+import SettingsOptionsMenu from "../../components/SettingsOptionsMenu/SettingsOptionsMenu";
 
 export type NavItems = {
   title: string;

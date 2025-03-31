@@ -1,4 +1,4 @@
-import { selectOnlineMembers, selectUser } from "@/features/user/userSlice";
+import { selectOnlineMembers, selectUser } from "../../features/user/userSlice";
 import Image from "next/image";
 import { JSX } from "react";
 import { useSelector } from "react-redux";

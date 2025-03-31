@@ -1,13 +1,19 @@
-import { SEND_MESSAGE } from "@/constants/events";
-import { useSocket } from "@/contexts/socket/SocketProvider";
-import { selectUser } from "@/features/user/userSlice";
+import { SEND_MESSAGE } from "../../constants/events";
+import { useSocket } from "../../contexts/socket/SocketProvider";
+import { selectUser } from "../../features/user/userSlice";
 import { Textarea } from "@chakra-ui/react";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, JSX, useState } from "react";
 import { BsFillSendFill } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
 
-const MessageInput = ({ chatId, chat }: { chatId: string; chat: Chat }) => {
+const MessageInput = ({
+  chatId,
+  chat,
+}: {
+  chatId: string;
+  chat: Chat;
+}): JSX.Element => {
   const socket: Socket | null = useSocket();
   const user: User | null = useSelector(selectUser);
   const [content, setContent] = useState<string>("");

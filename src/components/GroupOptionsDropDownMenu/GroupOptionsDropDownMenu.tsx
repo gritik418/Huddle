@@ -12,10 +12,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { useClearChatMutation } from "@/features/api/chatApi";
-import { AppDispatch } from "@/app/store";
+import { useClearChatMutation } from "../../features/api/chatApi";
+import { AppDispatch } from "../../app/store";
 import { useDispatch } from "react-redux";
-import { clearMessages } from "@/features/message/messageSlice";
+import { clearMessages } from "../../features/message/messageSlice";
 import { Bounce, toast } from "react-toastify";
 
 const GroupOptionsDropDownMenu = ({

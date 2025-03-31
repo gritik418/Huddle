@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import { JSX } from "react";
 
 const GroupMemberTile = ({
   member,
@@ -7,7 +7,7 @@ const GroupMemberTile = ({
 }: {
   member: ChatMember;
   admins: string[];
-}) => {
+}): JSX.Element => {
   return (
     <div
       key={member._id}

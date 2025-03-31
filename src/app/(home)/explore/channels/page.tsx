@@ -1,5 +1,5 @@
 "use client";
-import SearchBar from "@/components/SearchBar/SearchBar";
+import SearchBar from "../../../../components/SearchBar/SearchBar";
 import React, { useState } from "react";
 
 const ExploreChannels = () => {

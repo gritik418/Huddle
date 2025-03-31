@@ -1,4 +1,4 @@
-import { clearUser, selectUser } from "@/features/user/userSlice";
+import { clearUser, selectUser } from "../../features/user/userSlice";
 import Image from "next/image";
 import Link from "next/link";
 import { JSX } from "react";
@@ -14,11 +14,14 @@ import {
   MenubarSeparator,
   MenubarTrigger,
 } from "../ui/menubar";
-import { LogoutResponse, useUserLogoutMutation } from "@/features/api/authApi";
+import {
+  LogoutResponse,
+  useUserLogoutMutation,
+} from "../../features/api/authApi";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { Bounce, toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { AppDispatch } from "@/app/store";
+import { AppDispatch } from "../../app/store";
 
 const ProfileMenu = (): JSX.Element => {
   const user: User | null = useSelector(selectUser);

@@ -1,14 +1,15 @@
 "use client";
-import { AppDispatch } from "@/app/store";
-import { useUserLogoutMutation } from "@/features/api/authApi";
-import { useGetUserQuery } from "@/features/api/userApi";
-import { clearUser } from "@/features/user/userSlice";
+import { AppDispatch } from "../../app/store";
+import { useUserLogoutMutation } from "../../features/api/authApi";
+import { useGetUserQuery } from "../../features/api/userApi";
+import { clearUser } from "../../features/user/userSlice";
 import Image from "next/image";
 import { redirect, useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import Spinner from "../Spinner/Spinner";
+import { JSX } from "react";
 
-const NotLoggedIn = () => {
+const NotLoggedIn = (): JSX.Element => {
   const [userLogout] = useUserLogoutMutation();
   const dispatch = useDispatch<AppDispatch>();
   const { isLoading, data } = useGetUserQuery();

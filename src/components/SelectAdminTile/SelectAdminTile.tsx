@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { Dispatch, JSX, SetStateAction } from "react";
+import { Dispatch, JSX, SetStateAction } from "react";
 
 type PropsType = {
   user: Follower;

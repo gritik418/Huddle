@@ -4,8 +4,8 @@ import {
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useGetUsersForMentionQuery } from "@/features/api/userApi";
+} from "../../components/ui/dropdown-menu";
+import { useGetUsersForMentionQuery } from "../../features/api/userApi";
 import { Dispatch, JSX, SetStateAction } from "react";
 import { VscMention } from "react-icons/vsc";
 import MentionItem from "../MentionItem/MentionItem";

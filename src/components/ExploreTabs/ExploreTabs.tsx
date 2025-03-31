@@ -1,12 +1,12 @@
 "use client";
-import React from "react";
+import { JSX } from "react";
 import Link from "next/link";
 import { FaHashtag } from "react-icons/fa";
 import { GrChannel } from "react-icons/gr";
 import { LuUser } from "react-icons/lu";
 import { usePathname } from "next/navigation";
 
-const ExploreTabs = () => {
+const ExploreTabs = (): JSX.Element => {
   const pathname = usePathname();
   return (
     <ul className="flex p-3 gap-5">

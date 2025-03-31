@@ -6,16 +6,20 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "../../components/ui/select";
 import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
-import { ChannelData } from "@/validators/channelSchema";
+import { ChannelData } from "../../validators/channelSchema";
+import { JSX } from "react";
 
 type PropsType = {
   setValue: UseFormSetValue<ChannelData>;
   getValues: UseFormGetValues<ChannelData>;
 };
 
-export function SelectChannelType({ getValues, setValue }: PropsType) {
+export function SelectChannelType({
+  getValues,
+  setValue,
+}: PropsType): JSX.Element {
   const handleChange = (value: "public" | "private" | "invite-only") => {
     setValue("type", value);
   };

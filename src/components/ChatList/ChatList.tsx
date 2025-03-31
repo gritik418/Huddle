@@ -2,8 +2,8 @@
 import { JSX, useEffect, useState } from "react";
 import ChatListItem from "../ChatListItem/ChatListItem";
 import { useSelector } from "react-redux";
-import { selectChats, selectChatsLoading } from "@/features/chat/chatSlice";
-import { selectUser } from "@/features/user/userSlice";
+import { selectChats, selectChatsLoading } from "../../features/chat/chatSlice";
+import { selectUser } from "../../features/user/userSlice";
 import ChatItemSkeleton from "../ChatItemSkeleton/ChatItemSkeleton";
 
 type PropsType = { chatId: string | null; searchQuery: string | null };

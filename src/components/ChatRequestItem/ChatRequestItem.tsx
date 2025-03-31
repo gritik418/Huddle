@@ -2,7 +2,7 @@ import {
   ChatRequestApiResponse,
   useAcceptChatRequestMutation,
   useDeclineChatRequestMutation,
-} from "@/features/api/chatRequestApi";
+} from "../../features/api/chatRequestApi";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
 import { JSX, useState } from "react";
@@ -11,8 +11,8 @@ import { MdDelete } from "react-icons/md";
 import { Bounce, toast } from "react-toastify";
 import Spinner from "../Spinner/Spinner";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/app/store";
-import { removeChatRequest } from "@/features/chatRequest/chatRequestSlice";
+import { AppDispatch } from "../../app/store";
+import { removeChatRequest } from "../../features/chatRequest/chatRequestSlice";
 import Link from "next/link";
 
 type PropsType = {

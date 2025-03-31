@@ -1,5 +1,5 @@
 "use client";
-import { AppDispatch } from "@/app/store";
+import { AppDispatch } from "../../app/store";
 import { JSX, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +9,7 @@ import {
   selectUserPulses,
   selectUserPulsesLoading,
   selectUserPulsesPagination,
-} from "@/features/pulse/pulseSlice";
+} from "../../features/pulse/pulseSlice";
 import UserPulseItem from "../UserPulseItem/UserPulseItem";
 
 const UserPulses = (): JSX.Element => {

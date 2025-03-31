@@ -1,12 +1,12 @@
 "use client";
-import { AppDispatch } from "@/app/store";
+import { AppDispatch } from "../../app/store";
 import {
   clearSearch,
   searchAsync,
   selectSearchedAccounts,
   selectSearchLoading,
   selectSearchPagination,
-} from "@/features/search/searchSlice";
+} from "../../features/search/searchSlice";
 import { JSX, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";

@@ -1,6 +1,6 @@
 "use client";
-import SearchBar from "@/components/SearchBar/SearchBar";
-import SearchedHashtags from "@/components/SearchedHashtags/SearchedHashtags";
+import SearchBar from "../../../../components/SearchBar/SearchBar";
+import SearchedHashtags from "../../../../components/SearchedHashtags/SearchedHashtags";
 import { useState } from "react";
 
 const ExploreHashtags = () => {

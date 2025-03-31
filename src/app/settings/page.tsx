@@ -1,21 +1,22 @@
 "use client";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "../../components/ui/separator";
 import {
   useToggleAccountPrivacyMutation,
   useToggleActiveStatusVisibilityMutation,
   useToggleMentionsAllowanceMutation,
-} from "@/features/api/accountSettingsApi";
+} from "../../features/api/accountSettingsApi";
 import {
   selectUser,
   toggleActiveStatus,
   toggleAllowMentions,
   togglePrivacy,
-} from "@/features/user/userSlice";
+} from "../../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 import { AppDispatch } from "../store";
+import { JSX } from "react";
 
-const PrivacySettings = () => {
+const PrivacySettings = (): JSX.Element => {
   const user: User | null = useSelector(selectUser);
   const [toggleAccountPrivacy] = useToggleAccountPrivacyMutation();
   const [toggleMentionsAllowance] = useToggleMentionsAllowanceMutation();

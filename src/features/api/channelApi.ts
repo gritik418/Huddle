@@ -8,6 +8,21 @@ export type CreateChannelApiResponse = {
   errors?: Partial<ChannelData>;
 };
 
+export type GetChannelApiResponse = {
+  success: boolean;
+  message?: string;
+  channel?: {
+    _id: string;
+    creatorId: Follower;
+    description: string;
+    isActive: boolean;
+    members: Follower[];
+    name: string;
+    sendMessagePermission: "creator" | "members" | "everyone";
+    type: "public" | "private" | "invite-only";
+  };
+};
+
 const channelApi = createApi({
   reducerPath: "channelApi",
   baseQuery: fetchBaseQuery({
@@ -25,9 +40,19 @@ const channelApi = createApi({
         body: data,
       }),
     }),
+    getChannelById: build.query<GetChannelApiResponse, string>({
+      query: (channelId: string) => ({
+        url: `/${channelId}`,
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useCreateChannelMutation } = channelApi;
+export const { useCreateChannelMutation, useGetChannelByIdQuery } = channelApi;
 
 export default channelApi;

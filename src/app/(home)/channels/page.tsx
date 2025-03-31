@@ -1,14 +1,14 @@
 "use client";
-import { AppDispatch } from "@/app/store";
-import Spinner from "@/components/Spinner/Spinner";
+import { AppDispatch } from "../../../app/store";
+import Spinner from "../../../components/Spinner/Spinner";
 import {
   clearSearch,
   searchAsync,
   selectSearchedChannels,
   selectSearchLoading,
   selectSearchPagination,
-} from "@/features/search/searchSlice";
-import { selectUser } from "@/features/user/userSlice";
+} from "../../../features/search/searchSlice";
+import { selectUser } from "../../../features/user/userSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { JSX, useEffect, useState } from "react";
@@ -103,17 +103,13 @@ const Channels = (): JSX.Element => {
                 <div className="flex gap-2">
                   <Link
                     href={`/channels/${channel._id}`}
-                    className="border-blue-500 text-blue-500 border-2 font-semibold px-3 box-border py-1 rounded-md"
+                    className="border-blue-500 text-blue-500 border-2 font-semibold px-2 box-border rounded-md"
                   >
                     View
                   </Link>
 
-                  {channel.members.includes(user._id) ? (
-                    <button className="bg-red-400 text-white px-3 py-1 rounded-md hover:bg-red-500">
-                      Leave
-                    </button>
-                  ) : (
-                    <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
+                  {!channel.members.includes(user._id) && (
+                    <button className="bg-blue-500 text-white px-2 font-semibold rounded-md hover:bg-blue-600">
                       Join
                     </button>
                   )}

@@ -1,4 +1,4 @@
-import React, { JSX } from "react";
+import { JSX } from "react";
 import StoryItem from "../StoryItem/StoryItem";
 import AddStory from "../AddStory/AddStory";
 

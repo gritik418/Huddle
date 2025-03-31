@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Dispatch, JSX, SetStateAction } from "react";
+import { ChangeEvent, Dispatch, JSX, SetStateAction } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 
 type PropsType = {

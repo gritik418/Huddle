@@ -1,5 +1,5 @@
 "use client";
-import { selectFollowings } from "@/features/user/userSlice";
+import { selectFollowings } from "../../features/user/userSlice";
 import { Dispatch, JSX, SetStateAction } from "react";
 import { useSelector } from "react-redux";
 import SelectMemberTile from "../SelectMemberTile/SelectMemberTile";

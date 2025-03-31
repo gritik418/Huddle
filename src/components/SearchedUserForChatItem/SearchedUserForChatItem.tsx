@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { JSX, useState } from "react";
+import { JSX, useState } from "react";
 import { BiSolidMessageAdd } from "react-icons/bi";
 import {
   Tooltip,
@@ -10,7 +10,7 @@ import {
 import {
   SendChatRequestApiResponse,
   useSendChatRequestMutation,
-} from "@/features/api/chatRequestApi";
+} from "../../features/api/chatRequestApi";
 import { Bounce, toast } from "react-toastify";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Spinner from "../Spinner/Spinner";

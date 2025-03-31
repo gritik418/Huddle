@@ -1,7 +1,7 @@
 import Image from "next/image";
-import React from "react";
+import { JSX } from "react";
 
-const PulseItem = ({ pulse }: { pulse: Pulse }) => {
+const PulseItem = ({ pulse }: { pulse: Pulse }): JSX.Element => {
   return (
     <div className="bg-white p-4 rounded-lg shadow-md w-full">
       <div className="flex items-center space-x-2">

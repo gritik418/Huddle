@@ -1,7 +1,7 @@
 import Image from "next/image";
-import React from "react";
+import { JSX } from "react";
 
-const InviteMemberItem = ({ member }: { member: Follower }) => {
+const InviteMemberItem = ({ member }: { member: Follower }): JSX.Element => {
   return (
     <div className="bg-white flex justify-between items-center rounded-lg p-2">
       <div className="flex items-center gap-2">

@@ -1,5 +1,5 @@
-import HomeSidebar from "@/components/HomeSidebar/HomeSidebar";
-import Navbar from "@/components/Navbar/Navbar";
+import HomeSidebar from "../../components/HomeSidebar/HomeSidebar";
+import Navbar from "../../components/Navbar/Navbar";
 
 export default function Layout({
   children,

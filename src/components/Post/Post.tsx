@@ -6,12 +6,12 @@ import { FaRegCommentDots } from "react-icons/fa";
 import PostMedia from "../PostMedia/PostMedia";
 import PostOptions from "../PostOptions/PostOptions";
 import { useSelector } from "react-redux";
-import { selectUser } from "@/features/user/userSlice";
+import { selectUser } from "../../features/user/userSlice";
 import { Bounce, toast } from "react-toastify";
 import {
   useLikePostMutation,
   useUnlikePostMutation,
-} from "@/features/api/postApi";
+} from "../../features/api/postApi";
 import { redirect } from "next/navigation";
 
 type PropsType = {

@@ -1,5 +1,5 @@
 "use client";
-import { selectUser } from "@/features/user/userSlice";
+import { selectUser } from "../../features/user/userSlice";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

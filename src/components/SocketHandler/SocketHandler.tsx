@@ -1,5 +1,5 @@
 "use client";
-import { AppDispatch } from "@/app/store";
+import { AppDispatch } from "../../app/store";
 import {
   ACCEPTED_FOLLOW_REQUEST,
   ADDED_TO_GROUP,
@@ -12,17 +12,20 @@ import {
   STATUS_UPDATE,
   UNSEND_MESSAGE,
   USER_ONLINE,
-} from "@/constants/events";
-import { useSocket } from "@/contexts/socket/SocketProvider";
+} from "../../constants/events";
+import { useSocket } from "../../contexts/socket/SocketProvider";
 import {
   addChat,
   removeLastMessage,
   updateLastMessage,
-} from "@/features/chat/chatSlice";
-import { addChatRequest } from "@/features/chatRequest/chatRequestSlice";
-import { addFollowRequest } from "@/features/followRequest/followRequestSlice";
-import { addMessage, removeMessage } from "@/features/message/messageSlice";
-import { addOnlineMember, removeOnlineMember } from "@/features/user/userSlice";
+} from "../../features/chat/chatSlice";
+import { addChatRequest } from "../../features/chatRequest/chatRequestSlice";
+import { addFollowRequest } from "../../features/followRequest/followRequestSlice";
+import { addMessage, removeMessage } from "../../features/message/messageSlice";
+import {
+  addOnlineMember,
+  removeOnlineMember,
+} from "../../features/user/userSlice";
 import { usePathname } from "next/navigation";
 import React, { JSX, useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";

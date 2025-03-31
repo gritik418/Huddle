@@ -1,14 +1,14 @@
 "use client";
-import { AppDispatch } from "@/app/store";
-import Post from "@/components/Post/Post";
-import PostSkeleton from "@/components/PostSkeleton/PostSkeleton";
-import Spinner from "@/components/Spinner/Spinner";
+import { AppDispatch } from "../../../app/store";
+import Post from "../../../components/Post/Post";
+import PostSkeleton from "../../../components/PostSkeleton/PostSkeleton";
+import Spinner from "../../../components/Spinner/Spinner";
 import {
   getPostsByFollowingsAsync,
   selectPostByFollowings,
   selectPostByFollowingsLoading,
   selectPostByFollowingsPagination,
-} from "@/features/post/postSlice";
+} from "../../../features/post/postSlice";
 import Image from "next/image";
 import { JSX, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";

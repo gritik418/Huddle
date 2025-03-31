@@ -1,9 +1,9 @@
 "use client";
-import AddPost from "@/components/AddPost/AddPost";
-import Feed from "@/components/Feed/Feed";
-import HomeSidebar from "@/components/HomeSidebar/HomeSidebar";
-import Navbar from "@/components/Navbar/Navbar";
-import StoriesContainer from "@/components/StoriesContainer/StoriesContainer";
+import AddPost from "../components/AddPost/AddPost";
+import Feed from "../components/Feed/Feed";
+import HomeSidebar from "../components/HomeSidebar/HomeSidebar";
+import Navbar from "../components/Navbar/Navbar";
+import StoriesContainer from "../components/StoriesContainer/StoriesContainer";
 import { JSX } from "react";
 
 const App = (): JSX.Element => {
