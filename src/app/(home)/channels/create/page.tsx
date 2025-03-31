@@ -30,9 +30,6 @@ const CreateChannelPage = (): JSX.Element => {
   const [createChannel] = useCreateChannelMutation();
   const user = useSelector(selectUser);
   const router = useRouter();
-
-  if (!user) return <NotLoggedIn />;
-
   const {
     register,
     handleSubmit,
@@ -49,6 +46,8 @@ const CreateChannelPage = (): JSX.Element => {
     },
     resolver: zodResolver(ChannelSchema),
   });
+
+  if (!user) return <NotLoggedIn />;
 
   const handleCreateChannel = async (values: ChannelData) => {
     try {
