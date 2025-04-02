@@ -1,34 +1,34 @@
 "use client";
-import { AppDispatch } from "../../../app/store";
-import Spinner from "../../../components/Spinner/Spinner";
+import Link from "next/link";
+import { AppDispatch } from "../../../../app/store";
+import Spinner from "../../../../components/Spinner/Spinner";
 import {
   clearSearch,
   searchAsync,
   selectSearchedChannels,
   selectSearchLoading,
   selectSearchPagination,
-} from "../../../features/search/searchSlice";
-import { selectUser } from "../../../features/user/userSlice";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+} from "../../../../features/search/searchSlice";
+import { selectUser } from "../../../../features/user/userSlice";
 import { JSX, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
-const Channels = (): JSX.Element => {
-  const [searchQuery, setSearchQuery] = useState("");
+const AllChannels = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>();
   const [page, setPage] = useState<number>(1);
   const channels: Channel[] = useSelector(selectSearchedChannels);
   const loading: boolean = useSelector(selectSearchLoading);
   const pagination = useSelector(selectSearchPagination);
   const user: User = useSelector(selectUser)!;
+  const router = useRouter();
 
   const fetchData = async () => {
     if (page >= 1) {
       dispatch(
         searchAsync({
-          searchQuery,
+          searchQuery: "",
           type: "channels",
           page: page + 1,
           limit: 10,
@@ -39,24 +39,22 @@ const Channels = (): JSX.Element => {
     }
   };
 
+  const handleCreateChannelPage = () => {
+    router.push("/channels/create");
+  };
+
   useEffect(() => {
     setPage(1);
     const timeOutId = setTimeout(() => {
       dispatch(clearSearch());
 
       dispatch(
-        searchAsync({ searchQuery, type: "channels", page: 1, limit: 10 })
+        searchAsync({ searchQuery: "", type: "channels", page: 1, limit: 10 })
       );
     }, 600);
 
     return () => clearTimeout(timeOutId);
-  }, [searchQuery, dispatch]);
-
-  const router = useRouter();
-
-  const handleCreateChannelPage = () => {
-    router.push("/channels/create");
-  };
+  }, [dispatch]);
 
   function renderContent(): JSX.Element {
     if (loading && page === 1) {
@@ -102,7 +100,7 @@ const Channels = (): JSX.Element => {
 
                 <div className="flex gap-2">
                   <Link
-                    href={`/channels/${channel._id}`}
+                    href={`/channels/info/${channel._id}`}
                     className="border-blue-500 text-blue-500 border-2 font-semibold px-2 box-border rounded-md"
                   >
                     View
@@ -121,46 +119,26 @@ const Channels = (): JSX.Element => {
       </InfiniteScroll>
     );
   }
-
   return (
-    <div className="flex flex-col min-h-[calc(100vh-56px-16px-24px)] w-full gap-3">
-      <div className="bg-gradient-to-r rounded-lg from-blue-400 to-purple-500 text-white text-center p-6">
-        <h1 className="text-3xl font-bold">Channels</h1>
-        <p className="mt-2 text-sm font-semibold">
-          Join a channel or create your own to start a conversation!
-        </p>
-      </div>
+    <div className="w-full bg-white min-h-[calc(100vh-56px-16px-24px-130px)] flex flex-col p-3 rounded-lg">
+      <div className="mx-auto w-full p-2 items-center">
+        <div className="flex justify-between items-center mb-4 h-10">
+          <h2 className="text-2xl font-semibold">All Channels</h2>
 
-      <div className="w-full bg-white min-h-[calc(100vh-56px-16px-24px-130px)] flex flex-col p-3 rounded-lg">
-        <div className="mx-auto w-full p-6 items-center">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-semibold">Browse Channels</h2>
-
-            <div className="text-center">
-              <button
-                onClick={handleCreateChannelPage}
-                className="bg-[var(--primary)] transition-colors ease-in-out duration-300 text-white px-6 py-3 rounded-md hover:bg-[var(--secondary)]"
-              >
-                Create a New Channel
-              </button>
-            </div>
+          <div className="text-center">
+            <button
+              onClick={handleCreateChannelPage}
+              className="bg-[var(--primary)] transition-colors h-10 ease-in-out duration-300 text-white px-6 rounded-md hover:bg-[var(--secondary)]"
+            >
+              Create a New Channel
+            </button>
           </div>
-
-          <div className="w-full my-6 flex items-center gap-2">
-            <input
-              type="text"
-              placeholder="Search Channels"
-              className="border bg-gray-50 border-gray-300 outline-blue-400 p-4 rounded-md w-full"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-
-          <div className="flex mt-6 w-full flex-col">{renderContent()}</div>
         </div>
+
+        <div className="flex mt-6 w-full flex-col">{renderContent()}</div>
       </div>
     </div>
   );
 };
 
-export default Channels;
+export default AllChannels;

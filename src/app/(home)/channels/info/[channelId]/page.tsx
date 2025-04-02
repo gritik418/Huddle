@@ -1,19 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import CreatorInfo from "../../../../components/CreatorInfo/CreatorInfo";
-import Spinner from "../../../../components/Spinner/Spinner";
-import { useGetChannelByIdQuery } from "../../../../features/api/channelApi";
+import CreatorInfo from "../../../../../components/CreatorInfo/CreatorInfo";
+import Spinner from "../../../../../components/Spinner/Spinner";
+import { useGetChannelByIdQuery } from "../../../../../features/api/channelApi";
 import { useParams } from "next/navigation";
-import React, { JSX } from "react";
+import { JSX } from "react";
 
 const ChannelInfo = (): JSX.Element => {
   const params = useParams();
   const channelId = params?.channelId as string;
 
-  const { data, isLoading, isError } = useGetChannelByIdQuery(channelId, {
-    skip: !channelId,
-  });
+  const { data, isLoading, isError } = useGetChannelByIdQuery(channelId);
 
   if (isLoading) {
     return (
