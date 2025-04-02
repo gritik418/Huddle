@@ -119,6 +119,7 @@ const AllChannels = (): JSX.Element => {
       </InfiniteScroll>
     );
   }
+
   return (
     <div className="w-full bg-white min-h-[calc(100vh-56px-16px-24px-130px)] flex flex-col p-3 rounded-lg">
       <div className="mx-auto w-full p-2 items-center">

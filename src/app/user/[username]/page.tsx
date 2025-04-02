@@ -53,8 +53,8 @@ const UserInfo = (): JSX.Element => {
           <Image
             src={"/images/no-user.jpg"}
             alt="no-user"
-            height={300}
-            width={300}
+            height={210}
+            width={210}
           />
           <p className="text-center text-lg text-gray-600 max-w-[600px]">
             Oops! We couldn&apos;t find the user you&apos;re looking for. Maybe
@@ -183,8 +183,8 @@ const UserInfo = (): JSX.Element => {
                   data?.user?.profilePicture || "/images/default-profile.jpg"
                 }
                 alt="avatar"
-                height={150}
-                width={150}
+                height={200}
+                width={200}
                 className="rounded-full h-full w-full"
               />
             </div>

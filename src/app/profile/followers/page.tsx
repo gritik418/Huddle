@@ -1,13 +1,34 @@
 "use client";
-import { selectFollowers } from "../../../features/user/userSlice";
+import { useRemoveFollowerMutation } from "../../../features/api/userApi";
+import {
+  removeFromFollowers,
+  selectFollowers,
+} from "../../../features/user/userSlice";
 import Image from "next/image";
 import Link from "next/link";
 import { JSX, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../../app/store";
+import Spinner from "../../../components/Spinner/Spinner";
 
 const Followers = () => {
   const followers: Follower[] = useSelector(selectFollowers);
   const [searchQuery, setSearchQuery] = useState("");
+  const [removeFollowerLoading, setRemoveFollowerLoading] =
+    useState<boolean>(false);
+  const [removeFollower] = useRemoveFollowerMutation();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleRemoveFollower = async (userId: string): Promise<void> => {
+    setRemoveFollowerLoading(true);
+    const { data: res } = await removeFollower(userId);
+    setRemoveFollowerLoading(false);
+    if (res) {
+      if (res.success) {
+        dispatch(removeFromFollowers(userId));
+      }
+    }
+  };
 
   function renderComponent(): JSX.Element {
     if (!followers || followers.length === 0) {
@@ -36,12 +57,14 @@ const Followers = () => {
     return (
       <div className="flex flex-col gap-3">
         {filteredFollowers.map((follower) => (
-          <Link
-            href={`/user/${follower.username}`}
+          <div
             key={follower._id}
             className="flex items-center justify-between p-4 shadow-sm bg-gray-50 rounded-lg"
           >
-            <div className="flex items-center">
+            <Link
+              href={`/user/${follower.username}`}
+              className="flex items-center"
+            >
               <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center text-lg font-semibold text-white mr-4">
                 <Image
                   src={follower.profilePicture || "/images/default-profile.jpg"}
@@ -56,8 +79,15 @@ const Followers = () => {
                 <p className="font-semibold">{follower.firstName}</p>
                 <p className="text-sm text-gray-500">@{follower.username}</p>
               </div>
-            </div>
-          </Link>
+            </Link>
+
+            <button
+              onClick={() => handleRemoveFollower(follower._id)}
+              className="flex w-28 h-10 items-center justify-center bg-blue-400 rounded-lg font-bold text-white text-xl"
+            >
+              {removeFollowerLoading ? <Spinner variant={null} /> : "Remove"}
+            </button>
+          </div>
         ))}
       </div>
     );

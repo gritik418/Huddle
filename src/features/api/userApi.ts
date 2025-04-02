@@ -151,6 +151,16 @@ const userApi = createApi({
         },
       }),
     }),
+    removeFollower: build.mutation<ApiResponse, string>({
+      query: (followerId: string) => ({
+        url: `/${followerId}/remove`,
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
@@ -163,6 +173,7 @@ export const {
   useGetPostsByUserQuery,
   useGetActiveMembersQuery,
   useGetUserByUsernameQuery,
+  useRemoveFollowerMutation,
   useGetUsersForMentionQuery,
 } = userApi;
 

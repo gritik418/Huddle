@@ -1,13 +1,33 @@
 "use client";
-import { selectFollowings } from "../../../features/user/userSlice";
+import { AppDispatch } from "../../../app/store";
+import { useUnfollowMutation } from "../../../features/api/userApi";
 import Image from "next/image";
 import Link from "next/link";
 import { JSX, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  removeFromFollowing,
+  selectFollowings,
+} from "../../../features/user/userSlice";
+import Spinner from "../../../components/Spinner/Spinner";
 
 const Followings = () => {
   const followings = useSelector(selectFollowings);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [unfollowLoading, setUnfollowLoading] = useState<boolean>(false);
+  const [unfollow] = useUnfollowMutation();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleUnfollow = async (userId: string): Promise<void> => {
+    setUnfollowLoading(true);
+    const { data: res } = await unfollow(userId);
+    setUnfollowLoading(false);
+    if (res) {
+      if (res.success) {
+        dispatch(removeFromFollowing(userId));
+      }
+    }
+  };
 
   function renderComponent(): JSX.Element {
     if (!followings || followings.length === 0) {
@@ -36,12 +56,14 @@ const Followings = () => {
     return (
       <div className="flex flex-col gap-3">
         {filteredFollowings.map((following) => (
-          <Link
-            href={`/user/${following.username}`}
+          <div
             key={following._id}
             className="flex items-center justify-between p-4 shadow-sm bg-gray-50 rounded-lg"
           >
-            <div className="flex items-center">
+            <Link
+              href={`/user/${following.username}`}
+              className="flex items-center flex-1"
+            >
               <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center text-lg font-semibold text-white mr-4">
                 <Image
                   src={
@@ -57,8 +79,15 @@ const Followings = () => {
                 <p className="font-semibold">{following.firstName}</p>
                 <p className="text-sm text-gray-500">@{following.username}</p>
               </div>
-            </div>
-          </Link>
+            </Link>
+
+            <button
+              onClick={() => handleUnfollow(following._id)}
+              className="flex w-28 h-10 items-center justify-center bg-blue-400 rounded-lg font-bold text-white text-xl"
+            >
+              {unfollowLoading ? <Spinner variant={null} /> : "Unfollow"}
+            </button>
+          </div>
         ))}
       </div>
     );

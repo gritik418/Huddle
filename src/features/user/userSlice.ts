@@ -69,6 +69,19 @@ const userSlice = createSlice({
         }
       }
     },
+    removeFromFollowers: (state, action) => {
+      if (action.payload) {
+        state.followers = state.followers.filter(
+          (follower: Follower) => follower._id !== action.payload
+        );
+
+        if (state.user && state.user.followers) {
+          state.user.followers = state.user.followers.filter(
+            (id: string) => id !== action.payload
+          );
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -116,6 +129,7 @@ export const {
   toggleActiveStatus,
   toggleAllowMentions,
   removeFromFollowing,
+  removeFromFollowers,
 } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user.user;

@@ -40,13 +40,12 @@ const BrowseChannels = (): JSX.Element => {
 
   useEffect(() => {
     setPage(1);
+    dispatch(clearSearch());
     const timeOutId = setTimeout(() => {
-      dispatch(clearSearch());
-
       dispatch(
         searchAsync({ searchQuery, type: "channels", page: 1, limit: 10 })
       );
-    }, 600);
+    }, 200);
 
     return () => clearTimeout(timeOutId);
   }, [searchQuery, dispatch]);
@@ -128,7 +127,7 @@ const BrowseChannels = (): JSX.Element => {
             placeholder="Search Channels"
             className="border bg-gray-50 border-gray-300 outline-blue-400 p-4 rounded-md w-full"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => setSearchQuery(() => e.target.value)}
           />
         </div>
 
