@@ -16,6 +16,7 @@ import {
 } from "../../../features/api/userApi";
 import {
   addToBlockedUsers,
+  removeFromBlockedUsers,
   removeFromFollowing,
   selectBlockedUserIds,
   selectUser,
@@ -27,7 +28,10 @@ import { JSX, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { useBlockUserMutation } from "@/features/api/blockUserApi";
+import {
+  useBlockUserMutation,
+  useUnblockUserMutation,
+} from "@/features/api/blockUserApi";
 
 const UserInfo = (): JSX.Element => {
   const params: { username: string } = useParams();
@@ -35,6 +39,7 @@ const UserInfo = (): JSX.Element => {
   const [activeTab, setActiveTab] = useState<"posts" | "channels">("posts");
   const [sendFollowRequest] = useSendFollowRequestMutation();
   const [loading, setLoading] = useState<boolean>(false);
+  const [unblockLoading, setUnblockLoading] = useState<boolean>(false);
   const [unfollowLoading, setUnfollowLoading] = useState<boolean>(false);
   const [unfollow] = useUnfollowMutation();
   const [blockUser] = useBlockUserMutation();
@@ -43,6 +48,8 @@ const UserInfo = (): JSX.Element => {
   const userId: string | undefined = data?.user?._id;
   const dispatch = useDispatch<AppDispatch>();
   const blockedUserIds = useSelector(selectBlockedUserIds);
+  const [showUnblockModal, setShowUnblockModal] = useState<boolean>(false);
+  const [unblock] = useUnblockUserMutation();
 
   if (isLoading) {
     return (
@@ -171,6 +178,32 @@ const UserInfo = (): JSX.Element => {
     }
   };
 
+  const handleUnblock = async () => {
+    if (!data.user?._id) return;
+    try {
+      setUnblockLoading(true);
+      const { data: res } = await unblock(data.user._id);
+      if (res?.success) {
+        dispatch(removeFromBlockedUsers(data.user._id));
+      }
+      setUnblockLoading(false);
+      setShowUnblockModal(false);
+    } catch (error) {
+      console.error(error);
+      toast.error("Some error occured.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
+
   if (data.user && data.user._id.toString() === user?._id.toString()) {
     redirect("/profile");
   }
@@ -270,31 +303,42 @@ const UserInfo = (): JSX.Element => {
           </div>
 
           <div className="flex my-6 justify-end">
-            {user?.following.includes(data.user._id.toString()) ? (
-              <button
-                onClick={handleUnfollow}
-                className="flex w-32 h-10 items-center justify-center text-[var(--secondary)] rounded-lg font-bold text-xl bg-gray-200"
+            {blockedUserIds.includes(data.user._id) ? (
+              <div
+                onClick={() => setShowUnblockModal(true)}
+                className="flex p-2 hover:bg-[var(--secondary)] items-center justify-center rounded-md font-medium cursor-pointer bg-[var(--primary)] transition-colors ease-in-out duration-300 text-white"
               >
-                {unfollowLoading ? <Spinner variant={"xs"} /> : "Unfollow"}
-              </button>
+                Unblock
+              </div>
             ) : (
               <>
-                {user?.followers.includes(data.user._id.toString()) ? (
+                {user?.following.includes(data.user._id.toString()) ? (
                   <button
-                    disabled={loading}
-                    onClick={handleSendFollowRequest}
-                    className="flex w-36 h-10 items-center justify-center bg-[var(--secondary)] rounded-lg font-bold text-xl text-white"
+                    onClick={handleUnfollow}
+                    className="flex w-32 h-10 items-center justify-center text-[var(--secondary)] rounded-lg font-bold text-xl bg-gray-200"
                   >
-                    {loading ? <Spinner variant={null} /> : "Follow Back"}
+                    {unfollowLoading ? <Spinner variant={"xs"} /> : "Unfollow"}
                   </button>
                 ) : (
-                  <button
-                    disabled={loading}
-                    onClick={handleSendFollowRequest}
-                    className="flex w-24 items-center justify-center h-10 bg-[var(--secondary)] rounded-lg font-bold text-xl text-white"
-                  >
-                    {loading ? <Spinner variant={null} /> : "Follow"}
-                  </button>
+                  <>
+                    {user?.followers.includes(data.user._id.toString()) ? (
+                      <button
+                        disabled={loading}
+                        onClick={handleSendFollowRequest}
+                        className="flex w-36 h-10 items-center justify-center bg-[var(--secondary)] rounded-lg font-bold text-xl text-white"
+                      >
+                        {loading ? <Spinner variant={null} /> : "Follow Back"}
+                      </button>
+                    ) : (
+                      <button
+                        disabled={loading}
+                        onClick={handleSendFollowRequest}
+                        className="flex w-24 items-center justify-center h-10 bg-[var(--secondary)] rounded-lg font-bold text-xl text-white"
+                      >
+                        {loading ? <Spinner variant={null} /> : "Follow"}
+                      </button>
+                    )}
+                  </>
                 )}
               </>
             )}
@@ -346,6 +390,37 @@ const UserInfo = (): JSX.Element => {
           </div>
         )}
       </div>
+
+      {showUnblockModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+              Unblock User
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to unblock{" "}
+              <strong>
+                {data.user?.firstName} {data.user?.lastName}
+              </strong>
+              ?
+            </p>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setShowUnblockModal(false)}
+                className="bg-gray-300 text-gray-700 h-10 px-4 rounded-md hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleUnblock}
+                className="bg-red-600 hover:bg-red-700 w-32 text-white h-10 rounded-md flex items-center justify-center"
+              >
+                {unblockLoading ? <Spinner variant={null} /> : "Yes, Unblock"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

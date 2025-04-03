@@ -94,6 +94,18 @@ const userSlice = createSlice({
         }
       }
     },
+    removeFromBlockedUsers: (state, action) => {
+      if (action.payload) {
+        if (state.blockedUserIds.includes(action.payload)) {
+          state.blockedUserIds = state.blockedUserIds.filter(
+            (id: string) => id !== action.payload
+          );
+          state.blockedUsers = state.blockedUsers.filter(
+            (user: Follower) => user._id !== action.payload
+          );
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -158,6 +170,7 @@ export const {
   toggleAllowMentions,
   removeFromFollowing,
   removeFromFollowers,
+  removeFromBlockedUsers,
 } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user.user;

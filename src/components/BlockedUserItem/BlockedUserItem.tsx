@@ -37,8 +37,7 @@ const BlockedUserItem = ({ user }: { user: Follower }): JSX.Element => {
         <div className="flex h-16 w-16 rounded-full">
           <Image
             className="h-full w-full rounded-full"
-            // src={user.profilePicture || "/images/default-profile.jpg"}
-            src={"/images/default-profile.jpg"}
+            src={user.profilePicture || "/images/default-profile.jpg"}
             alt="avatar"
             height={50}
             width={50}
