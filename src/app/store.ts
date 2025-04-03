@@ -20,6 +20,7 @@ import pulseApi from "../features/api/pulseApi";
 import pulseSlice from "../features/pulse/pulseSlice";
 import blockUserApi from "../features/api/blockUserApi";
 import channelApi from "../features/api/channelApi";
+import channelSlice from "@/features/channel/channelSlice";
 
 const store = configureStore({
   reducer: {
@@ -42,6 +43,7 @@ const store = configureStore({
     [pulseSlice.reducerPath]: pulseSlice.reducer,
     [searchSlice.reducerPath]: searchSlice.reducer,
     [messageSlice.reducerPath]: messageSlice.reducer,
+    [channelSlice.reducerPath]: channelSlice.reducer,
     [chatRequestSlice.reducerPath]: chatRequestSlice.reducer,
     [followRequestSlice.reducerPath]: followRequestSlice.reducer,
   },

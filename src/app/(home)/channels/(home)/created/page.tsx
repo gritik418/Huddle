@@ -6,49 +6,34 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../../../app/store";
 import Spinner from "../../../../../components/Spinner/Spinner";
 import {
-  clearSearch,
-  searchAsync,
-  selectSearchedChannels,
-  selectSearchLoading,
-  selectSearchPagination,
-} from "../../../../../features/search/searchSlice";
-import { selectUser } from "../../../../../features/user/userSlice";
+  getCreatedChannelsAsync,
+  selectCreatedChannels,
+  selectCreatedChannelsLoading,
+  selectCreatedChannelsPagination,
+} from "../../../../../features/channel/channelSlice";
 
-const BrowseChannels = (): JSX.Element => {
-  const [searchQuery, setSearchQuery] = useState("");
+const CreatedChannels = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>();
   const [page, setPage] = useState<number>(1);
-  const channels: Channel[] = useSelector(selectSearchedChannels);
-  const loading: boolean = useSelector(selectSearchLoading);
-  const pagination = useSelector(selectSearchPagination);
-  const user: User = useSelector(selectUser)!;
+  const channels: Channel[] = useSelector(selectCreatedChannels);
+  const loading: boolean = useSelector(selectCreatedChannelsLoading);
+  const pagination = useSelector(selectCreatedChannelsPagination);
 
   const fetchData = async () => {
     if (page >= 1) {
-      dispatch(
-        searchAsync({
-          searchQuery,
-          type: "channels",
-          page: page + 1,
-          limit: 10,
-        })
-      );
-
+      dispatch(getCreatedChannelsAsync({ page: page + 1, limit: 10 }));
       setPage(() => page + 1);
     }
   };
 
   useEffect(() => {
     setPage(1);
-    dispatch(clearSearch());
     const timeOutId = setTimeout(() => {
-      dispatch(
-        searchAsync({ searchQuery, type: "channels", page: 1, limit: 10 })
-      );
+      dispatch(getCreatedChannelsAsync({ page: 1, limit: 10 }));
     }, 1000);
 
     return () => clearTimeout(timeOutId);
-  }, [searchQuery, dispatch]);
+  }, [dispatch]);
 
   function renderContent(): JSX.Element {
     if (loading && page === 1) {
@@ -62,7 +47,7 @@ const BrowseChannels = (): JSX.Element => {
     if (!channels || channels.length === 0 || !pagination) {
       return (
         <div className="flex items-center justify-center my-6">
-          <p className="text-lg">No channels found.</p>
+          <p className="text-lg">You haven't created any channels yet.</p>
         </div>
       );
     }
@@ -99,12 +84,6 @@ const BrowseChannels = (): JSX.Element => {
                   >
                     View
                   </Link>
-
-                  {!channel.members.includes(user._id) && (
-                    <button className="bg-blue-500 text-white px-2 font-semibold rounded-md hover:bg-blue-600">
-                      Join
-                    </button>
-                  )}
                 </div>
               </div>
             </div>
@@ -118,17 +97,7 @@ const BrowseChannels = (): JSX.Element => {
     <div className="w-full bg-white min-h-[calc(100vh-56px-16px-24px-130px)] flex flex-col p-3 rounded-lg">
       <div className="mx-auto w-full p-2 items-center">
         <div className="flex justify-between items-center h-10 mb-4">
-          <h2 className="text-2xl font-semibold">Browse Channels</h2>
-        </div>
-
-        <div className="w-full my-6 flex items-center gap-2">
-          <input
-            type="text"
-            placeholder="Search Channels"
-            className="border bg-gray-50 border-gray-300 outline-blue-400 p-4 rounded-md w-full"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(() => e.target.value)}
-          />
+          <h2 className="text-2xl font-semibold">Created Channels</h2>
         </div>
 
         <div className="flex mt-6 w-full flex-col">{renderContent()}</div>
@@ -137,4 +106,4 @@ const BrowseChannels = (): JSX.Element => {
   );
 };
 
-export default BrowseChannels;
+export default CreatedChannels;
