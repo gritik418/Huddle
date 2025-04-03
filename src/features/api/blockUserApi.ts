@@ -6,6 +6,11 @@ type GetBlockedUsersApiResponse = {
   blockedUsers?: Follower[];
 };
 
+type ApiResponse = {
+  success: boolean;
+  message: string;
+};
+
 const blockUserApi = createApi({
   reducerPath: "blockUserApi",
   baseQuery: fetchBaseQuery({
@@ -24,9 +29,20 @@ const blockUserApi = createApi({
       }),
       providesTags: ["block"],
     }),
-    unblockUser: build.mutation<void, string>({
+    unblockUser: build.mutation<ApiResponse, string>({
       query: (userId: string) => ({
         url: `/${userId}/unblock`,
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+      invalidatesTags: ["block"],
+    }),
+    blockUser: build.mutation<ApiResponse, string>({
+      query: (userId: string) => ({
+        url: `/${userId}/block`,
         method: "POST",
         credentials: "include",
         headers: {
@@ -38,6 +54,10 @@ const blockUserApi = createApi({
   }),
 });
 
-export const { useGetBlockedUsersQuery, useUnblockUserMutation } = blockUserApi;
+export const {
+  useGetBlockedUsersQuery,
+  useUnblockUserMutation,
+  useBlockUserMutation,
+} = blockUserApi;
 
 export default blockUserApi;

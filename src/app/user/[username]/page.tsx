@@ -1,4 +1,5 @@
 "use client";
+import { Menu, Portal } from "@chakra-ui/react";
 import { AppDispatch } from "../../../app/store";
 import Navbar from "../../../components/Navbar/Navbar";
 import PrivateAccount from "../../../components/PrivateAccount/PrivateAccount";
@@ -14,7 +15,9 @@ import {
   useUnfollowMutation,
 } from "../../../features/api/userApi";
 import {
+  addToBlockedUsers,
   removeFromFollowing,
+  selectBlockedUserIds,
   selectUser,
 } from "../../../features/user/userSlice";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
@@ -23,6 +26,8 @@ import { redirect, useParams } from "next/navigation";
 import { JSX, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Bounce, toast } from "react-toastify";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { useBlockUserMutation } from "@/features/api/blockUserApi";
 
 const UserInfo = (): JSX.Element => {
   const params: { username: string } = useParams();
@@ -32,10 +37,12 @@ const UserInfo = (): JSX.Element => {
   const [loading, setLoading] = useState<boolean>(false);
   const [unfollowLoading, setUnfollowLoading] = useState<boolean>(false);
   const [unfollow] = useUnfollowMutation();
+  const [blockUser] = useBlockUserMutation();
   const { username } = params;
   const { data, isLoading, error } = useGetUserByUsernameQuery(username);
   const userId: string | undefined = data?.user?._id;
   const dispatch = useDispatch<AppDispatch>();
+  const blockedUserIds = useSelector(selectBlockedUserIds);
 
   if (isLoading) {
     return (
@@ -156,6 +163,14 @@ const UserInfo = (): JSX.Element => {
     }
   };
 
+  const handleBlock = async (): Promise<void> => {
+    if (!data.user?._id) return;
+    const { data: res } = await blockUser(data.user._id);
+    if (res?.success) {
+      dispatch(addToBlockedUsers(data.user._id));
+    }
+  };
+
   if (data.user && data.user._id.toString() === user?._id.toString()) {
     redirect("/profile");
   }
@@ -187,6 +202,31 @@ const UserInfo = (): JSX.Element => {
                 width={200}
                 className="rounded-full h-full w-full"
               />
+            </div>
+
+            <div className="flex">
+              <Menu.Root>
+                <Menu.Trigger asChild>
+                  <div className="flex bg-gray-50 cursor-pointer p-[5px] rounded-lg absolute top-3 right-3">
+                    <BsThreeDotsVertical />
+                  </div>
+                </Menu.Trigger>
+                <Portal>
+                  <Menu.Positioner>
+                    <Menu.Content>
+                      {blockedUserIds.includes(data.user._id) ? (
+                        <Menu.Item onClick={handleBlock} value="new-txt-a">
+                          Unblock User
+                        </Menu.Item>
+                      ) : (
+                        <Menu.Item onClick={handleBlock} value="new-txt-a">
+                          Block User
+                        </Menu.Item>
+                      )}
+                    </Menu.Content>
+                  </Menu.Positioner>
+                </Portal>
+              </Menu.Root>
             </div>
           </div>
 
@@ -261,48 +301,50 @@ const UserInfo = (): JSX.Element => {
           </div>
         </div>
 
-        <div className="flex flex-col bg-white p-3 rounded-lg">
-          <div className="flex">
-            <ul className="flex items-center w-full gap-4">
-              <li
-                onClick={() => setActiveTab("posts")}
-                className={`px-4 p-2 rounded-lg cursor-pointer ${
-                  activeTab === "posts"
-                    ? "bg-[var(--secondary)] text-white font-bold"
-                    : "bg-gray-100"
-                }`}
-              >
-                Posts
-              </li>
+        {!blockedUserIds.includes(data.user._id) && (
+          <div className="flex flex-col bg-white p-3 rounded-lg">
+            <div className="flex">
+              <ul className="flex items-center w-full gap-4">
+                <li
+                  onClick={() => setActiveTab("posts")}
+                  className={`px-4 p-2 rounded-lg cursor-pointer ${
+                    activeTab === "posts"
+                      ? "bg-[var(--secondary)] text-white font-bold"
+                      : "bg-gray-100"
+                  }`}
+                >
+                  Posts
+                </li>
 
-              <li
-                onClick={() => setActiveTab("channels")}
-                className={`px-4 p-2 rounded-lg cursor-pointer ${
-                  activeTab === "channels"
-                    ? "bg-[var(--secondary)] text-white font-bold"
-                    : "bg-gray-100"
-                }`}
-              >
-                Channels
-              </li>
-            </ul>
-          </div>
+                <li
+                  onClick={() => setActiveTab("channels")}
+                  className={`px-4 p-2 rounded-lg cursor-pointer ${
+                    activeTab === "channels"
+                      ? "bg-[var(--secondary)] text-white font-bold"
+                      : "bg-gray-100"
+                  }`}
+                >
+                  Channels
+                </li>
+              </ul>
+            </div>
 
-          <div className="flex mt-4">
-            {activeTab === "posts" ? (
-              <>
-                {data.user?.isPrivate &&
-                !user?.following.includes(data.user._id) ? (
-                  <PrivateAccount />
-                ) : (
-                  <UserPosts user={data.user} />
-                )}
-              </>
-            ) : (
-              <UserChannels />
-            )}
+            <div className="flex mt-4">
+              {activeTab === "posts" ? (
+                <>
+                  {data.user?.isPrivate &&
+                  !user?.following.includes(data.user._id) ? (
+                    <PrivateAccount />
+                  ) : (
+                    <UserPosts user={data.user} />
+                  )}
+                </>
+              ) : (
+                <UserChannels />
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

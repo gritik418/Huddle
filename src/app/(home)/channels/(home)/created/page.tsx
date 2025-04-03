@@ -11,6 +11,7 @@ import {
   selectCreatedChannelsLoading,
   selectCreatedChannelsPagination,
 } from "../../../../../features/channel/channelSlice";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 const CreatedChannels = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>();
@@ -70,8 +71,17 @@ const CreatedChannels = (): JSX.Element => {
               key={channel._id}
               className="bg-gray-50 w-full flex-col flex flex-1 p-4 rounded-lg shadow-lg hover:shadow-lg transition"
             >
-              <h3 className="text-xl font-semibold">{channel.name}</h3>
-              <p className="text-sm text-gray-600">{channel.description}</p>
+              <div className="flex justify-between">
+                <div className="flex flex-col">
+                  <h3 className="text-xl font-semibold">{channel.name}</h3>
+                  <p className="text-sm text-gray-600">{channel.description}</p>
+                </div>
+
+                <div className="flex bg-gray-200 cursor-pointer h-max p-[6px] rounded-lg">
+                  <BsThreeDotsVertical className="text-sm" />
+                </div>
+              </div>
+
               <div className="mt-8 flex justify-between items-center">
                 <span className="text-sm text-gray-500">
                   {channel.members.length} members

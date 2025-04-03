@@ -1,12 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import userApi from "../api/userApi";
 import { RootState } from "@/app/store";
+import blockUserApi from "../api/blockUserApi";
 
 interface UserState {
   user: User | null;
   onlineMembers: string[];
   followings: Follower[];
   followers: Follower[];
+  blockedUsers: Follower[];
+  blockedUserIds: string[];
 }
 
 const initialState: UserState = {
@@ -14,6 +17,8 @@ const initialState: UserState = {
   onlineMembers: [],
   followings: [],
   followers: [],
+  blockedUsers: [],
+  blockedUserIds: [],
 };
 
 const userSlice = createSlice({
@@ -82,6 +87,13 @@ const userSlice = createSlice({
         }
       }
     },
+    addToBlockedUsers: (state, action) => {
+      if (action.payload) {
+        if (!state.blockedUserIds.includes(action.payload)) {
+          state.blockedUserIds.push(action.payload);
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -117,6 +129,21 @@ const userSlice = createSlice({
             state.followers = action.payload.followers || [];
           }
         }
+      )
+      .addMatcher(
+        blockUserApi.endpoints.getBlockedUsers.matchFulfilled,
+        (state, action) => {
+          if (action.payload.success) {
+            if (action.payload.blockedUsers) {
+              action.payload.blockedUsers?.forEach((user: Follower) => {
+                if (!state.blockedUserIds.includes(user._id)) {
+                  state.blockedUserIds.push(user._id);
+                  state.blockedUsers.push(user);
+                }
+              });
+            }
+          }
+        }
       );
   },
 });
@@ -125,6 +152,7 @@ export const {
   clearUser,
   togglePrivacy,
   addOnlineMember,
+  addToBlockedUsers,
   removeOnlineMember,
   toggleActiveStatus,
   toggleAllowMentions,
@@ -137,5 +165,8 @@ export const selectFollowers = (state: RootState) => state.user.followers;
 export const selectFollowings = (state: RootState) => state.user.followings;
 export const selectOnlineMembers = (state: RootState) =>
   state.user.onlineMembers;
+export const selectBlockedUsers = (state: RootState) => state.user.blockedUsers;
+export const selectBlockedUserIds = (state: RootState) =>
+  state.user.blockedUserIds;
 
 export default userSlice;
