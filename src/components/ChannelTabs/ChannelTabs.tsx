@@ -10,8 +10,8 @@ type Tab = {
 
 const tabItems: Tab[] = [
   {
-    name: "Chats",
-    link: "/channels/chats",
+    name: "All",
+    link: "/channels",
   },
   {
     name: "Browse",

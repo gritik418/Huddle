@@ -1,6 +1,7 @@
 import { IoChatboxEllipses } from "react-icons/io5";
 import ChannelTabs from "../../../../components/ChannelTabs/ChannelTabs";
 import { JSX } from "react";
+import Link from "next/link";
 
 export default function Layout({
   children,
@@ -23,6 +24,13 @@ export default function Layout({
           Invites
         </div>
       </div>
+
+      <Link
+        href={"/channels/chats"}
+        className="flex shadow-xl bg-black items-center justify-center fixed h-14 w-14 right-8 bottom-8 rounded-full"
+      >
+        <IoChatboxEllipses className="text-white text-2xl" />
+      </Link>
 
       {children}
     </div>

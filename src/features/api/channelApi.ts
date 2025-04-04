@@ -23,6 +23,12 @@ export type GetChannelApiResponse = {
   };
 };
 
+export type GetChannelChatsApiResponse = {
+  success: boolean;
+  message?: string;
+  channels?: Channel[];
+};
+
 const channelApi = createApi({
   reducerPath: "channelApi",
   baseQuery: fetchBaseQuery({
@@ -50,9 +56,23 @@ const channelApi = createApi({
         },
       }),
     }),
+    getChannelChats: build.query<GetChannelChatsApiResponse, void>({
+      query: () => ({
+        url: "/chats",
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useCreateChannelMutation, useGetChannelByIdQuery } = channelApi;
+export const {
+  useGetChannelByIdQuery,
+  useGetChannelChatsQuery,
+  useCreateChannelMutation,
+} = channelApi;
 
 export default channelApi;
