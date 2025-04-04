@@ -1,3 +1,4 @@
+import { IoChatboxEllipses } from "react-icons/io5";
 import ChannelTabs from "../../../../components/ChannelTabs/ChannelTabs";
 import { JSX } from "react";
 

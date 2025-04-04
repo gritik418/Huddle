@@ -1,36 +1,55 @@
 "use client";
+import { AppDispatch } from "../../../../store";
+import Spinner from "../../../../../components/Spinner/Spinner";
+import {
+  clearSearch,
+  searchAsync,
+  selectSearchedChannels,
+  selectSearchLoading,
+  selectSearchPagination,
+} from "../../../../../features/search/searchSlice";
 import { JSX, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../../../../../app/store";
-import Spinner from "../../../../../components/Spinner/Spinner";
-import {
-  getJoinedChannelsAsync,
-  selectJoinedChannels,
-  selectJoinedChannelsLoading,
-  selectJoinedChannelsPagination,
-} from "../../../../../features/channel/channelSlice";
+import { useRouter } from "next/navigation";
 import ChannelItem from "../../../../../components/ChannelItem/ChannelItem";
 
-const JoinedChannels = (): JSX.Element => {
+const ChannelChats = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>();
   const [page, setPage] = useState<number>(1);
-  const channels: Channel[] = useSelector(selectJoinedChannels);
-  const loading: boolean = useSelector(selectJoinedChannelsLoading);
-  const pagination = useSelector(selectJoinedChannelsPagination);
+  const channels: Channel[] = useSelector(selectSearchedChannels);
+  const loading: boolean = useSelector(selectSearchLoading);
+  const pagination = useSelector(selectSearchPagination);
+  const router = useRouter();
 
   const fetchData = async () => {
     if (page >= 1) {
-      dispatch(getJoinedChannelsAsync({ page: page + 1, limit: 10 }));
+      dispatch(
+        searchAsync({
+          searchQuery: "",
+          type: "channels",
+          page: page + 1,
+          limit: 10,
+        })
+      );
+
       setPage(() => page + 1);
     }
+  };
+
+  const handleCreateChannelPage = () => {
+    router.push("/channels/create");
   };
 
   useEffect(() => {
     setPage(1);
     const timeOutId = setTimeout(() => {
-      dispatch(getJoinedChannelsAsync({ page: 1, limit: 10 }));
-    }, 1000);
+      dispatch(clearSearch());
+
+      dispatch(
+        searchAsync({ searchQuery: "", type: "channels", page: 1, limit: 10 })
+      );
+    }, 600);
 
     return () => clearTimeout(timeOutId);
   }, [dispatch]);
@@ -47,7 +66,7 @@ const JoinedChannels = (): JSX.Element => {
     if (!channels || channels.length === 0 || !pagination) {
       return (
         <div className="flex items-center justify-center my-6">
-          <p className="text-lg">You haven't joined any channels yet.</p>
+          <p className="text-lg">No channels found.</p>
         </div>
       );
     }
@@ -76,8 +95,17 @@ const JoinedChannels = (): JSX.Element => {
   return (
     <div className="w-full bg-white min-h-[calc(100vh-56px-16px-24px-130px)] flex flex-col p-3 rounded-lg">
       <div className="mx-auto w-full p-2 items-center">
-        <div className="flex justify-between items-center h-10 mb-4">
-          <h2 className="text-2xl font-semibold">Joined Channels</h2>
+        <div className="flex justify-between items-center mb-4 h-10">
+          <h2 className="text-2xl font-semibold">Chats</h2>
+
+          <div className="text-center">
+            <button
+              onClick={handleCreateChannelPage}
+              className="bg-[var(--primary)] transition-colors h-10 ease-in-out duration-300 text-white px-6 rounded-md hover:bg-[var(--secondary)]"
+            >
+              Create a New Channel
+            </button>
+          </div>
         </div>
 
         <div className="flex mt-6 w-full flex-col">{renderContent()}</div>
@@ -86,4 +114,4 @@ const JoinedChannels = (): JSX.Element => {
   );
 };
 
-export default JoinedChannels;
+export default ChannelChats;

@@ -10,8 +10,8 @@ type Tab = {
 
 const tabItems: Tab[] = [
   {
-    name: "All",
-    link: "/channels",
+    name: "Chats",
+    link: "/channels/chats",
   },
   {
     name: "Browse",
@@ -32,12 +32,12 @@ const ChannelTabs = (): JSX.Element => {
   const pathname = usePathname();
 
   return (
-    <ul className="flex gap-3">
+    <ul className="flex gap-1 sm:gap-3">
       {tabItems.map((tab: Tab) => (
         <Link
           key={tab.name}
           href={tab.link}
-          className={`px-3 rounded-xl p-1 ${
+          className={`px-2 text-xs sm:text-lg sm:px-3 rounded-xl p-1 ${
             tab.link === pathname ? "bg-gray-300" : "bg-gray-100"
           }`}
         >

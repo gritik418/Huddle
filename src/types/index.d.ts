@@ -159,8 +159,8 @@ interface Channel {
   name: string;
   description: string;
   type: "public" | "private" | "invite-only";
-  creatorId: string;
-  members: string[];
+  creatorId: Follower;
+  members: Follower[];
   isActive: boolean;
   sendMessagePermission: "creator" | "members" | "everyone";
 }

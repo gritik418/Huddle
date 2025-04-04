@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { JSX, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +10,7 @@ import {
   selectCreatedChannelsLoading,
   selectCreatedChannelsPagination,
 } from "../../../../../features/channel/channelSlice";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import ChannelItem from "../../../../../components/ChannelItem/ChannelItem";
 
 const CreatedChannels = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>();
@@ -67,36 +66,7 @@ const CreatedChannels = (): JSX.Element => {
       >
         <div className="grid w-full min-w-full grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           {channels.map((channel: Channel) => (
-            <div
-              key={channel._id}
-              className="bg-gray-50 w-full flex-col flex flex-1 p-4 rounded-lg shadow-lg hover:shadow-lg transition"
-            >
-              <div className="flex justify-between">
-                <div className="flex flex-col">
-                  <h3 className="text-xl font-semibold">{channel.name}</h3>
-                  <p className="text-sm text-gray-600">{channel.description}</p>
-                </div>
-
-                <div className="flex bg-gray-200 cursor-pointer h-max p-[6px] rounded-lg">
-                  <BsThreeDotsVertical className="text-sm" />
-                </div>
-              </div>
-
-              <div className="mt-8 flex justify-between items-center">
-                <span className="text-sm text-gray-500">
-                  {channel.members.length} members
-                </span>
-
-                <div className="flex gap-2">
-                  <Link
-                    href={`/channels/info/${channel._id}`}
-                    className="border-blue-500 text-blue-500 border-2 font-semibold px-2 box-border rounded-md"
-                  >
-                    View
-                  </Link>
-                </div>
-              </div>
-            </div>
+            <ChannelItem key={channel._id} channel={channel} />
           ))}
         </div>
       </InfiniteScroll>
