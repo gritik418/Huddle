@@ -8,7 +8,7 @@ export default function Layout({
 }>): JSX.Element {
   return (
     <div className="w-full min-h-[calc(100vh-56px-16px-24px)] gap-2 h-[calc(100vh-56px-16px-24px)] bg-white p-2 flex rounded-lg">
-      <div className="min-w-[280px] items-center h-full overflow-y-scroll">
+      <div className="min-w-[280px] items-center h-full overflow-y-scroll hide-scrollbar">
         <ChannelChats />
       </div>
 

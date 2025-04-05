@@ -43,7 +43,7 @@ const ChannelItem = ({ channel }: { channel: Channel }): JSX.Element => {
 
           {memberIds.includes(user._id) ? (
             <Link
-              href={`/channels/chat/${channel._id}`}
+              href={`/channels/chats/${channel._id}`}
               className="bg-blue-500 text-white flex items-center justify-center font-semibold px-2 box-border rounded-md"
             >
               Chat

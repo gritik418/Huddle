@@ -24,7 +24,7 @@ const ChannelChats = (): JSX.Element => {
   }
 
   return (
-    <div className="flex flex-col gap-2 overflow-scroll">
+    <div className="flex flex-col gap-2 overflow-scroll hide-scrollbar">
       {data.channels.map((channel: Channel) => (
         <ChannelChatItem key={channel._id} channel={channel} />
       ))}

@@ -183,3 +183,13 @@ interface NotificationData {
   postId?: string;
   chat?: Chat;
 }
+
+interface ChannelMessage {
+  channelId: Follower;
+  sender: Follower;
+  content?: string;
+  attachment?: Attachment[];
+  sentAt?: Date;
+  status: "sent" | "delivered" | "failed";
+  deletedFor: string[];
+}
