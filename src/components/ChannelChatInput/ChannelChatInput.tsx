@@ -27,7 +27,7 @@ const ChannelChatInput = ({ channel }: { channel: Channel }): JSX.Element => {
   };
 
   return (
-    <div className="bg-gray-200 gap-3 flex items-center justify-between p-2 rounded-xl">
+    <div className="bg-gray-100 gap-3 flex items-center justify-between p-2 rounded-xl">
       <div className="flex flex-1">
         <input
           type="text"

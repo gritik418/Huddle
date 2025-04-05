@@ -174,6 +174,7 @@ interface NotificationData {
     | "FOLLOW_REQUEST"
     | "ADDED_TO_GROUP"
     | "NEW_MENTION"
+    | "NEW_CHANNEL_MESSAGE"
     | "ACCEPTED_FOLLOW_REQUEST";
   followRequestReceiver?: Follower;
   chatRequest?: ChatRequest;
@@ -182,6 +183,8 @@ interface NotificationData {
   creator?: Follower;
   postId?: string;
   chat?: Chat;
+  channel?: Channel;
+  channelMessage?: ChannelMessage;
 }
 
 interface ChannelMessage {

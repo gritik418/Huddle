@@ -1,22 +1,24 @@
 import { selectChannelMessages } from "../../features/channel/channelSlice";
-import { JSX } from "react";
+import { JSX, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import ChannelMessageItem from "../ChannelMessageItem/ChannelMessageItem";
 
-const ChannelMessagePlayground = ({
-  channelId,
-}: {
-  channelId: string;
-}): JSX.Element => {
+const ChannelMessagePlayground = (): JSX.Element => {
   const messages = useSelector(selectChannelMessages);
 
-  console.log(messages);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
-    <div className="h-full flex w-full flex-col p-3 gap-2">
+    <div className="h-full flex w-full overflow-y-scroll hode-scrollbar flex-col p-3 gap-3">
       {messages.map((message: ChannelMessage) => (
         <ChannelMessageItem key={message._id} message={message} />
       ))}
+
+      <div ref={messagesEndRef}></div>
     </div>
   );
 };

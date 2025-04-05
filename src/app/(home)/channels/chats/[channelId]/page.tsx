@@ -10,40 +10,49 @@ import { useParams } from "next/navigation";
 import {
   useGetChannelByIdQuery,
   useGetChannelChatMessagesQuery,
+  useGetChannelChatsQuery,
 } from "../../../../../features/api/channelApi";
 import Spinner from "../../../../../components/Spinner/Spinner";
 import Image from "next/image";
+import ChannelChats from "../../../../../components/ChannelChats/ChannelChats";
 
 const ChannelChat = () => {
   const params: { channelId: string } = useParams();
   const user: User | null = useSelector(selectUser);
 
   const { data, isError, isLoading } = useGetChannelByIdQuery(params.channelId);
+
   useGetChannelChatMessagesQuery(params.channelId, {
     refetchOnMountOrArgChange: true,
   });
 
-  if (!user || !user._id) return <NotLoggedIn />;
+  const {
+    isError: chatsError,
+    isLoading: chatsLoading,
+    data: chatsData,
+  } = useGetChannelChatsQuery();
 
-  if (isLoading) {
+  if (isLoading || chatsLoading) {
     return (
-      <div className="flex bg-gray-50 h-full rounded-lg w-full items-center justify-center">
+      <div className="flex bg-gray-50 min-h-[calc(100vh-56px-16px-24px)] h-full rounded-lg w-full items-center justify-center">
         <Spinner variant={"medium"} />
       </div>
     );
   }
 
-  if (isError) {
+  if (!user || !user._id) return <NotLoggedIn />;
+
+  if (isError || chatsError) {
     return (
-      <div className="flex flex-col bg-gray-50 h-full rounded-lg w-full items-center justify-center">
+      <div className="flex flex-col min-h-[calc(100vh-56px-16px-24px)] bg-gray-50 h-full rounded-lg w-full items-center justify-center">
         <p>Something went wrong while fetching the channel.</p>{" "}
       </div>
     );
   }
 
-  if (!data?.channel) {
+  if (!data?.channel || !chatsData?.channels) {
     return (
-      <div className="flex flex-col h-full rounded-lg w-full items-center justify-center">
+      <div className="flex flex-col bg-white h-full min-h-[calc(100vh-56px-16px-24px)] rounded-lg w-full items-center justify-center">
         <Image
           src={"/images/no-chat.jpg"}
           alt="no-chat"
@@ -115,12 +124,20 @@ const ChannelChat = () => {
   }
 
   return (
-    <div className="flex flex-col w-full h-full bg-gray-50">
-      <ChannelChatInfo channel={data?.channel} />
+    <div className="w-full min-h-[calc(100vh-56px-16px-24px)] gap-2 h-[calc(100vh-56px-16px-24px)] bg-white p-2 flex rounded-lg">
+      <div className="min-w-[280px] items-center h-full overflow-y-scroll hide-scrollbar">
+        <ChannelChats channels={chatsData?.channels} />
+      </div>
 
-      <ChannelMessagePlayground channelId={data.channel._id} />
+      <div className="flex flex-1 h-full items-center justify-center w-full">
+        <div className="flex flex-col w-full h-full bg-gray-50">
+          <ChannelChatInfo channel={data?.channel} />
 
-      {renderInputComponent()}
+          <ChannelMessagePlayground />
+
+          {renderInputComponent()}
+        </div>
+      </div>
     </div>
   );
 };

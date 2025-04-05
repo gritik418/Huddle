@@ -12,7 +12,7 @@ const ChannelChatItem = ({ channel }: { channel: Channel }): JSX.Element => {
       className={`flex p-2 items-center gap-2 rounded-lg ${
         pathname.includes(channel._id)
           ? "bg-[var(--secondary)] text-white font-semibold"
-          : "bg-gray-50"
+          : "bg-gray-100"
       }`}
     >
       <div className="flex h-12 w-12 rounded-full">

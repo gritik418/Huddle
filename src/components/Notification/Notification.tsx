@@ -10,6 +10,8 @@ const Notification = ({
   followRequestReceiver,
   creator,
   chat,
+  channel,
+  channelMessage,
 }: NotificationData): JSX.Element => {
   if (type === "CHAT_REQUEST")
     return (
@@ -195,6 +197,29 @@ const Notification = ({
         </div>
       );
     }
+  }
+
+  if (type === "NEW_CHANNEL_MESSAGE") {
+    return (
+      <div className="flex flex-col w-full">
+        <div className="flex font-semibold flex-col">
+          <p className="text-xs font-bold">New Channel Message</p>
+          <p>{channel?.name}</p>
+        </div>
+
+        {channelMessage?.content && (
+          <div className="flex items-center mt-2 justify-between p-1">
+            <p className="text-sm font-normal">
+              <span className="font-semibold">
+                {channelMessage?.sender.firstName}:
+              </span>{" "}
+              {channelMessage?.content?.slice(0, 20)}
+              {channelMessage?.content?.length > 20 ? "..." : ""}
+            </p>
+          </div>
+        )}
+      </div>
+    );
   }
 
   if (type === "ADDED_TO_GROUP") {

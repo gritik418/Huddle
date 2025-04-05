@@ -5,6 +5,7 @@ import {
   ADDED_TO_GROUP,
   CHANNEL_MESSAGE_SENT,
   MESSAGE_SENT,
+  NEW_CHANNEL_MESSAGE,
   NEW_CHAT,
   NEW_CHAT_REQUEST,
   NEW_FOLLOW_REQUEST,
@@ -235,9 +236,30 @@ const SocketHandler = ({
 
   const channelMessageSentHandler = useCallback(
     ({ message }: { message: ChannelMessage }) => {
-      console.log(message);
       if (pathname.includes(message.channelId)) {
         dispatch(addToChannelMessages(message));
+      }
+    },
+    [pathname, dispatch]
+  );
+
+  const newChannelMessageHandler = useCallback(
+    ({ message, channel }: { message: ChannelMessage; channel: Channel }) => {
+      if (pathname.includes(channel._id.toString())) {
+        dispatch(addToChannelMessages(message));
+      } else {
+        toast(
+          Notification({
+            id: message._id,
+            channel: channel,
+            type: "NEW_CHANNEL_MESSAGE",
+            channelMessage: message,
+          }),
+          {
+            hideProgressBar: true,
+            autoClose: 1000,
+          }
+        );
       }
     },
     [pathname, dispatch]
@@ -270,6 +292,8 @@ const SocketHandler = ({
 
     socket.on(CHANNEL_MESSAGE_SENT, channelMessageSentHandler);
 
+    socket.on(NEW_CHANNEL_MESSAGE, newChannelMessageHandler);
+
     return () => {
       socket.off(NEW_MESSAGE, newMessageHandler);
 
@@ -292,20 +316,23 @@ const SocketHandler = ({
       socket.off(ADDED_TO_GROUP, addedToGroupHandler);
 
       socket.off(CHANNEL_MESSAGE_SENT, channelMessageSentHandler);
+
+      socket.off(NEW_CHANNEL_MESSAGE, newChannelMessageHandler);
     };
   }, [
     socket,
+    newChatHandler,
+    newMentionHandler,
     newMessageHandler,
     messageSentHandler,
+    addedToGroupHandler,
+    statusUpdateHandler,
+    unsendMessageHandler,
     newChatRequestHandler,
     newfollowRequestHandler,
-    newChatHandler,
-    statusUpdateHandler,
-    acceptedFollowRequestHandler,
-    newMentionHandler,
-    unsendMessageHandler,
-    addedToGroupHandler,
+    newChannelMessageHandler,
     channelMessageSentHandler,
+    acceptedFollowRequestHandler,
   ]);
   return <div>{children}</div>;
 };
