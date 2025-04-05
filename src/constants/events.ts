@@ -21,3 +21,9 @@ export const ACCEPTED_FOLLOW_REQUEST = "accepted_follow_request";
 export const NEW_MENTION = "new_mention";
 
 export const UNSEND_MESSAGE = "unsend_message";
+
+export const SEND_CHANNEL_MESSAGE = "send_channel_message";
+
+export const NEW_CHANNEL_MESSAGE = "new_channel_message";
+
+export const CHANNEL_MESSAGE_SENT = "channel_message_sent";

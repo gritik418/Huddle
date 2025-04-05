@@ -3,6 +3,7 @@ import { AppDispatch } from "../../app/store";
 import {
   ACCEPTED_FOLLOW_REQUEST,
   ADDED_TO_GROUP,
+  CHANNEL_MESSAGE_SENT,
   MESSAGE_SENT,
   NEW_CHAT,
   NEW_CHAT_REQUEST,
@@ -32,6 +33,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { Socket } from "socket.io-client";
 import Notification from "../Notification/Notification";
+import { addToChannelMessages } from "@/features/channel/channelSlice";
 
 const SocketHandler = ({
   children,
@@ -231,6 +233,16 @@ const SocketHandler = ({
     [dispatch]
   );
 
+  const channelMessageSentHandler = useCallback(
+    ({ message }: { message: ChannelMessage }) => {
+      console.log(message);
+      if (pathname.includes(message.channelId)) {
+        dispatch(addToChannelMessages(message));
+      }
+    },
+    [pathname, dispatch]
+  );
+
   useEffect(() => {
     if (!socket) return;
 
@@ -256,6 +268,8 @@ const SocketHandler = ({
 
     socket.on(ADDED_TO_GROUP, addedToGroupHandler);
 
+    socket.on(CHANNEL_MESSAGE_SENT, channelMessageSentHandler);
+
     return () => {
       socket.off(NEW_MESSAGE, newMessageHandler);
 
@@ -276,6 +290,8 @@ const SocketHandler = ({
       socket.off(UNSEND_MESSAGE, unsendMessageHandler);
 
       socket.off(ADDED_TO_GROUP, addedToGroupHandler);
+
+      socket.off(CHANNEL_MESSAGE_SENT, channelMessageSentHandler);
     };
   }, [
     socket,
@@ -289,6 +305,7 @@ const SocketHandler = ({
     newMentionHandler,
     unsendMessageHandler,
     addedToGroupHandler,
+    channelMessageSentHandler,
   ]);
   return <div>{children}</div>;
 };

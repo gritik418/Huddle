@@ -10,8 +10,6 @@ const ChannelItem = ({ channel }: { channel: Channel }): JSX.Element => {
 
   if (!user) return <NotLoggedIn />;
 
-  console.log(channel);
-
   const memberIds: string[] = channel.members.map((member: Follower) => {
     return member._id.toString();
   });

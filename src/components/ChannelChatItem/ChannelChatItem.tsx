@@ -11,7 +11,7 @@ const ChannelChatItem = ({ channel }: { channel: Channel }): JSX.Element => {
       href={`/channels/chats/${channel._id}`}
       className={`flex p-2 items-center gap-2 rounded-lg ${
         pathname.includes(channel._id)
-          ? "bg-gray-400 text-white font-semibold"
+          ? "bg-[var(--secondary)] text-white font-semibold"
           : "bg-gray-50"
       }`}
     >

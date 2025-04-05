@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import { getCreatedChannels, getJoinedChannels } from "./channelApi";
+import channelApi from "../api/channelApi";
 
 interface ChannelState {
   joinedChannels: Channel[];
@@ -19,6 +20,8 @@ interface ChannelState {
     totalPages: number;
   };
   createdChannelIds: string[];
+
+  channelMessages: ChannelMessage[];
 }
 
 const initialState: ChannelState = {
@@ -28,6 +31,7 @@ const initialState: ChannelState = {
   createdChannels: [],
   createdChannelsLoading: false,
   createdChannelIds: [],
+  channelMessages: [],
 };
 
 export const getJoinedChannelsAsync = createAsyncThunk(
@@ -50,7 +54,13 @@ const channelSlice = createSlice({
   name: "channel",
   reducerPath: "channel",
   initialState,
-  reducers: {},
+  reducers: {
+    addToChannelMessages: (state, action) => {
+      if (action.payload.channelId) {
+        state.channelMessages.push(action.payload);
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getJoinedChannelsAsync.pending, (state) => {
@@ -94,9 +104,31 @@ const channelSlice = createSlice({
       })
       .addCase(getCreatedChannelsAsync.rejected, (state) => {
         state.createdChannelsLoading = false;
-      });
+      })
+      .addMatcher(
+        channelApi.endpoints.getChannelChatMessages.matchPending,
+        (state) => {
+          state.channelMessages = [];
+        }
+      )
+      .addMatcher(
+        channelApi.endpoints.getChannelChatMessages.matchFulfilled,
+        (state, action) => {
+          if (action.payload.messages) {
+            state.channelMessages = action.payload.messages;
+          }
+        }
+      )
+      .addMatcher(
+        channelApi.endpoints.getChannelChatMessages.matchRejected,
+        (state) => {
+          state.channelMessages = [];
+        }
+      );
   },
 });
+
+export const { addToChannelMessages } = channelSlice.actions;
 
 export const selectJoinedChannels = (state: RootState) =>
   state.channel.joinedChannels;
@@ -111,5 +143,8 @@ export const selectCreatedChannelsLoading = (state: RootState) =>
   state.channel.createdChannelsLoading;
 export const selectCreatedChannelsPagination = (state: RootState) =>
   state.channel.createdChannelsPagination;
+
+export const selectChannelMessages = (state: RootState) =>
+  state.channel.channelMessages;
 
 export default channelSlice;

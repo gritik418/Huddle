@@ -185,7 +185,8 @@ interface NotificationData {
 }
 
 interface ChannelMessage {
-  channelId: Follower;
+  _id: string;
+  channelId: string;
   sender: Follower;
   content?: string;
   attachment?: Attachment[];

@@ -248,7 +248,7 @@ const UserInfo = (): JSX.Element => {
                   <Menu.Positioner>
                     <Menu.Content>
                       {blockedUserIds.includes(data.user._id) ? (
-                        <Menu.Item onClick={handleBlock} value="new-txt-a">
+                        <Menu.Item onClick={handleUnblock} value="new-txt-a">
                           Unblock User
                         </Menu.Item>
                       ) : (

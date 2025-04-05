@@ -10,6 +10,7 @@ import React, { JSX } from "react";
 import Spinner from "../Spinner/Spinner";
 import { usePathname } from "next/navigation";
 import NotLoggedIn from "../NotLoggedIn/NotLoggedIn";
+import { useGetBlockedUsersQuery } from "@/features/api/blockUserApi";
 
 const UserProvider = ({
   children,
@@ -24,6 +25,7 @@ const UserProvider = ({
   useGetFollowRequestsQuery();
   useGetFollowingsQuery();
   useGetFollowersQuery();
+  useGetBlockedUsersQuery();
 
   if (
     pathname === "/login" ||
