@@ -10,9 +10,10 @@ const BlockedUsers = (): JSX.Element => {
 
   const { data, error, isLoading } = useGetBlockedUsersQuery();
 
-  const filteredUsers = data?.blockedUsers?.filter((user: Follower) =>
-    user.username.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredUsers = data?.blockedUsers?.filter((user: Follower) => {
+    const userQuery = `${user.firstName}${user.lastName}${user.username}`;
+    return userQuery.toLowerCase().includes(searchQuery.toLowerCase());
+  });
 
   function renderContent(): JSX.Element {
     if (isLoading) {
@@ -65,7 +66,7 @@ const BlockedUsers = (): JSX.Element => {
           placeholder="Search blocked users"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full py-2 px-4 rounded-md border border-gray-300 outline-[var(--secondary)]"
+          className="w-full py-2 px-4 rounded-md border bg-gray-50 border-gray-300 outline-[var(--secondary)]"
         />
       </div>
 

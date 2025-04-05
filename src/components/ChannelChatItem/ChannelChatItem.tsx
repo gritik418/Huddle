@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { JSX } from "react";
@@ -9,24 +8,23 @@ const ChannelChatItem = ({ channel }: { channel: Channel }): JSX.Element => {
   return (
     <Link
       href={`/channels/chats/${channel._id}`}
-      className={`flex p-2 items-center gap-2 rounded-lg ${
+      className={`flex flex-col p-5 items-start gap-2 w-full rounded-lg ${
         pathname.includes(channel._id)
           ? "bg-[var(--secondary)] text-white font-semibold"
           : "bg-gray-100"
       }`}
     >
-      <div className="flex h-12 w-12 rounded-full">
-        <Image
-          src={"/images/default-profile.jpg"}
-          alt="icon"
-          height={60}
-          width={60}
-          className="h-full w-full rounded-full"
-        />
+      <div className="flex flex-col">
+        <p className="text-lg font-semibold">{channel.name}</p>
+
+        <p className="text-xs">{channel.description}</p>
       </div>
 
-      <div className="flex">
-        <p>{channel.name}</p>
+      <div className="flex flex-col mt-6">
+        <p className="text-xs">
+          {channel.members.length}{" "}
+          {channel.members.length > 1 ? "members" : "member"}
+        </p>
       </div>
     </Link>
   );

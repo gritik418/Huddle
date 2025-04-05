@@ -26,11 +26,11 @@ const ChannelChatsPage = (): JSX.Element => {
 
   return (
     <div className="w-full min-h-[calc(100vh-56px-16px-24px)] gap-2 h-[calc(100vh-56px-16px-24px)] bg-white p-2 flex rounded-lg">
-      <div className="min-w-[280px] items-center h-full overflow-y-scroll hide-scrollbar">
+      <div className="min-w-[280px] w-full lg:w-1/2 xl:w-1/3 items-center h-full overflow-y-scroll hide-scrollbar">
         <ChannelChats channels={data.channels} />
       </div>
 
-      <div className="flex flex-1 h-full items-center justify-center w-full">
+      <div className="hidden lg:flex lg:w-1/2 xl:w-2/3 flex-1 h-full items-center justify-center w-full">
         <div className="flex flex-1 h-full items-center justify-center w-full">
           <Image
             src={"/images/select-channel-chat.jpg"}

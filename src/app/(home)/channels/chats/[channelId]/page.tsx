@@ -16,7 +16,7 @@ import Spinner from "../../../../../components/Spinner/Spinner";
 import Image from "next/image";
 import ChannelChats from "../../../../../components/ChannelChats/ChannelChats";
 
-const ChannelChat = () => {
+const ChannelChat = (): JSX.Element => {
   const params: { channelId: string } = useParams();
   const user: User | null = useSelector(selectUser);
 
@@ -124,13 +124,15 @@ const ChannelChat = () => {
     );
   }
 
+  console.log(chatsData.channels);
+
   return (
     <div className="w-full min-h-[calc(100vh-56px-16px-24px)] gap-2 h-[calc(100vh-56px-16px-24px)] bg-white p-2 flex rounded-lg">
-      <div className="min-w-[280px] items-center h-full overflow-y-scroll hide-scrollbar">
+      <div className="hidden w-full lg:flex flex-col lg:w-1/2 xl:w-1/3  items-center h-full overflow-y-scroll hide-scrollbar">
         <ChannelChats channels={chatsData?.channels} />
       </div>
 
-      <div className="flex flex-1 h-full items-center justify-center w-full">
+      <div className="lg:w-1/2 xl:w-2/3 flex-1 h-full items-center justify-center w-full">
         <div className="flex flex-col w-full h-full bg-gray-50">
           <ChannelChatInfo channel={data?.channel} />
 
