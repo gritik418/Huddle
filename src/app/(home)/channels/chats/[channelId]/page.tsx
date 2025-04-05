@@ -6,7 +6,7 @@ import ChannelMessagePlayground from "../../../../../components/ChannelMessagePl
 import { selectUser } from "../../../../../features/user/userSlice";
 import NotLoggedIn from "../../../../../components/NotLoggedIn/NotLoggedIn";
 import { JSX } from "react";
-import { useParams } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import {
   useGetChannelByIdQuery,
   useGetChannelChatMessagesQuery,
@@ -69,6 +69,7 @@ const ChannelChat = () => {
   const memberIds = data.channel.members.map((member: Follower) => member._id);
 
   function renderInputComponent(): JSX.Element {
+    if (!user) redirect("/login");
     if (data?.channel?.sendMessagePermission === "creator") {
       if (data?.channel?.creatorId._id === user?._id)
         return <ChannelChatInput channel={data.channel} />;
@@ -83,7 +84,7 @@ const ChannelChat = () => {
     }
 
     if (data?.channel?.sendMessagePermission === "members") {
-      if (memberIds.includes(user?._id.toString()!))
+      if (memberIds.includes(user._id.toString()))
         return <ChannelChatInput channel={data.channel} />;
 
       return (
@@ -100,7 +101,7 @@ const ChannelChat = () => {
       if (data?.channel?.creatorId._id === user?._id)
         return <ChannelChatInput channel={data.channel} />;
 
-      if (memberIds.includes(user?._id.toString()!))
+      if (memberIds.includes(user._id.toString()))
         return <ChannelChatInput channel={data.channel} />;
 
       return (

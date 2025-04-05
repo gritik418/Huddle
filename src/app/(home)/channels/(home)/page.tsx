@@ -8,7 +8,6 @@ import {
   selectSearchLoading,
   selectSearchPagination,
 } from "../../../../features/search/searchSlice";
-import { selectUser } from "../../../../features/user/userSlice";
 import { JSX, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +20,6 @@ const AllChannels = (): JSX.Element => {
   const channels: Channel[] = useSelector(selectSearchedChannels);
   const loading: boolean = useSelector(selectSearchLoading);
   const pagination = useSelector(selectSearchPagination);
-  const user: User = useSelector(selectUser)!;
   const router = useRouter();
 
   const fetchData = async () => {

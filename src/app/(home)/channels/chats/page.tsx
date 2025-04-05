@@ -19,7 +19,7 @@ const ChannelChatsPage = (): JSX.Element => {
   if (isError || !data || !data.channels || !data.channels.length) {
     return (
       <div className="flex min-h-[calc(100vh-56px-16px-24px)] bg-white w-full h-full items-center justify-center">
-        <p className="text-lg">You haven't joined any channels yet.</p>
+        <p className="text-lg">You haven&apos;t joined any channels yet.</p>
       </div>
     );
   }

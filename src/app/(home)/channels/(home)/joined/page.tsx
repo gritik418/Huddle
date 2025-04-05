@@ -47,7 +47,7 @@ const JoinedChannels = (): JSX.Element => {
     if (!channels || channels.length === 0 || !pagination) {
       return (
         <div className="flex items-center justify-center my-6">
-          <p className="text-lg">You haven't joined any channels yet.</p>
+          <p className="text-lg">You haven&apos;t joined any channels yet.</p>
         </div>
       );
     }
