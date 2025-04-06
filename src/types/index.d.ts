@@ -216,3 +216,10 @@ interface Story {
   viewsCount?: number;
   viewers?: string[];
 }
+
+interface JoinRequest {
+  _id: string;
+  userId: Follower;
+  channelId: string;
+  status: "pending" | "accepted" | "rejected";
+}

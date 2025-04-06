@@ -5,6 +5,12 @@ export type JoinRequestApiResponse = {
   message: string;
 };
 
+export type GetJoinRequestsApiResponse = {
+  success: boolean;
+  message?: string;
+  joinRequests: JoinRequest[];
+};
+
 const joinRequestApi = createApi({
   reducerPath: "joinRequestApi",
   baseQuery: fetchBaseQuery({
@@ -21,9 +27,44 @@ const joinRequestApi = createApi({
         },
       }),
     }),
+    getJoinRequests: build.query<GetJoinRequestsApiResponse, string>({
+      query: (channelId: string) => ({
+        url: `/${channelId}`,
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
+    acceptJoinRequest: build.mutation<JoinRequestApiResponse, string>({
+      query: (requestId: string) => ({
+        url: `/${requestId}/accept`,
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
+    declineJoinRequest: build.mutation<JoinRequestApiResponse, string>({
+      query: (requestId: string) => ({
+        url: `/${requestId}/decline`,
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useSendJoinRequestMutation } = joinRequestApi;
+export const {
+  useSendJoinRequestMutation,
+  useGetJoinRequestsQuery,
+  useAcceptJoinRequestMutation,
+  useDeclineJoinRequestMutation,
+} = joinRequestApi;
 
 export default joinRequestApi;

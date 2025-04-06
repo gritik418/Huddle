@@ -1,38 +1,25 @@
 "use client";
 
+import NotLoggedIn from "../../../../../components/NotLoggedIn/NotLoggedIn";
+import {
+  JoinRequestApiResponse,
+  useGetJoinRequestsQuery,
+  useSendJoinRequestMutation,
+} from "../../../../../features/api/joinRequestApi";
+import { Input, Menu, Portal, Textarea } from "@chakra-ui/react";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
+import { useParams } from "next/navigation";
+import { JSX, useState } from "react";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { IoPersonRemove } from "react-icons/io5";
+import { useSelector } from "react-redux";
+import { Bounce, toast } from "react-toastify";
 import CreatorInfo from "../../../../../components/CreatorInfo/CreatorInfo";
 import Spinner from "../../../../../components/Spinner/Spinner";
 import { useGetChannelByIdQuery } from "../../../../../features/api/channelApi";
-import { useParams } from "next/navigation";
-import { JSX, useState } from "react";
-import { Input, Menu, Portal, Textarea } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
 import { selectUser } from "../../../../../features/user/userSlice";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { IoPersonRemove } from "react-icons/io5";
-import NotLoggedIn from "@/components/NotLoggedIn/NotLoggedIn";
-import {
-  JoinRequestApiResponse,
-  useSendJoinRequestMutation,
-} from "@/features/api/joinRequestApi";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { Bounce, toast } from "react-toastify";
-
-const dummyJoinRequests = [
-  {
-    _id: "user1",
-    username: "john_doe",
-    firstName: "John",
-    lastName: "Doe",
-  },
-  {
-    _id: "user2",
-    username: "jane_smith",
-    firstName: "Jane",
-    lastName: "Smith",
-  },
-];
+import JoinRequestItem from "../../../../../components/JoinRequestItem/JoinRequestItem";
 
 const ChannelInfo = (): JSX.Element => {
   const params = useParams();
@@ -47,10 +34,16 @@ const ChannelInfo = (): JSX.Element => {
       refetchOnMountOrArgChange: true,
     }
   );
+  const {
+    data: requestData,
+    isLoading: requestLoading,
+    isError: joinRequestError,
+    refetch: refetchJoinRequest,
+  } = useGetJoinRequestsQuery(channelId);
 
   if (!user || !user._id) return <NotLoggedIn />;
 
-  if (isLoading) {
+  if (isLoading || requestLoading) {
     return (
       <div className="flex bg-white w-full items-center justify-center p-6 rounded-lg min-h-[calc(100vh-56px-16px-24px)]">
         <Spinner variant={"medium"} />
@@ -58,7 +51,14 @@ const ChannelInfo = (): JSX.Element => {
     );
   }
 
-  if (isError || !data || !channelId || !data.channel || !data.channel._id) {
+  if (
+    isError ||
+    !data ||
+    !channelId ||
+    !data.channel ||
+    !data.channel._id ||
+    joinRequestError
+  ) {
     return (
       <div className="flex flex-col bg-white w-full items-center justify-center p-6 rounded-lg min-h-[calc(100vh-56px-16px-24px)]">
         <Image
@@ -78,7 +78,7 @@ const ChannelInfo = (): JSX.Element => {
     member._id.toString()
   );
 
-  const handleSendJoinRequest = async () => {
+  const handleSendJoinRequest = async (): Promise<void> => {
     try {
       setJoinRequestLoading(true);
       const { data, error } = await sendJoinRequest(channelId);
@@ -247,61 +247,40 @@ const ChannelInfo = (): JSX.Element => {
         )}
       </div>
 
-      {user?._id === data.channel.creatorId._id && (
-        <div className="mt-6 flex w-full flex-col">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">
-            Join Requests{" "}
-            <span className="text-xs">
-              ({dummyJoinRequests?.length || 0}{" "}
-              {dummyJoinRequests?.length === 1 ? "request" : "requests"})
-            </span>
-          </h2>
+      {user?._id === data.channel.creatorId._id &&
+        requestData &&
+        requestData.joinRequests &&
+        data.channel.type == "private" && (
+          <div className="mt-6 flex w-full flex-col">
+            <h2 className="text-xl font-semibold text-gray-700 mb-4">
+              Join Requests{" "}
+              <span className="text-xs">
+                ({requestData?.joinRequests?.length || 0}{" "}
+                {requestData.joinRequests?.length === 1
+                  ? "request"
+                  : "requests"}
+                )
+              </span>
+            </h2>
 
-          {dummyJoinRequests?.length > 0 ? (
-            <div className="flex w-full flex-col gap-4">
-              {dummyJoinRequests.map((request: Follower) => (
-                <div
-                  key={request._id}
-                  className="flex items-center justify-between p-4 rounded-xl bg-gray-50 border hover:shadow-md transition"
-                >
-                  <div className="flex items-center gap-3">
-                    <Image
-                      src={
-                        request.profilePicture || "/images/default-profile.jpg"
-                      }
-                      alt={request.username}
-                      width={40}
-                      height={40}
-                      className="rounded-full object-cover"
-                    />
-                    <div>
-                      <p className="text-sm text-gray-500">
-                        {request.firstName} {request?.lastName}
-                      </p>
-                      <p className="text-gray-600 font-medium">
-                        {request.username}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2">
-                    <button className="px-3 py-1 text-sm text-white bg-green-500 hover:bg-green-600 rounded-lg transition">
-                      Accept
-                    </button>
-                    <button className="px-3 py-1 text-sm text-white bg-red-500 hover:bg-red-600 rounded-lg transition">
-                      Reject
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-gray-500 italic">
-              No join requests at the moment.
-            </p>
-          )}
-        </div>
-      )}
+            {requestData.joinRequests?.length > 0 ? (
+              <div className="flex w-full flex-col gap-4">
+                {requestData.joinRequests.map((request: JoinRequest) => (
+                  <JoinRequestItem
+                    key={request._id}
+                    request={request}
+                    refetchJoinRequest={refetchJoinRequest}
+                    refetch={refetch}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500 italic">
+                No join requests at the moment.
+              </p>
+            )}
+          </div>
+        )}
     </div>
   );
 };

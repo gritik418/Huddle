@@ -110,7 +110,7 @@ const CreateChannelPage = (): JSX.Element => {
         });
 
         if (data.channel) {
-          router.push(`/channels/${data.channel._id}`);
+          router.push(`/channels/info/${data.channel._id}`);
         }
       }
     } catch (error) {

@@ -12,6 +12,8 @@ import {
 } from "@/features/api/joinRequestApi";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Spinner from "../Spinner/Spinner";
+import { Menu, Portal } from "@chakra-ui/react";
+import { MdDelete } from "react-icons/md";
 
 const ChannelItem = ({ channel }: { channel: Channel }): JSX.Element => {
   const user = useSelector(selectUser);
@@ -80,9 +82,30 @@ const ChannelItem = ({ channel }: { channel: Channel }): JSX.Element => {
           <p className="text-sm text-gray-600">{channel.description}</p>
         </div>
 
-        <div className="flex bg-gray-200 cursor-pointer h-max p-[6px] rounded-lg">
-          <BsThreeDotsVertical className="text-sm" />
-        </div>
+        {channel.creatorId._id === user._id && (
+          <Menu.Root>
+            <Menu.Trigger asChild>
+              <div className="flex bg-gray-200 cursor-pointer h-max p-[6px] rounded-lg">
+                <BsThreeDotsVertical className="text-sm" />
+              </div>
+            </Menu.Trigger>
+            <Portal>
+              <Menu.Positioner>
+                <Menu.Content>
+                  <Menu.Item
+                    value="new-txt-a"
+                    className="gap-2 cursor-pointer text-xs p-2"
+                  >
+                    Delete Channel{" "}
+                    <Menu.ItemCommand className="ml-2">
+                      <MdDelete />
+                    </Menu.ItemCommand>
+                  </Menu.Item>
+                </Menu.Content>
+              </Menu.Positioner>
+            </Portal>
+          </Menu.Root>
+        )}
       </div>
 
       <div className="mt-8 flex justify-between items-center">
