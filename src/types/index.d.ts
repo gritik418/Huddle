@@ -147,6 +147,13 @@ interface Message {
   deletedFor: Types.ObjectId[];
 }
 
+interface Attachment {
+  filename: string;
+  fileType?: string;
+  filePath: string;
+  size: number;
+}
+
 interface Pulse {
   _id: Types.ObjectId;
   userId: Follower;
@@ -196,4 +203,16 @@ interface ChannelMessage {
   sentAt?: Date;
   status: "sent" | "delivered" | "failed";
   deletedFor: string[];
+}
+
+interface Story {
+  _id: string;
+  userId: Follower;
+  mediaUrl?: string;
+  mediaType?: "image" | "video";
+  caption?: string;
+  createdAt: string;
+  expiresAt: string;
+  viewsCount?: number;
+  viewers?: string[];
 }

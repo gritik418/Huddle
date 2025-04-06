@@ -5,12 +5,19 @@ import CreatorInfo from "../../../../../components/CreatorInfo/CreatorInfo";
 import Spinner from "../../../../../components/Spinner/Spinner";
 import { useGetChannelByIdQuery } from "../../../../../features/api/channelApi";
 import { useParams } from "next/navigation";
-import { JSX } from "react";
+import { JSX, useState } from "react";
 import { Input, Menu, Portal, Textarea } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../../../../features/user/userSlice";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoPersonRemove } from "react-icons/io5";
+import NotLoggedIn from "@/components/NotLoggedIn/NotLoggedIn";
+import {
+  JoinRequestApiResponse,
+  useSendJoinRequestMutation,
+} from "@/features/api/joinRequestApi";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { Bounce, toast } from "react-toastify";
 
 const dummyJoinRequests = [
   {
@@ -31,8 +38,17 @@ const ChannelInfo = (): JSX.Element => {
   const params = useParams();
   const channelId = params?.channelId as string;
   const user: User | null = useSelector(selectUser);
+  const [sendJoinRequest] = useSendJoinRequestMutation();
+  const [joinRequestLoading, setJoinRequestLoading] = useState<boolean>(false);
 
-  const { data, isLoading, isError } = useGetChannelByIdQuery(channelId);
+  const { data, isLoading, isError, refetch } = useGetChannelByIdQuery(
+    channelId,
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
+
+  if (!user || !user._id) return <NotLoggedIn />;
 
   if (isLoading) {
     return (
@@ -42,7 +58,7 @@ const ChannelInfo = (): JSX.Element => {
     );
   }
 
-  if (isError || !data || !channelId || !data.channel) {
+  if (isError || !data || !channelId || !data.channel || !data.channel._id) {
     return (
       <div className="flex flex-col bg-white w-full items-center justify-center p-6 rounded-lg min-h-[calc(100vh-56px-16px-24px)]">
         <Image
@@ -57,6 +73,60 @@ const ChannelInfo = (): JSX.Element => {
       </div>
     );
   }
+
+  const memberIds: string[] = data.channel.members.map((member: Follower) =>
+    member._id.toString()
+  );
+
+  const handleSendJoinRequest = async () => {
+    try {
+      setJoinRequestLoading(true);
+      const { data, error } = await sendJoinRequest(channelId);
+      await refetch();
+      setJoinRequestLoading(false);
+      if (error) {
+        const errorResponse = error as FetchBaseQueryError;
+        const parsedError = errorResponse?.data as JoinRequestApiResponse;
+
+        toast.error(parsedError.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      } else if (data) {
+        toast.success(data.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.success("Something went wrong.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
 
   return (
     <div className="flex flex-col bg-white p-6 rounded-lg min-h-[calc(100vh-56px-16px-24px)] w-full gap-3 shadow-md">
@@ -87,6 +157,17 @@ const ChannelInfo = (): JSX.Element => {
           className="border-2 p-2 bg-gray-50 resize-none outline-none"
         />
       </div>
+
+      {!memberIds.includes(user?._id) &&
+        data.channel.creatorId._id !== user._id &&
+        data.channel.type !== "invite-only" && (
+          <button
+            onClick={handleSendJoinRequest}
+            className="self-center mt-2 h-10 w-28 flex items-center justify-center text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition"
+          >
+            {joinRequestLoading ? <Spinner variant={null} /> : "Join Channel"}
+          </button>
+        )}
 
       <div className="mt-4">
         <h2 className="text-xl font-semibold text-gray-700 mb-2">Creator</h2>

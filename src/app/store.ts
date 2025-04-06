@@ -20,7 +20,8 @@ import pulseApi from "../features/api/pulseApi";
 import pulseSlice from "../features/pulse/pulseSlice";
 import blockUserApi from "../features/api/blockUserApi";
 import channelApi from "../features/api/channelApi";
-import channelSlice from "@/features/channel/channelSlice";
+import channelSlice from "../features/channel/channelSlice";
+import joinRequestApi from "../features/api/joinRequestApi";
 
 const store = configureStore({
   reducer: {
@@ -34,6 +35,7 @@ const store = configureStore({
     [messageApi.reducerPath]: messageApi.reducer,
     [blockUserApi.reducerPath]: blockUserApi.reducer,
     [chatRequestApi.reducerPath]: chatRequestApi.reducer,
+    [joinRequestApi.reducerPath]: joinRequestApi.reducer,
     [followRequestApi.reducerPath]: followRequestApi.reducer,
     [accountSettingsApi.reducerPath]: accountSettingsApi.reducer,
     [userSlice.reducerPath]: userSlice.reducer,
@@ -59,6 +61,7 @@ const store = configureStore({
       .concat(messageApi.middleware)
       .concat(blockUserApi.middleware)
       .concat(chatRequestApi.middleware)
+      .concat(joinRequestApi.middleware)
       .concat(followRequestApi.middleware)
       .concat(accountSettingsApi.middleware),
 });

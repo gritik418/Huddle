@@ -1,18 +1,77 @@
+"use client";
 import { selectUser } from "../../features/user/userSlice";
 import Link from "next/link";
-import { JSX } from "react";
+import { JSX, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import NotLoggedIn from "../NotLoggedIn/NotLoggedIn";
+import { Bounce, toast } from "react-toastify";
+import {
+  JoinRequestApiResponse,
+  useSendJoinRequestMutation,
+} from "@/features/api/joinRequestApi";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import Spinner from "../Spinner/Spinner";
 
 const ChannelItem = ({ channel }: { channel: Channel }): JSX.Element => {
   const user = useSelector(selectUser);
+  const [sendJoinRequest] = useSendJoinRequestMutation();
+  const [joinRequestLoading, setJoinRequestLoading] = useState<boolean>(false);
 
   if (!user) return <NotLoggedIn />;
 
   const memberIds: string[] = channel.members.map((member: Follower) => {
     return member._id.toString();
   });
+
+  const handleSendJoinRequest = async () => {
+    try {
+      setJoinRequestLoading(true);
+      const { data, error } = await sendJoinRequest(channel._id);
+      setJoinRequestLoading(false);
+      if (error) {
+        const errorResponse = error as FetchBaseQueryError;
+        const parsedError = errorResponse?.data as JoinRequestApiResponse;
+
+        toast.error(parsedError.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      } else if (data) {
+        toast.success(data.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.success("Something went wrong.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
   return (
     <div className="bg-gray-50 w-full flex-col flex flex-1 p-4 rounded-lg shadow-lg hover:shadow-lg transition">
       <div className="flex justify-between">
@@ -39,7 +98,8 @@ const ChannelItem = ({ channel }: { channel: Channel }): JSX.Element => {
             View
           </Link>
 
-          {memberIds.includes(user._id) ? (
+          {memberIds.includes(user._id) ||
+          channel.creatorId._id === user._id ? (
             <Link
               href={`/channels/chats/${channel._id}`}
               className="bg-blue-500 text-white flex items-center justify-center font-semibold px-2 box-border rounded-md"
@@ -47,8 +107,11 @@ const ChannelItem = ({ channel }: { channel: Channel }): JSX.Element => {
               Chat
             </Link>
           ) : (
-            <button className="bg-blue-500 text-white px-2 font-semibold rounded-md hover:bg-blue-600">
-              Join
+            <button
+              onClick={handleSendJoinRequest}
+              className="bg-blue-500 flex items-center justify-center text-white w-14 font-semibold rounded-md hover:bg-blue-600"
+            >
+              {joinRequestLoading ? <Spinner variant={null} /> : "Join"}
             </button>
           )}
         </div>
