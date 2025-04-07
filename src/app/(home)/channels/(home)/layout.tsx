@@ -2,6 +2,7 @@ import { IoChatboxEllipses } from "react-icons/io5";
 import ChannelTabs from "../../../../components/ChannelTabs/ChannelTabs";
 import { JSX } from "react";
 import Link from "next/link";
+import InvitesContainer from "../../../../components/InvitesContainer/InvitesContainer";
 
 export default function Layout({
   children,
@@ -20,9 +21,7 @@ export default function Layout({
       <div className="flex justify-between bg-white p-3 rounded-lg items-center">
         <ChannelTabs />
 
-        <div className="flex font-bold cursor-pointer text-blue-600">
-          Invites
-        </div>
+        <InvitesContainer />
       </div>
 
       <Link

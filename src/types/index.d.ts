@@ -223,3 +223,18 @@ interface JoinRequest {
   channelId: string;
   status: "pending" | "accepted" | "rejected";
 }
+
+interface ChannelInvite {
+  _id: string;
+  receiverId: Follower;
+  senderId: Follower;
+  channelId: {
+    _id: string;
+    creatorId: string;
+    name: string;
+    description: string;
+    members: string[];
+    type: "public" | "private" | "invite-only";
+  };
+  status: "pending" | "accepted" | "rejected";
+}

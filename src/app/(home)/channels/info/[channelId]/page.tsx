@@ -28,7 +28,7 @@ import JoinRequestItem from "../../../../../components/JoinRequestItem/JoinReque
 import { AppDispatch } from "../../../../../app/store";
 import { deleteChannelById } from "../../../../../features/channel/channelSlice";
 import { filterSearchedChannelById } from "../../../../../features/search/searchSlice";
-import InviteMembers from "@/components/InviteMembers/InviteMembers";
+import InviteMembers from "../../../../../components/InviteMembers/InviteMembers";
 
 const ChannelInfo = (): JSX.Element => {
   const params = useParams();
