@@ -21,6 +21,7 @@ import {
   DeleteChannelApiResponse,
   useDeleteChannelMutation,
   useGetChannelByIdQuery,
+  useRemoveMemberFromChannelMutation,
 } from "../../../../../features/api/channelApi";
 import { selectUser } from "../../../../../features/user/userSlice";
 import JoinRequestItem from "../../../../../components/JoinRequestItem/JoinRequestItem";
@@ -36,6 +37,7 @@ const ChannelInfo = (): JSX.Element => {
   const [sendJoinRequest] = useSendJoinRequestMutation();
   const [joinRequestLoading, setJoinRequestLoading] = useState<boolean>(false);
   const [deleteChannel] = useDeleteChannelMutation();
+  const [removeMember] = useRemoveMemberFromChannelMutation();
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
@@ -192,6 +194,54 @@ const ChannelInfo = (): JSX.Element => {
     }
   };
 
+  const handleRemoveMember = async (memberId: string): Promise<void> => {
+    try {
+      const { data, error } = await removeMember({ channelId, memberId });
+      await refetch();
+      if (error) {
+        const errorResponse = error as FetchBaseQueryError;
+        const parsedError = errorResponse?.data as DeleteChannelApiResponse;
+
+        toast.error(parsedError.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      } else if (data) {
+        toast.success(data.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.success("Something went wrong.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col bg-white p-6 rounded-lg min-h-[calc(100vh-56px-16px-24px)] w-full gap-3 shadow-md">
       <h1 className="text-2xl font-semibold text-gray-800 text-center">
@@ -288,6 +338,7 @@ const ChannelInfo = (): JSX.Element => {
                         <Menu.Positioner>
                           <Menu.Content>
                             <Menu.Item
+                              onClick={() => handleRemoveMember(member._id)}
                               value="new-txt-a"
                               className="cursor-pointer"
                             >

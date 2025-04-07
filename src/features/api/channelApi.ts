@@ -97,6 +97,19 @@ const channelApi = createApi({
         },
       }),
     }),
+    removeMemberFromChannel: build.mutation<
+      DeleteChannelApiResponse,
+      { memberId: string; channelId: string }
+    >({
+      query: ({ memberId, channelId }) => ({
+        url: `/${channelId}/remove/${memberId}`,
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
@@ -106,6 +119,7 @@ export const {
   useCreateChannelMutation,
   useDeleteChannelMutation,
   useGetChannelChatMessagesQuery,
+  useRemoveMemberFromChannelMutation,
 } = channelApi;
 
 export default channelApi;
