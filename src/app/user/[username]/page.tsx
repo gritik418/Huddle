@@ -16,6 +16,7 @@ import {
 } from "../../../features/api/userApi";
 import {
   addToBlockedUsers,
+  addToFollowings,
   removeFromBlockedUsers,
   removeFromFollowing,
   selectBlockedUserIds,
@@ -117,6 +118,9 @@ const UserInfo = (): JSX.Element => {
         }
       } else {
         if (data.success) {
+          if (data.followingId) {
+            dispatch(addToFollowings(data.followingId));
+          }
           toast.success(data.message, {
             position: "top-right",
             autoClose: 1500,

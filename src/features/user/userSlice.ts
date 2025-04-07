@@ -106,6 +106,13 @@ const userSlice = createSlice({
         }
       }
     },
+    addToFollowings: (state, action) => {
+      if (action.payload) {
+        if (!state.user?.following.includes(action.payload)) {
+          state.user?.following.push(action.payload);
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -163,6 +170,7 @@ const userSlice = createSlice({
 export const {
   clearUser,
   togglePrivacy,
+  addToFollowings,
   addOnlineMember,
   addToBlockedUsers,
   removeOnlineMember,

@@ -9,6 +9,7 @@ export type GetFollowRequestsApiResponse = {
 export type SendFollowRequestApiResponse = {
   success: boolean;
   message?: string;
+  followingId?: string;
 };
 
 export type FollowRequestApiResponse = {

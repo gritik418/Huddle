@@ -1,28 +1,54 @@
-import { JSX } from "react";
+"use client";
+import { JSX, useState } from "react";
 import InviteMemberItem from "../InviteMemberItem/InviteMemberItem";
+import { useGetFollowingsQuery } from "@/features/api/userApi";
+import Spinner from "../Spinner/Spinner";
 
-const members: Follower[] = [
-  {
-    _id: "67d82efd5acd2adc74a7e3f1",
-    firstName: "Devansh ",
-    lastName: "Davash",
-    username: "Devansh",
-  },
-  {
-    _id: "67d86eafb31852b954870581",
-    firstName: "Ritik",
-    lastName: "Gupta",
-    username: "ritik_dev",
-  },
-];
+const InviteMembers = ({ memberIds }: { memberIds: string[] }): JSX.Element => {
+  const { isError, isLoading, data } = useGetFollowingsQuery();
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
-const InviteMembers = (): JSX.Element => {
   function renderContent(): JSX.Element {
+    if (isLoading)
+      return (
+        <div className="flex items-center justify-center py-8">
+          <Spinner variant={"medium"} />
+        </div>
+      );
+
+    if (isError || !data || !data.following || data.following.length === 0) {
+      return (
+        <div className="flex py-8 text-center w-full items-center justify-center">
+          <p>No users to invite.</p>
+        </div>
+      );
+    }
+
+    const filteredMembers = data.following
+      .filter((member: Follower) => !memberIds.includes(member._id))
+      .filter((member: Follower) => {
+        if (searchTerm.trim().length > 0) {
+          const memberQuery = `${member.firstName}${member?.lastName}${member.username}`;
+          return memberQuery.toLowerCase().includes(searchTerm.toLowerCase());
+        } else {
+          return true;
+        }
+      });
+
+    if (!filteredMembers || filteredMembers.length === 0) {
+      return (
+        <div className="flex py-8 text-center w-full items-center justify-center">
+          <p>No users to invite.</p>
+        </div>
+      );
+    }
+
     return (
       <div className="flex flex-col gap-3">
-        {members.map((member: Follower) => (
-          <InviteMemberItem key={member._id} member={member} />
-        ))}
+        {filteredMembers.map((member: Follower) => {
+          if (memberIds.includes(member._id)) return null;
+          return <InviteMemberItem key={member._id} member={member} />;
+        })}
       </div>
     );
   }
@@ -36,6 +62,8 @@ const InviteMembers = (): JSX.Element => {
           type="text"
           className="w-full p-4 outline-[var(--secondary)] rounded-md"
           placeholder="Search users..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
 
