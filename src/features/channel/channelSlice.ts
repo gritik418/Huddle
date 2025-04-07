@@ -60,6 +60,27 @@ const channelSlice = createSlice({
         state.channelMessages.push(action.payload);
       }
     },
+    deleteChannelById: (state, action) => {
+      if (state.createdChannelIds.includes(action.payload)) {
+        state.createdChannels = state.createdChannels.filter(
+          (channel: Channel) => channel._id !== action.payload
+        );
+
+        state.createdChannelIds = state.createdChannelIds.filter(
+          (id: string) => id !== action.payload
+        );
+      }
+
+      if (state.joinedChannelIds.includes(action.payload)) {
+        state.joinedChannels = state.joinedChannels.filter(
+          (channel: Channel) => channel._id !== action.payload
+        );
+
+        state.joinedChannelIds = state.joinedChannelIds.filter(
+          (id: string) => id !== action.payload
+        );
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -128,7 +149,7 @@ const channelSlice = createSlice({
   },
 });
 
-export const { addToChannelMessages } = channelSlice.actions;
+export const { addToChannelMessages, deleteChannelById } = channelSlice.actions;
 
 export const selectJoinedChannels = (state: RootState) =>
   state.channel.joinedChannels;

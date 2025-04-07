@@ -1,56 +1,26 @@
-import {
-  GetJoinRequestsApiResponse,
-  JoinRequestApiResponse,
-  useAcceptJoinRequestMutation,
-  useDeclineJoinRequestMutation,
-} from "../../features/api/joinRequestApi";
-import {
-  BaseQueryFn,
-  FetchArgs,
-  FetchBaseQueryError,
-  FetchBaseQueryMeta,
-  QueryActionCreatorResult,
-  QueryDefinition,
-} from "@reduxjs/toolkit/query";
+import { useGetChannelByIdQuery } from "../../features/api/channelApi";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
 import { JSX, useState } from "react";
 import { Bounce, toast } from "react-toastify";
+import {
+  JoinRequestApiResponse,
+  useAcceptJoinRequestMutation,
+  useDeclineJoinRequestMutation,
+  useGetJoinRequestsQuery,
+} from "../../features/api/joinRequestApi";
 import Spinner from "../Spinner/Spinner";
-import { GetChannelApiResponse } from "../../features/api/channelApi";
 
-type PropsType = {
+type RefetchJoinRequestType = ReturnType<
+  typeof useGetJoinRequestsQuery
+>["refetch"];
+type RefetchChannelType = ReturnType<typeof useGetChannelByIdQuery>["refetch"];
+
+interface PropsType {
   request: JoinRequest;
-  refetch: () => QueryActionCreatorResult<
-    QueryDefinition<
-      string,
-      BaseQueryFn<
-        string | FetchArgs,
-        unknown,
-        FetchBaseQueryError,
-        {},
-        FetchBaseQueryMeta
-      >,
-      never,
-      GetChannelApiResponse,
-      "channelApi"
-    >
-  >;
-  refetchJoinRequest: () => QueryActionCreatorResult<
-    QueryDefinition<
-      string,
-      BaseQueryFn<
-        string | FetchArgs,
-        unknown,
-        FetchBaseQueryError,
-        {},
-        FetchBaseQueryMeta
-      >,
-      never,
-      GetJoinRequestsApiResponse,
-      "joinRequestApi"
-    >
-  >;
-};
+  refetch: RefetchChannelType;
+  refetchJoinRequest: RefetchJoinRequestType;
+}
 
 const JoinRequestItem = ({
   request,

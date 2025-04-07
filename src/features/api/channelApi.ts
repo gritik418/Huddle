@@ -35,6 +35,11 @@ export type GetChannelMessagesApiResponse = {
   messages?: ChannelMessage[];
 };
 
+export type DeleteChannelApiResponse = {
+  success: boolean;
+  message: string;
+};
+
 const channelApi = createApi({
   reducerPath: "channelApi",
   baseQuery: fetchBaseQuery({
@@ -82,6 +87,16 @@ const channelApi = createApi({
         },
       }),
     }),
+    deleteChannel: build.mutation<DeleteChannelApiResponse, string>({
+      query: (channelId: string) => ({
+        url: `/${channelId}`,
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
@@ -89,6 +104,7 @@ export const {
   useGetChannelByIdQuery,
   useGetChannelChatsQuery,
   useCreateChannelMutation,
+  useDeleteChannelMutation,
   useGetChannelChatMessagesQuery,
 } = channelApi;
 

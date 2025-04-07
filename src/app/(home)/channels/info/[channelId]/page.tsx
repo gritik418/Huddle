@@ -9,17 +9,24 @@ import {
 import { Input, Menu, Portal, Textarea } from "@chakra-ui/react";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { JSX, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoPersonRemove } from "react-icons/io5";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 import CreatorInfo from "../../../../../components/CreatorInfo/CreatorInfo";
 import Spinner from "../../../../../components/Spinner/Spinner";
-import { useGetChannelByIdQuery } from "../../../../../features/api/channelApi";
+import {
+  DeleteChannelApiResponse,
+  useDeleteChannelMutation,
+  useGetChannelByIdQuery,
+} from "../../../../../features/api/channelApi";
 import { selectUser } from "../../../../../features/user/userSlice";
 import JoinRequestItem from "../../../../../components/JoinRequestItem/JoinRequestItem";
+import { AppDispatch } from "../../../../../app/store";
+import { deleteChannelById } from "../../../../../features/channel/channelSlice";
+import { filterSearchedChannelById } from "../../../../../features/search/searchSlice";
 
 const ChannelInfo = (): JSX.Element => {
   const params = useParams();
@@ -27,6 +34,10 @@ const ChannelInfo = (): JSX.Element => {
   const user: User | null = useSelector(selectUser);
   const [sendJoinRequest] = useSendJoinRequestMutation();
   const [joinRequestLoading, setJoinRequestLoading] = useState<boolean>(false);
+  const [deleteChannel] = useDeleteChannelMutation();
+  const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
 
   const { data, isLoading, isError, refetch } = useGetChannelByIdQuery(
     channelId,
@@ -111,6 +122,58 @@ const ChannelInfo = (): JSX.Element => {
           theme: "light",
           transition: Bounce,
         });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.success("Something went wrong.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
+
+  const handleDeleteChannel = async (): Promise<void> => {
+    try {
+      setDeleteLoading(true);
+      const { data, error } = await deleteChannel(channelId);
+      setDeleteLoading(false);
+      if (error) {
+        const errorResponse = error as FetchBaseQueryError;
+        const parsedError = errorResponse?.data as DeleteChannelApiResponse;
+
+        toast.error(parsedError.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      } else if (data) {
+        dispatch(deleteChannelById(channelId));
+        dispatch(filterSearchedChannelById(channelId));
+        toast.success(data.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        router.push("/channels");
       }
     } catch (error) {
       console.error(error);
@@ -281,6 +344,17 @@ const ChannelInfo = (): JSX.Element => {
             )}
           </div>
         )}
+
+      {data.channel.creatorId._id === user._id && (
+        <div className="flex mt-6 justify-end">
+          <button
+            onClick={handleDeleteChannel}
+            className="bg-red-500 text-white w-20 h-10 flex justify-center items-center rounded-lg"
+          >
+            {deleteLoading ? <Spinner variant={null} /> : "Delete"}
+          </button>
+        </div>
+      )}
     </div>
   );
 };

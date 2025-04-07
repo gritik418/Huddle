@@ -1,6 +1,7 @@
 import { Dialog, Portal, Textarea } from "@chakra-ui/react";
 import React, { JSX, useRef, useState } from "react";
 import AddStory from "../AddStory/AddStory";
+import Image from "next/image";
 
 const AddStoryModal = (): JSX.Element => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -49,9 +50,11 @@ const AddStoryModal = (): JSX.Element => {
               >
                 {filePreview ? (
                   fileType === "image" ? (
-                    <img
+                    <Image
                       src={filePreview}
                       alt="Preview"
+                      height={210}
+                      width={210}
                       className="h-52 rounded-md object-cover"
                     />
                   ) : fileType === "video" ? (

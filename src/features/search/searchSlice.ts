@@ -56,6 +56,17 @@ const searchSlice = createSlice({
       state.channelIds = [];
       state.channels = [];
     },
+    filterSearchedChannelById: (state, action) => {
+      if (state.channelIds.includes(action.payload)) {
+        state.channelIds = state.channelIds.filter(
+          (id: string) => id !== action.payload
+        );
+
+        state.channels = state.channels.filter(
+          (channel: Channel) => channel._id !== action.payload
+        );
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -107,7 +118,7 @@ const searchSlice = createSlice({
   },
 });
 
-export const { clearSearch } = searchSlice.actions;
+export const { clearSearch, filterSearchedChannelById } = searchSlice.actions;
 
 export const selectSearchedAccounts = (state: RootState) =>
   state.search.accounts;
