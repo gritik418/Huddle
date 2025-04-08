@@ -32,7 +32,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import {
   useBlockUserMutation,
   useUnblockUserMutation,
-} from "@/features/api/blockUserApi";
+} from "../../../features/api/blockUserApi";
 
 const UserInfo = (): JSX.Element => {
   const params: { username: string } = useParams();

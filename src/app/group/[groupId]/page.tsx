@@ -1,14 +1,20 @@
 "use client";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import GroupMemberTile from "../../../components/GroupMemberTile/GroupMemberTile";
 import Spinner from "../../../components/Spinner/Spinner";
-import { useGetGroupByIdQuery } from "../../../features/api/groupApi";
+import {
+  GroupApiResponse,
+  useGetGroupByIdQuery,
+  useLeaveGroupMutation,
+} from "../../../features/api/groupApi";
 import groupSchema from "../../../validators/groupSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { useParams } from "next/navigation";
-import { useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { JSX, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FaCamera } from "react-icons/fa";
+import { Bounce, toast } from "react-toastify";
 
 interface FormValues {
   groupName: string;
@@ -16,9 +22,11 @@ interface FormValues {
   groupIcon: File | undefined;
 }
 
-const GroupInformation = () => {
+const GroupInformation = (): JSX.Element => {
   const params: { groupId: string } = useParams();
   const { isLoading, data, error } = useGetGroupByIdQuery(params.groupId);
+  const [leaveGroup] = useLeaveGroupMutation();
+  const router = useRouter();
 
   const {
     handleSubmit,
@@ -35,6 +43,54 @@ const GroupInformation = () => {
 
   const handleUpdateGroupInfo = (values: FormValues) => {
     console.log(values);
+  };
+
+  const handleLeaveGroup = async () => {
+    try {
+      const { data, error } = await leaveGroup(params.groupId);
+      if (error) {
+        const errorResponse = error as FetchBaseQueryError;
+        const parsedError = errorResponse?.data as GroupApiResponse;
+
+        toast.error(parsedError.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      } else if (data) {
+        router.push("/chat");
+        toast.success(data.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Server Error.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
   };
 
   useEffect(() => {

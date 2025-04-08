@@ -1,4 +1,5 @@
 "use client";
+import { useSelector } from "react-redux";
 import ChatSection from "../../../components/ChatSection/ChatSection";
 import MessageInput from "../../../components/MessageInput/MessageInput";
 import MessagePlayground from "../../../components/MessagePlayground/MessagePlayground";
@@ -13,9 +14,18 @@ import { useGetMessagesQuery } from "../../../features/api/messageApi";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { JSX } from "react";
+import {
+  selectBlockedUserIds,
+  selectUser,
+} from "../../../features/user/userSlice";
+import NotLoggedIn from "../../../components/NotLoggedIn/NotLoggedIn";
 
 const SelectedChat = (): JSX.Element => {
   const params: { chatId: string } = useParams();
+  const user: User | null = useSelector(selectUser);
+  const blockedUserIds = useSelector(selectBlockedUserIds);
+
+  if (!user) return <NotLoggedIn />;
 
   const { chatId } = params;
   const { isLoading, data, error } = useGetChatByIdQuery(chatId);
@@ -48,6 +58,33 @@ const SelectedChat = (): JSX.Element => {
     );
   }
 
+  if (!data.chat.isGroupChat) {
+    const sender: ChatMember = data.chat.members.filter(
+      (member: ChatMember) => member._id !== user?._id
+    )[0];
+
+    if (blockedUserIds.includes(sender._id)) {
+      return (
+        <>
+          <div className="hidden md:flex">
+            <ChatSection chatId={chatId} />
+          </div>
+
+          <MessageSection>
+            <MessageSectionHeader chat={data?.chat} />
+            <MessagePlayground />
+
+            <div className="flex h-20 px-2 items-center justify-center bg-red-100 text-red-700 rounded-md">
+              <p className="text-center text-xs">
+                You have blocked this user. You cannot send messages to them.
+              </p>
+            </div>
+          </MessageSection>
+        </>
+      );
+    }
+  }
+
   return (
     <>
       <div className="hidden md:flex">
@@ -57,6 +94,7 @@ const SelectedChat = (): JSX.Element => {
       <MessageSection>
         <MessageSectionHeader chat={data?.chat} />
         <MessagePlayground />
+
         <MessageInput chatId={chatId} chat={data.chat} />
       </MessageSection>
     </>
