@@ -10,6 +10,12 @@ export default function SettingsAppearancePage() {
           Customize the appearance of the app. Automatically switch between day
           and night themes.
         </p>
+
+        <div className="mt-4 rounded-md bg-muted p-3 border border-border">
+          <p className="text-sm text-muted-foreground">
+            This feature will be available soon as part of an upcoming update.
+          </p>
+        </div>
       </div>
       <Separator />
       <AppearanceForm />

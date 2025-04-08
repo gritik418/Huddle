@@ -2,7 +2,7 @@ import {
   ChannelInviteApiResponse,
   useAcceptChannelInviteMutation,
   useDeclineChannelInviteMutation,
-} from "@/features/api/channelInviteApi";
+} from "../../features/api/channelInviteApi";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
 import { JSX, useState } from "react";
@@ -14,7 +14,6 @@ const ChannelInviteItem = ({
 }: {
   invite: ChannelInvite;
 }): JSX.Element => {
-  console.log(invite);
   const sender = invite.senderId;
   const channel = invite.channelId;
   const [acceptInvite] = useAcceptChannelInviteMutation();

@@ -110,11 +110,22 @@ const channelApi = createApi({
         },
       }),
     }),
+    leaveChannel: build.mutation<DeleteChannelApiResponse, string>({
+      query: (channelId: string) => ({
+        url: `/${channelId}/leave`,
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
 export const {
   useGetChannelByIdQuery,
+  useLeaveChannelMutation,
   useGetChannelChatsQuery,
   useCreateChannelMutation,
   useDeleteChannelMutation,

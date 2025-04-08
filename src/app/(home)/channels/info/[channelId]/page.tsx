@@ -21,6 +21,7 @@ import {
   DeleteChannelApiResponse,
   useDeleteChannelMutation,
   useGetChannelByIdQuery,
+  useLeaveChannelMutation,
   useRemoveMemberFromChannelMutation,
 } from "../../../../../features/api/channelApi";
 import { selectUser } from "../../../../../features/user/userSlice";
@@ -29,6 +30,8 @@ import { AppDispatch } from "../../../../../app/store";
 import { deleteChannelById } from "../../../../../features/channel/channelSlice";
 import { filterSearchedChannelById } from "../../../../../features/search/searchSlice";
 import InviteMembers from "../../../../../components/InviteMembers/InviteMembers";
+import { GiExitDoor } from "react-icons/gi";
+import { MdDelete } from "react-icons/md";
 
 const ChannelInfo = (): JSX.Element => {
   const params = useParams();
@@ -37,8 +40,10 @@ const ChannelInfo = (): JSX.Element => {
   const [sendJoinRequest] = useSendJoinRequestMutation();
   const [joinRequestLoading, setJoinRequestLoading] = useState<boolean>(false);
   const [deleteChannel] = useDeleteChannelMutation();
+  const [leaveChannel] = useLeaveChannelMutation();
   const [removeMember] = useRemoveMemberFromChannelMutation();
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
+  const [leaveLoading, setLeaveLoading] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
@@ -177,6 +182,56 @@ const ChannelInfo = (): JSX.Element => {
           transition: Bounce,
         });
         router.push("/channels");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.success("Something went wrong.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
+
+  const handleLeaveChannel = async (): Promise<void> => {
+    try {
+      setLeaveLoading(true);
+      const { data, error } = await leaveChannel(channelId);
+      await refetch();
+      setLeaveLoading(false);
+      if (error) {
+        const errorResponse = error as FetchBaseQueryError;
+        const parsedError = errorResponse?.data as DeleteChannelApiResponse;
+
+        toast.error(parsedError.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      } else if (data) {
+        toast.success(data.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       }
     } catch (error) {
       console.error(error);
@@ -407,12 +462,36 @@ const ChannelInfo = (): JSX.Element => {
         <div className="flex mt-6 justify-end">
           <button
             onClick={handleDeleteChannel}
-            className="bg-red-500 text-white w-20 h-10 flex justify-center items-center rounded-lg"
+            className="bg-red-500 font-semibold text-white w-24 h-10 flex justify-center items-center rounded-lg"
           >
-            {deleteLoading ? <Spinner variant={null} /> : "Delete"}
+            {deleteLoading ? (
+              <Spinner variant={null} />
+            ) : (
+              <span className="flex items-center gap-2">
+                Delete <MdDelete />
+              </span>
+            )}
           </button>
         </div>
       )}
+
+      {data.channel.creatorId._id !== user._id &&
+        memberIds.includes(user._id) && (
+          <div className="flex mt-6 justify-end">
+            <button
+              onClick={handleLeaveChannel}
+              className="bg-red-500 font-semibold text-white w-24 h-10 flex justify-center items-center rounded-lg"
+            >
+              {leaveLoading ? (
+                <Spinner variant={null} />
+              ) : (
+                <span className="flex items-center gap-2">
+                  Leave <GiExitDoor />
+                </span>
+              )}
+            </button>
+          </div>
+        )}
     </div>
   );
 };
