@@ -1,28 +1,30 @@
 "use client";
-import {
-  LoginResponse,
-  useUserLoginMutation,
-} from "../../../features/api/authApi";
-import { selectUser } from "../../../features/user/userSlice";
-import loginSchema, { LoginData } from "../../../validators/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
-import { JSX, useState } from "react";
+import { useRouter } from "next/navigation";
+import { JSX, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash, FaUser } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosLock } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { Bounce, toast } from "react-toastify";
+import {
+  LoginResponse,
+  useUserLoginMutation,
+} from "../../../features/api/authApi";
+import { selectUser } from "../../../features/user/userSlice";
+import loginSchema, { LoginData } from "../../../validators/loginSchema";
+import { useGetUserQuery } from "@/features/api/userApi";
 
 const Login = (): JSX.Element => {
   const router = useRouter();
   const user: User | null = useSelector(selectUser);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [userLogin] = useUserLoginMutation();
+  const { refetch } = useGetUserQuery();
 
   const {
     register,
@@ -40,6 +42,7 @@ const Login = (): JSX.Element => {
   const handleLogin = async (loginData: LoginData): Promise<void> => {
     try {
       const { data, error } = await userLogin(loginData);
+      await refetch();
       if (error) {
         const errorResponse = error as FetchBaseQueryError;
         const parsedError = errorResponse?.data as LoginResponse;
@@ -85,9 +88,6 @@ const Login = (): JSX.Element => {
           theme: "light",
           transition: Bounce,
         });
-        setTimeout(() => {
-          router.push("/");
-        }, 1200);
       }
     } catch (error) {
       console.error(error);
@@ -105,9 +105,11 @@ const Login = (): JSX.Element => {
     }
   };
 
-  if (user && user._id) {
-    redirect("/");
-  }
+  useEffect(() => {
+    if (user && user._id) {
+      router.push("/");
+    }
+  }, [router, user]);
 
   return (
     <div className="flex justify-center items-center border-2 min-h-screen py-16 bg-gray-100">

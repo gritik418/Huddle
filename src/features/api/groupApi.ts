@@ -11,6 +11,11 @@ export interface CreateGroupApiResponse {
   };
 }
 
+export interface GroupApiResponse {
+  success: boolean;
+  message: string;
+}
+
 export interface GetGroupByIdApiResponse {
   success: boolean;
   message?: string;
@@ -41,9 +46,23 @@ const groupApi = createApi({
         },
       }),
     }),
+    leaveGroup: build.mutation<GroupApiResponse, string>({
+      query: (groupId: string) => ({
+        url: `/leave/${groupId}`,
+        credentials: "include",
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useCreateGroupMutation, useGetGroupByIdQuery } = groupApi;
+export const {
+  useLeaveGroupMutation,
+  useGetGroupByIdQuery,
+  useCreateGroupMutation,
+} = groupApi;
 
 export default groupApi;

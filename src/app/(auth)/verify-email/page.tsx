@@ -1,4 +1,12 @@
 "use client";
+import { useGetUserQuery } from "@/features/api/userApi";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Bounce, toast } from "react-toastify";
 import Spinner from "../../../components/Spinner/Spinner";
 import {
   InputOTP,
@@ -11,13 +19,6 @@ import {
 } from "../../../features/api/authApi";
 import { selectSignupEmail } from "../../../features/auth/authSlice";
 import { selectUser } from "../../../features/user/userSlice";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { REGEXP_ONLY_DIGITS } from "input-otp";
-import Image from "next/image";
-import { redirect, useRouter } from "next/navigation";
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { Bounce, toast } from "react-toastify";
 
 const VerifyEmail = () => {
   const [verifyEmail] = useVerifyUserEmailMutation();
@@ -27,13 +28,10 @@ const VerifyEmail = () => {
   const email = useSelector(selectSignupEmail);
   const router = useRouter();
   const user: User | null = useSelector(selectUser);
-
-  if (user && user._id) {
-    redirect("/");
-  }
+  const { refetch } = useGetUserQuery();
 
   if (!email) {
-    redirect("/signup");
+    return router.push("/signup");
   }
 
   const handleVerifyEmail = async () => {
@@ -44,6 +42,7 @@ const VerifyEmail = () => {
       try {
         setLoading(true);
         const { data, error } = await verifyEmail({ email, otp });
+        await refetch();
         setLoading(false);
         if (error) {
           const errorResponse = error as FetchBaseQueryError;
@@ -77,9 +76,6 @@ const VerifyEmail = () => {
               theme: "light",
               transition: Bounce,
             });
-            setTimeout(() => {
-              router.push("/");
-            }, 1200);
           }
         }
       } catch (error) {
@@ -105,6 +101,12 @@ const VerifyEmail = () => {
     }
     setOtp(value);
   };
+
+  useEffect(() => {
+    if (user && user._id) {
+      router.push("/");
+    }
+  }, [router, user]);
 
   return (
     <div className="flex h-screen items-center justify-center">

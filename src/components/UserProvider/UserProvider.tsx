@@ -20,7 +20,9 @@ const UserProvider = ({
 }>): JSX.Element => {
   const pathname: string = usePathname();
 
-  const { isLoading, error } = useGetUserQuery();
+  const { isLoading, error } = useGetUserQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
 
   useGetActiveMembersQuery();
   useGetFollowRequestsQuery();

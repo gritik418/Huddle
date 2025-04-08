@@ -5,7 +5,7 @@ import { useGetChatsQuery } from "../../features/api/chatApi";
 import { JSX } from "react";
 
 const Chat = (): JSX.Element => {
-  useGetChatsQuery();
+  useGetChatsQuery(undefined, { refetchOnMountOrArgChange: true });
   return (
     <>
       <ChatSection chatId={null} />
