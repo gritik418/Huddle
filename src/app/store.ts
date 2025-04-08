@@ -22,6 +22,8 @@ import blockUserApi from "../features/api/blockUserApi";
 import channelApi from "../features/api/channelApi";
 import channelSlice from "../features/channel/channelSlice";
 import joinRequestApi from "../features/api/joinRequestApi";
+import channelInviteApi from "@/features/api/channelInviteApi";
+import channelInvitesSlice from "@/features/channelInvites/channelInvitesSlice";
 
 const store = configureStore({
   reducer: {
@@ -37,6 +39,7 @@ const store = configureStore({
     [chatRequestApi.reducerPath]: chatRequestApi.reducer,
     [joinRequestApi.reducerPath]: joinRequestApi.reducer,
     [followRequestApi.reducerPath]: followRequestApi.reducer,
+    [channelInviteApi.reducerPath]: channelInviteApi.reducer,
     [accountSettingsApi.reducerPath]: accountSettingsApi.reducer,
     [userSlice.reducerPath]: userSlice.reducer,
     [authSlice.reducerPath]: authSlice.reducer,
@@ -48,6 +51,7 @@ const store = configureStore({
     [channelSlice.reducerPath]: channelSlice.reducer,
     [chatRequestSlice.reducerPath]: chatRequestSlice.reducer,
     [followRequestSlice.reducerPath]: followRequestSlice.reducer,
+    [channelInvitesSlice.reducerPath]: channelInvitesSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -62,6 +66,7 @@ const store = configureStore({
       .concat(blockUserApi.middleware)
       .concat(chatRequestApi.middleware)
       .concat(joinRequestApi.middleware)
+      .concat(channelInviteApi.middleware)
       .concat(followRequestApi.middleware)
       .concat(accountSettingsApi.middleware),
 });

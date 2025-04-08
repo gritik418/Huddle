@@ -399,7 +399,7 @@ const ChannelInfo = (): JSX.Element => {
 
       {data.channel.creatorId._id === user._id && (
         <div className="flex flex-col mt-6 w-full flex-1">
-          <InviteMembers memberIds={memberIds} />
+          <InviteMembers channelId={channelId} memberIds={memberIds} />
         </div>
       )}
 

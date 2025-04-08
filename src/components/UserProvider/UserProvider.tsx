@@ -11,6 +11,7 @@ import Spinner from "../Spinner/Spinner";
 import { usePathname } from "next/navigation";
 import NotLoggedIn from "../NotLoggedIn/NotLoggedIn";
 import { useGetBlockedUsersQuery } from "@/features/api/blockUserApi";
+import { useGetAllInvitesQuery } from "@/features/api/channelInviteApi";
 
 const UserProvider = ({
   children,
@@ -26,6 +27,7 @@ const UserProvider = ({
   useGetFollowingsQuery();
   useGetFollowersQuery();
   useGetBlockedUsersQuery();
+  useGetAllInvitesQuery();
 
   if (
     pathname === "/login" ||

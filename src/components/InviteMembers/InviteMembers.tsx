@@ -4,7 +4,13 @@ import InviteMemberItem from "../InviteMemberItem/InviteMemberItem";
 import { useGetFollowingsQuery } from "@/features/api/userApi";
 import Spinner from "../Spinner/Spinner";
 
-const InviteMembers = ({ memberIds }: { memberIds: string[] }): JSX.Element => {
+const InviteMembers = ({
+  memberIds,
+  channelId,
+}: {
+  memberIds: string[];
+  channelId: string;
+}): JSX.Element => {
   const { isError, isLoading, data } = useGetFollowingsQuery();
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -47,7 +53,13 @@ const InviteMembers = ({ memberIds }: { memberIds: string[] }): JSX.Element => {
       <div className="flex flex-col gap-3">
         {filteredMembers.map((member: Follower) => {
           if (memberIds.includes(member._id)) return null;
-          return <InviteMemberItem key={member._id} member={member} />;
+          return (
+            <InviteMemberItem
+              key={member._id}
+              channelId={channelId}
+              member={member}
+            />
+          );
         })}
       </div>
     );
