@@ -25,14 +25,15 @@ const SelectedChat = (): JSX.Element => {
   const user: User | null = useSelector(selectUser);
   const blockedUserIds = useSelector(selectBlockedUserIds);
 
-  if (!user) return <NotLoggedIn />;
-
   const { chatId } = params;
   const { isLoading, data, error } = useGetChatByIdQuery(chatId);
+
   useGetChatsQuery();
   useGetMessagesQuery(chatId, {
     refetchOnMountOrArgChange: true,
   });
+
+  if (!user) return <NotLoggedIn />;
 
   if (isLoading) {
     return (

@@ -30,6 +30,15 @@ const VerifyEmail = () => {
   const user: User | null = useSelector(selectUser);
   const { refetch } = useGetUserQuery();
 
+  useEffect(() => {
+    if (user && user._id) {
+      router.push("/");
+    }
+    if (!email) {
+      return router.push("/signup");
+    }
+  }, [router, user, email]);
+
   if (!email) {
     return router.push("/signup");
   }
@@ -101,12 +110,6 @@ const VerifyEmail = () => {
     }
     setOtp(value);
   };
-
-  useEffect(() => {
-    if (user && user._id) {
-      router.push("/");
-    }
-  }, [router, user]);
 
   return (
     <div className="flex h-screen items-center justify-center">

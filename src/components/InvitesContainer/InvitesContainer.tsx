@@ -26,7 +26,7 @@ const InvitesContainer = (): JSX.Element => {
       return (
         <div className="flex flex-col gap-3 max-h-96 py-8 items-center justify-center text-center">
           <p className="text-lg font-medium text-gray-600">
-            You're all caught up!
+            You&apos;re all caught up!
           </p>
           <p className="text-sm text-gray-500">
             You have no pending invites at the moment.
