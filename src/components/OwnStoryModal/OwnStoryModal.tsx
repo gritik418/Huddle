@@ -4,7 +4,6 @@ import Image from "next/image";
 import { JSX, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectOwnStories } from "../../features/story/storySlice";
-import { selectUser } from "../../features/user/userSlice";
 import OwnStoryTrigger from "../OwnStoryTrigger/OwnStoryTrigger";
 
 const OwnStoryModal = (): JSX.Element => {

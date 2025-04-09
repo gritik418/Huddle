@@ -1,9 +1,16 @@
 import { Dialog, Portal, Textarea } from "@chakra-ui/react";
-import React, { JSX, useRef, useState } from "react";
-import AddStory from "../AddStory/AddStory";
 import Image from "next/image";
+import React, { JSX, useRef, useState } from "react";
 
-const AddStoryModal = (): JSX.Element => {
+type AddStoryModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+const AddStoryModal = ({
+  isOpen,
+  onClose,
+}: AddStoryModalProps): JSX.Element => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [fileType, setFileType] = useState<"image" | "video" | null>(null);
@@ -29,12 +36,22 @@ const AddStoryModal = (): JSX.Element => {
     fileInputRef.current?.click();
   };
 
-  return (
-    <Dialog.Root placement="center">
-      <Dialog.Trigger>
-        <AddStory />
-      </Dialog.Trigger>
+  const reset = () => {
+    setFilePreview(null);
+    setFileType(null);
+  };
 
+  return (
+    <Dialog.Root
+      open={isOpen}
+      onOpenChange={(details) => {
+        if (!details.open) {
+          reset();
+          onClose();
+        }
+      }}
+      placement="center"
+    >
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>

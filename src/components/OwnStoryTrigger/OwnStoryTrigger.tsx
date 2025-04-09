@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../features/user/userSlice";
-import { selectOwnStories } from "../../features/story/storySlice";
 import { JSX } from "react";
+import { useSelector } from "react-redux";
+import { selectOwnStories } from "../../features/story/storySlice";
+import { selectUser } from "../../features/user/userSlice";
 
 const OwnStoryTrigger = (): JSX.Element => {
   const user: User | null = useSelector(selectUser);
@@ -15,7 +15,7 @@ const OwnStoryTrigger = (): JSX.Element => {
 
   for (let i = 0; i < count; i++) {
     const start = i * degreePerStory;
-    const end = start + degreePerStory * 0.95; // tighter gaps
+    const end = start + degreePerStory * 0.95;
     segments.push(`#22c55e ${start}deg ${end}deg`);
     segments.push(`transparent ${end}deg ${(i + 1) * degreePerStory}deg`);
   }
@@ -28,7 +28,10 @@ const OwnStoryTrigger = (): JSX.Element => {
       : {};
 
   return (
-    <div className="h-16 w-16 rounded-full p-[2px]" style={borderStyle}>
+    <div
+      className="h-16 w-16 relative rounded-full p-[2px]"
+      style={borderStyle}
+    >
       <div className="h-full w-full rounded-full bg-white p-[2px]">
         <Image
           src={user?.profilePicture || "/images/default-profile.jpg"}
