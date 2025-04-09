@@ -13,6 +13,7 @@ const storyApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/story`,
   }),
+  tagTypes: ["ownStory"],
   endpoints: (build) => ({
     addToStory: build.mutation<StoryApiResponse, FormData>({
       query: (formData) => ({
@@ -21,6 +22,7 @@ const storyApi = createApi({
         method: "POST",
         body: formData,
       }),
+      invalidatesTags: ["ownStory"],
     }),
     getOwnStory: build.query<GetOwnStoryApiResponse, void>({
       query: () => ({
@@ -31,6 +33,7 @@ const storyApi = createApi({
           "Content-Type": "application/json",
         },
       }),
+      providesTags: ["ownStory"],
     }),
   }),
 });

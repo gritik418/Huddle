@@ -53,6 +53,20 @@ const OwnStoryModal = (): JSX.Element => {
     }
   };
 
+  const getTimeAgo = (dateString: string): string => {
+    const createdAt = new Date(dateString);
+    const now = new Date();
+    const diffInMs = now.getTime() - createdAt.getTime();
+
+    const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+
+    if (diffInMinutes < 1) return "Just now";
+    if (diffInHours < 1)
+      return `${diffInMinutes} min${diffInMinutes > 1 ? "s" : ""} ago`;
+    return `${diffInHours} hour${diffInHours > 1 ? "s" : ""} ago`;
+  };
+
   return (
     <Dialog.Root
       open={isOpen}
@@ -92,6 +106,12 @@ const OwnStoryModal = (): JSX.Element => {
                 ))}
               </div>
 
+              {currentStory?.createdAt && (
+                <div className="absolute top-2 right-4 text-[11px] text-gray-600 z-20 bg-gray-200 backdrop-blur px-2 py-1 rounded-full">
+                  {getTimeAgo(currentStory.createdAt)}
+                </div>
+              )}
+
               {currentStory ? (
                 <>
                   {currentStory.mediaType === "image" ? (
@@ -116,6 +136,7 @@ const OwnStoryModal = (): JSX.Element => {
                       {currentStory.caption}
                     </p>
                   )}
+
                   <div className="text-xs text-black">
                     {currentIndex + 1} / {ownStories.length}
                   </div>
