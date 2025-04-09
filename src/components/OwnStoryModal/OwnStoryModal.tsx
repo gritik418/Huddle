@@ -1,17 +1,75 @@
 "use client";
 import { Dialog, Portal } from "@chakra-ui/react";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Image from "next/image";
 import { JSX, useEffect, useState } from "react";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import { useSelector } from "react-redux";
+import { Bounce, toast } from "react-toastify";
+import {
+  StoryApiResponse,
+  useDeleteStoryMutation,
+} from "../../features/api/storyApi";
 import { selectOwnStories } from "../../features/story/storySlice";
 import OwnStoryTrigger from "../OwnStoryTrigger/OwnStoryTrigger";
 
 const OwnStoryModal = (): JSX.Element => {
   const ownStories = useSelector(selectOwnStories);
+  const [deleteStory] = useDeleteStoryMutation();
 
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [progress, setProgress] = useState(0);
+
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleDelete = async (storyId: string): Promise<void> => {
+    try {
+      const { data, error } = await deleteStory(storyId);
+      setMenuOpen(false);
+      if (error) {
+        const errorResponse = error as FetchBaseQueryError;
+        const parsedError = errorResponse?.data as StoryApiResponse;
+
+        toast.error(parsedError.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      } else if (data) {
+        toast.success(data.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
 
   const currentStory = ownStories?.[currentIndex];
 
@@ -32,8 +90,10 @@ const OwnStoryModal = (): JSX.Element => {
     const timeout = setTimeout(() => {
       if (currentIndex < ownStories.length - 1) {
         setCurrentIndex((prev) => prev + 1);
+        setMenuOpen(false);
       } else {
         setIsOpen(false);
+        setMenuOpen(false);
         setCurrentIndex(0);
       }
     }, 5000);
@@ -47,7 +107,9 @@ const OwnStoryModal = (): JSX.Element => {
   const handleNext = () => {
     if (currentIndex < ownStories.length - 1) {
       setCurrentIndex((prev) => prev + 1);
+      setMenuOpen(false);
     } else {
+      setMenuOpen(false);
       setIsOpen(false);
       setCurrentIndex(0);
     }
@@ -107,10 +169,36 @@ const OwnStoryModal = (): JSX.Element => {
               </div>
 
               {currentStory?.createdAt && (
-                <div className="absolute top-2 right-4 text-[11px] text-gray-600 z-20 bg-gray-200 backdrop-blur px-2 py-1 rounded-full">
+                <div className="flex self-start absolute gap-1 m-1 text-[11px] text-gray-600 bg-white/70 backdrop-blur px-2 py-1 rounded-full">
                   {getTimeAgo(currentStory.createdAt)}
                 </div>
               )}
+
+              <div className="absolute top-3 right-3 z-20">
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setMenuOpen(!menuOpen);
+                  }}
+                  className="p-[6px] bg-white/80 backdrop-blur-md rounded-full shadow-sm cursor-pointer hover:bg-white"
+                >
+                  <BsThreeDotsVertical className="text-gray-700 text-sm" />
+                </div>
+
+                {menuOpen && (
+                  <div
+                    onClick={(e) => e.stopPropagation()}
+                    className="absolute right-0 mt-2 w-28 bg-white rounded-lg shadow-lg border text-sm z-30 overflow-hidden"
+                  >
+                    <button
+                      onClick={() => handleDelete(currentStory._id)}
+                      className="w-full text-left p-2 hover:bg-gray-100"
+                    >
+                      Delete Story
+                    </button>
+                  </div>
+                )}
+              </div>
 
               {currentStory ? (
                 <>

@@ -46,6 +46,17 @@ const storyApi = createApi({
       }),
       providesTags: ["ownStory"],
     }),
+    deleteStory: build.mutation<StoryApiResponse, string>({
+      query: (storyId: string) => ({
+        url: `/${storyId}`,
+        credentials: "include",
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+      invalidatesTags: ["ownStory"],
+    }),
     getFollowingsStory: build.query<GetFollowingsStoryApiResponse, void>({
       query: () => ({
         url: "/followings",
@@ -63,6 +74,7 @@ const storyApi = createApi({
 export const {
   useGetOwnStoryQuery,
   useAddToStoryMutation,
+  useDeleteStoryMutation,
   useGetFollowingsStoryQuery,
 } = storyApi;
 

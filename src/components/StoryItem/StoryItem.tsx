@@ -134,8 +134,30 @@ const StoryItemModal = ({ user, stories }: Props): JSX.Element => {
                 ))}
               </div>
 
+              {user._id && (
+                <div className="flex self-start absolute gap-1 m-1 overflow-hidden">
+                  <div className="flex h-9 w-9 rounded-full">
+                    <Image
+                      src={
+                        user?.profilePicture || "/images/default-profile.jpg"
+                      }
+                      alt="avatar"
+                      height={50}
+                      width={50}
+                      className="h-full w-full rounded-full"
+                    />
+                  </div>
+
+                  <div className="flex flex-col text-white">
+                    <p className="text-sm">
+                      {user.firstName} {user?.lastName}
+                    </p>
+                    <p className="text-xs font-semibold">@{user.username}</p>
+                  </div>
+                </div>
+              )}
               {currentStory?.createdAt && (
-                <div className="absolute top-2 right-4 text-[11px] text-gray-600 z-20 bg-white/60 backdrop-blur px-2 py-1 rounded-full">
+                <div className="flex self-end absolute gap-1 m-1 text-[11px] text-gray-600 bg-white/70 backdrop-blur px-2 py-1 rounded-full">
                   {getTimeAgo(currentStory.createdAt)}
                 </div>
               )}
