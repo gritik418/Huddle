@@ -63,6 +63,16 @@ const groupApi = createApi({
         },
       }),
     }),
+    deleteGroup: build.mutation<GroupApiResponse, string>({
+      query: (groupId: string) => ({
+        url: `/${groupId}`,
+        credentials: "include",
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
     updateGroupIcon: build.mutation<
       GroupApiResponse,
       { groupId: string; data: FormData }
@@ -91,6 +101,7 @@ export const {
   useGetGroupByIdQuery,
   useLeaveGroupMutation,
   useCreateGroupMutation,
+  useDeleteGroupMutation,
   useUpdateGroupIconMutation,
   useUpdateGroupInfoMutation,
 } = groupApi;

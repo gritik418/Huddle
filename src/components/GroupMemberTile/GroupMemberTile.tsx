@@ -28,7 +28,9 @@ const GroupMemberTile = ({
           <p>
             {member.firstName} {member.lastName}
           </p>
-          <p>{member.username}</p>
+          <p className="text-xs font-semibold text-gray-500">
+            @{member.username}
+          </p>
         </div>
       </div>
 

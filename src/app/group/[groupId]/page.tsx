@@ -4,6 +4,7 @@ import GroupMemberTile from "../../../components/GroupMemberTile/GroupMemberTile
 import Spinner from "../../../components/Spinner/Spinner";
 import {
   GroupApiResponse,
+  useDeleteGroupMutation,
   useGetGroupByIdQuery,
   useLeaveGroupMutation,
   useUpdateGroupIconMutation,
@@ -18,8 +19,9 @@ import { useForm } from "react-hook-form";
 import { FaCamera } from "react-icons/fa";
 import { Bounce, toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { selectUser } from "@/features/user/userSlice";
-import NotLoggedIn from "@/components/NotLoggedIn/NotLoggedIn";
+import { selectUser } from "../../../features/user/userSlice";
+import NotLoggedIn from "../../../components/NotLoggedIn/NotLoggedIn";
+import { FiLogOut } from "react-icons/fi";
 
 interface FormValues {
   groupName: string;
@@ -33,10 +35,13 @@ const GroupInformation = (): JSX.Element => {
   const [updateIcon] = useUpdateGroupIconMutation();
   const [updateInfo] = useUpdateGroupInfoMutation();
   const [leaveGroup] = useLeaveGroupMutation();
+  const [deleteGroup] = useDeleteGroupMutation();
   const user: User | null = useSelector(selectUser);
   const [groupIcon, setGroupIcon] = useState<File | null>(null);
   const [groupIconPreview, setGroupIconPreview] = useState<string | null>(null);
   const [groupIconLoading, setGroupIconLoading] = useState<boolean>(false);
+  const [leaveGroupLoading, setLeaveGroupLoading] = useState<boolean>(false);
+  const [deleteGroupLoading, setDeleteGroupLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const {
@@ -174,7 +179,59 @@ const GroupInformation = (): JSX.Element => {
 
   const handleLeaveGroup = async () => {
     try {
+      setLeaveGroupLoading(true);
       const { data, error } = await leaveGroup(params.groupId);
+      setLeaveGroupLoading(false);
+      if (error) {
+        const errorResponse = error as FetchBaseQueryError;
+        const parsedError = errorResponse?.data as GroupApiResponse;
+
+        toast.error(parsedError.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      } else if (data) {
+        router.push("/chat");
+        toast.success(data.message, {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Server Error.", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
+
+  const handleDeleteGroup = async () => {
+    try {
+      setDeleteGroupLoading(true);
+      const { data, error } = await deleteGroup(params.groupId);
+      setDeleteGroupLoading(false);
       if (error) {
         const errorResponse = error as FetchBaseQueryError;
         const parsedError = errorResponse?.data as GroupApiResponse;
@@ -406,6 +463,31 @@ const GroupInformation = (): JSX.Element => {
             />
           ))}
         </div>
+      </div>
+
+      <div className="container mx-auto my-10 flex justify-end">
+        {data.group.admins.includes(user._id) ? (
+          <button
+            onClick={handleDeleteGroup}
+            className="h-10 w-36 flex items-center justify-center rounded-lg bg-red-600 text-white font-semibold shadow-md hover:bg-red-700 transition-all duration-200"
+          >
+            {deleteGroupLoading ? <Spinner variant={null} /> : "Delete Group"}
+          </button>
+        ) : (
+          <button
+            onClick={handleLeaveGroup}
+            className="gap-2 h-10 w-36 flex items-center justify-center rounded-lg bg-red-600 text-white font-semibold shadow-md hover:bg-red-700 transition-all duration-200"
+          >
+            {leaveGroupLoading ? (
+              <Spinner variant={null} />
+            ) : (
+              <span className="flex items-center justify-center gap-2">
+                <FiLogOut size={18} />
+                Leave Group
+              </span>
+            )}
+          </button>
+        )}
       </div>
     </div>
   );
