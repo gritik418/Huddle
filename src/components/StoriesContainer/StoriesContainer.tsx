@@ -8,16 +8,25 @@ import OwnStoryModal from "../OwnStoryModal/OwnStoryModal";
 import Image from "next/image";
 import { selectUser } from "../../features/user/userSlice";
 import { FaPlus } from "react-icons/fa";
+import { useGetFollowingsStoryQuery } from "@/features/api/storyApi";
+
+interface FollowingsStory {
+  user: Follower;
+  stories: Story[];
+}
 
 const StoriesContainer = (): JSX.Element => {
   const user: User | null = useSelector(selectUser);
   const ownStories = useSelector(selectOwnStories);
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
+  const { data } = useGetFollowingsStoryQuery();
+
+  if (!data || !data.stories) return <></>;
 
   return (
-    <div className="flex w-full min-h-24 bg-white px-4 items-center rounded-lg">
+    <div className="flex w-full h-24 bg-white px-4 items-center rounded-lg">
       <Menu.Root>
-        <Menu.ContextTrigger as="div">
+        <Menu.ContextTrigger as="div" className="flex items-center">
           {ownStories.length > 0 ? (
             <OwnStoryModal />
           ) : (
@@ -59,8 +68,8 @@ const StoriesContainer = (): JSX.Element => {
       <div className="h-12 border-[1px] border-gray-200 mx-3"></div>
 
       <div className="flex gap-2 w-[calc(100%-90px)] overflow-x-scroll hide-scrollbar">
-        {[...Array(30)].map((_, i) => (
-          <StoryItem key={i} />
+        {data.stories.map(({ stories, user }: FollowingsStory, i) => (
+          <StoryItem stories={stories} user={user} key={i} />
         ))}
       </div>
 

@@ -16,7 +16,7 @@ const OwnStoryTrigger = (): JSX.Element => {
   for (let i = 0; i < count; i++) {
     const start = i * degreePerStory;
     const end = start + degreePerStory * 0.95;
-    segments.push(`#22c55e ${start}deg ${end}deg`);
+    segments.push(`#00aaf0 ${start}deg ${end}deg`);
     segments.push(`transparent ${end}deg ${(i + 1) * degreePerStory}deg`);
   }
 
@@ -29,7 +29,7 @@ const OwnStoryTrigger = (): JSX.Element => {
 
   return (
     <div
-      className="h-16 w-16 relative rounded-full p-[2px]"
+      className="h-[70px] w-[70px] relative rounded-full p-[2px]"
       style={borderStyle}
     >
       <div className="h-full w-full rounded-full bg-white p-[2px]">

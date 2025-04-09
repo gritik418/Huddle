@@ -8,6 +8,17 @@ type GetOwnStoryApiResponse = {
   stories?: Story[];
 };
 
+interface UserWithStories {
+  user: Follower;
+  stories: Story[];
+}
+
+type GetFollowingsStoryApiResponse = {
+  success: boolean;
+  message?: string;
+  stories?: UserWithStories[];
+};
+
 const storyApi = createApi({
   reducerPath: "storyApi",
   baseQuery: fetchBaseQuery({
@@ -35,9 +46,24 @@ const storyApi = createApi({
       }),
       providesTags: ["ownStory"],
     }),
+    getFollowingsStory: build.query<GetFollowingsStoryApiResponse, void>({
+      query: () => ({
+        url: "/followings",
+        credentials: "include",
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+      providesTags: ["ownStory"],
+    }),
   }),
 });
 
-export const { useGetOwnStoryQuery, useAddToStoryMutation } = storyApi;
+export const {
+  useGetOwnStoryQuery,
+  useAddToStoryMutation,
+  useGetFollowingsStoryQuery,
+} = storyApi;
 
 export default storyApi;
