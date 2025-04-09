@@ -95,6 +95,7 @@ interface Chat {
     _id: string;
     content: string;
     sender: string;
+    updatedAt: string;
   };
   groupStatus?: "active" | "deleted";
   deletedAt?: Date;
@@ -145,6 +146,7 @@ interface Message {
   readAt?: Date;
   status: "sent" | "delivered" | "read" | "failed";
   deletedFor: Types.ObjectId[];
+  updatedAt: string;
 }
 
 interface Attachment {

@@ -13,6 +13,35 @@ const ChatListItem = ({ chat, chatId }: PropsType): JSX.Element => {
   const user: User | null = useSelector(selectUser);
   const activeMembers: string[] = useSelector(selectOnlineMembers);
 
+  const formatChatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+
+    const isToday = date.toDateString() === now.toDateString();
+
+    const yesterday = new Date();
+    yesterday.setDate(now.getDate() - 1);
+    const isYesterday = date.toDateString() === yesterday.toDateString();
+
+    if (isToday) {
+      return date.toLocaleTimeString([], {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      }); // 2:30 PM
+    } else if (isYesterday) {
+      return "Yesterday";
+    } else if (date.getFullYear() === now.getFullYear()) {
+      return date.toLocaleDateString([], { month: "short", day: "numeric" }); // Apr 6
+    } else {
+      return date.toLocaleDateString([], {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      }); // Apr 6, 2023
+    }
+  };
+
   let isSelected: boolean = false;
   if (chatId) {
     isSelected = chatId === chat._id;
@@ -64,11 +93,8 @@ const ChatListItem = ({ chat, chatId }: PropsType): JSX.Element => {
               isSelected ? "text-white" : "text-black"
             }`}
           >
-            11:40
-          </p>
-
-          <p className="text-[9px] font-semibold bg-red-400 h-4 w-4 rounded-full flex items-center justify-center text-white">
-            9+
+            {chat?.lastMessage?.updatedAt &&
+              formatChatTime(chat.lastMessage?.updatedAt)}
           </p>
         </div>
       </Link>
@@ -127,11 +153,8 @@ const ChatListItem = ({ chat, chatId }: PropsType): JSX.Element => {
             isSelected ? "text-white" : "text-black"
           }`}
         >
-          11:40
-        </p>
-
-        <p className="text-[9px] font-semibold bg-red-400 h-4 w-4 rounded-full flex items-center justify-center text-white">
-          9+
+          {chat?.lastMessage?.updatedAt &&
+            formatChatTime(chat.lastMessage?.updatedAt)}
         </p>
       </div>
     </Link>

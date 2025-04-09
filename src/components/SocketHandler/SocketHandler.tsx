@@ -54,6 +54,7 @@ const SocketHandler = ({
             _id: message._id,
             sender: message.sender._id,
             content: message.content,
+            updatedAt: message.updatedAt,
           },
         })
       );
@@ -89,6 +90,7 @@ const SocketHandler = ({
             _id: message._id,
             sender: message.sender._id,
             content: message.content,
+            updatedAt: message.updatedAt,
           },
         })
       );

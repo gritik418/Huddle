@@ -22,11 +22,17 @@ export interface GetGroupByIdApiResponse {
   group?: Group;
 }
 
+type UpdateInfoArgs = {
+  groupId: string;
+  data: { groupName: string; groupDescription: string };
+};
+
 const groupApi = createApi({
   reducerPath: "groupApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/group`,
   }),
+  tagTypes: ["groupIcon", "groupInfo"],
   endpoints: (build) => ({
     createGroup: build.mutation<CreateGroupApiResponse, FormData>({
       query: (data: FormData) => ({
@@ -45,6 +51,7 @@ const groupApi = createApi({
           "Content-Type": "application/json",
         },
       }),
+      providesTags: ["groupIcon", "groupInfo"],
     }),
     leaveGroup: build.mutation<GroupApiResponse, string>({
       query: (groupId: string) => ({
@@ -56,13 +63,36 @@ const groupApi = createApi({
         },
       }),
     }),
+    updateGroupIcon: build.mutation<
+      GroupApiResponse,
+      { groupId: string; data: FormData }
+    >({
+      query: ({ groupId, data }) => ({
+        url: `/${groupId}/icon`,
+        method: "PATCH",
+        credentials: "include",
+        body: data,
+      }),
+      invalidatesTags: ["groupIcon"],
+    }),
+    updateGroupInfo: build.mutation<GroupApiResponse, UpdateInfoArgs>({
+      query: ({ groupId, data }) => ({
+        url: `/${groupId}/info`,
+        method: "PATCH",
+        credentials: "include",
+        body: data,
+      }),
+      invalidatesTags: ["groupInfo"],
+    }),
   }),
 });
 
 export const {
-  useLeaveGroupMutation,
   useGetGroupByIdQuery,
+  useLeaveGroupMutation,
   useCreateGroupMutation,
+  useUpdateGroupIconMutation,
+  useUpdateGroupInfoMutation,
 } = groupApi;
 
 export default groupApi;
