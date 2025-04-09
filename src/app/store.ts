@@ -22,8 +22,10 @@ import blockUserApi from "../features/api/blockUserApi";
 import channelApi from "../features/api/channelApi";
 import channelSlice from "../features/channel/channelSlice";
 import joinRequestApi from "../features/api/joinRequestApi";
-import channelInviteApi from "@/features/api/channelInviteApi";
-import channelInvitesSlice from "@/features/channelInvites/channelInvitesSlice";
+import channelInviteApi from "../features/api/channelInviteApi";
+import channelInvitesSlice from "../features/channelInvites/channelInvitesSlice";
+import storyApi from "../features/api/storyApi";
+import storySlice from "../features/story/storySlice";
 
 const store = configureStore({
   reducer: {
@@ -32,6 +34,7 @@ const store = configureStore({
     [chatApi.reducerPath]: chatApi.reducer,
     [postApi.reducerPath]: postApi.reducer,
     [groupApi.reducerPath]: groupApi.reducer,
+    [storyApi.reducerPath]: storyApi.reducer,
     [pulseApi.reducerPath]: pulseApi.reducer,
     [channelApi.reducerPath]: channelApi.reducer,
     [messageApi.reducerPath]: messageApi.reducer,
@@ -46,6 +49,7 @@ const store = configureStore({
     [postSlice.reducerPath]: postSlice.reducer,
     [chatSlice.reducerPath]: chatSlice.reducer,
     [pulseSlice.reducerPath]: pulseSlice.reducer,
+    [storySlice.reducerPath]: storySlice.reducer,
     [searchSlice.reducerPath]: searchSlice.reducer,
     [messageSlice.reducerPath]: messageSlice.reducer,
     [channelSlice.reducerPath]: channelSlice.reducer,
@@ -61,6 +65,7 @@ const store = configureStore({
       .concat(postApi.middleware)
       .concat(pulseApi.middleware)
       .concat(groupApi.middleware)
+      .concat(storyApi.middleware)
       .concat(channelApi.middleware)
       .concat(messageApi.middleware)
       .concat(blockUserApi.middleware)

@@ -10,8 +10,9 @@ import React, { JSX } from "react";
 import Spinner from "../Spinner/Spinner";
 import { usePathname } from "next/navigation";
 import NotLoggedIn from "../NotLoggedIn/NotLoggedIn";
-import { useGetBlockedUsersQuery } from "@/features/api/blockUserApi";
-import { useGetAllInvitesQuery } from "@/features/api/channelInviteApi";
+import { useGetBlockedUsersQuery } from "../../features/api/blockUserApi";
+import { useGetAllInvitesQuery } from "../../features/api/channelInviteApi";
+import { useGetOwnStoryQuery } from "../../features/api/storyApi";
 
 const UserProvider = ({
   children,
@@ -30,6 +31,7 @@ const UserProvider = ({
   useGetFollowersQuery();
   useGetBlockedUsersQuery();
   useGetAllInvitesQuery();
+  useGetOwnStoryQuery();
 
   if (
     pathname === "/login" ||

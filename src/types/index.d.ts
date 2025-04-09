@@ -216,7 +216,7 @@ interface Story {
   createdAt: string;
   expiresAt: string;
   viewsCount?: number;
-  viewers?: string[];
+  viewers?: Follower[];
 }
 
 interface JoinRequest {
