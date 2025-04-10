@@ -22,19 +22,57 @@ const Spinner = ({
 
   switch (variant) {
     case "xs":
-      return <Image height={24} width={24} src={loaderGif} alt="loading" />;
+      return (
+        <Image
+          height={24}
+          width={24}
+          unoptimized
+          priority
+          src={loaderGif}
+          alt="loading"
+        />
+      );
 
     case "small":
-      return <Image height={30} width={30} src={loaderGif} alt="loading" />;
+      return (
+        <Image
+          height={30}
+          width={30}
+          unoptimized
+          priority
+          src={loaderGif}
+          alt="loading"
+        />
+      );
     case "medium":
-      return <Image height={60} width={60} src={loaderGif} alt="loading" />;
+      return (
+        <Image
+          height={60}
+          width={60}
+          unoptimized
+          priority
+          src={loaderGif}
+          alt="loading"
+        />
+      );
     case "large":
-      return <Image height={80} width={80} src={loaderGif} alt="loading" />;
+      return (
+        <Image
+          height={80}
+          width={80}
+          priority
+          unoptimized
+          src={loaderGif}
+          alt="loading"
+        />
+      );
     default:
       return (
         <Image
           height={20}
           width={20}
+          priority
+          unoptimized
           src={"/images/loader.gif"}
           alt="loading"
         />

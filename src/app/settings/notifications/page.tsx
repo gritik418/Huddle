@@ -7,7 +7,7 @@ export default function SettingsNotificationsPage() {
       <div>
         <h3 className="text-lg font-medium">Notifications</h3>
         <p className="text-sm text-muted-foreground">
-          Configure how you receive notifications.
+          Configure how you receive in-app notifications.
         </p>
       </div>
       <Separator />

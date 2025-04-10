@@ -15,9 +15,11 @@ const OwnStoryTrigger = (): JSX.Element => {
 
   for (let i = 0; i < count; i++) {
     const start = i * degreePerStory;
-    const end = start + degreePerStory * 0.95;
+    const end = count === 1 ? 360 : start + degreePerStory * 0.95;
     segments.push(`#00aaf0 ${start}deg ${end}deg`);
-    segments.push(`transparent ${end}deg ${(i + 1) * degreePerStory}deg`);
+    if (count > 1) {
+      segments.push(`transparent ${end}deg ${(i + 1) * degreePerStory}deg`);
+    }
   }
 
   const borderStyle =

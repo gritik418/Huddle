@@ -73,9 +73,11 @@ const StoryItemModal = ({ user, stories }: Props): JSX.Element => {
 
   for (let i = 0; i < count; i++) {
     const start = i * degreePerStory;
-    const end = start + degreePerStory * 0.95;
+    const end = count === 1 ? 360 : start + degreePerStory * 0.95;
     segments.push(`#22c55e ${start}deg ${end}deg`);
-    segments.push(`transparent ${end}deg ${(i + 1) * degreePerStory}deg`);
+    if (count > 1) {
+      segments.push(`transparent ${end}deg ${(i + 1) * degreePerStory}deg`);
+    }
   }
 
   const borderStyle =
@@ -95,13 +97,19 @@ const StoryItemModal = ({ user, stories }: Props): JSX.Element => {
           className="relative h-14 w-14 rounded-full p-[2px]"
           style={borderStyle}
         >
-          <Image
-            src={user?.profilePicture || "/images/default-profile.jpg"}
-            alt="avatar"
-            height={56}
-            width={56}
-            className="h-full w-full object-cover rounded-full"
-          />
+          <div className="flex h-full w-full border-[2px] border-white rounded-full">
+            <Image
+              src={user?.profilePicture || "/images/default-profile.jpg"}
+              alt="avatar"
+              height={56}
+              width={56}
+              className="h-full w-full object-cover rounded-full"
+            />
+          </div>
+        </div>
+
+        <div className="flex text-[7px] mt-[2px] justify-center items-center w-full">
+          <p className="text-center">{user.username}</p>
         </div>
       </Dialog.Trigger>
 
