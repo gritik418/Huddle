@@ -72,7 +72,7 @@ const InviteMembers = ({
       <div className="flex border mb-6 bg-white rounded-md">
         <input
           type="text"
-          className="w-full p-4 outline-[var(--secondary)] rounded-md"
+          className="w-full p-4 bg-gray-50 outline-[var(--secondary)] rounded-md"
           placeholder="Search users..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
