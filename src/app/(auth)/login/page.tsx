@@ -106,7 +106,7 @@ const Login = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (user && user._id) {
+    if (user && user._id && !user.isDeactivated) {
       router.push("/");
     }
   }, [router, user]);

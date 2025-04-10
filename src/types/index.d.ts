@@ -12,6 +12,7 @@ interface User {
   allowMentions: boolean;
   isPrivate: boolean;
   isVerified: boolean;
+  isDeactivated: boolean;
   isActive: boolean;
   provider: "credentials" | "google";
   followers: Types.ObjectId[];
@@ -239,4 +240,15 @@ interface ChannelInvite {
     type: "public" | "private" | "invite-only";
   };
   status: "pending" | "accepted" | "rejected";
+}
+
+interface NotificationSettings {
+  allowChatRequestNotification: boolean;
+  allowNewMessageNotification: boolean;
+  allowNewGroupNotification: boolean;
+  allowFollowRequestNotification: boolean;
+  allowAddedToGroupNotification: boolean;
+  allowNewMentionNotification: boolean;
+  allowNewChannelMessageNotification: boolean;
+  allowAcceptedFollowRequestNotification: boolean;
 }

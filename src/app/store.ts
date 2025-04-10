@@ -1,31 +1,33 @@
 import { configureStore } from "@reduxjs/toolkit";
-import chatRequestSlice from "../features/chatRequest/chatRequestSlice";
-import chatRequestApi from "../features/api/chatRequestApi";
-import chatApi from "../features/api/chatApi";
-import authApi from "../features/api/authApi";
-import userApi from "../features/api/userApi";
-import userSlice from "../features/user/userSlice";
-import messageApi from "../features/api/messageApi";
-import messageSlice from "../features/message/messageSlice";
-import chatSlice from "../features/chat/chatSlice";
-import searchSlice from "../features/search/searchSlice";
-import followRequestApi from "../features/api/followRequestApi";
-import followRequestSlice from "../features/followRequest/followRequestSlice";
-import groupApi from "../features/api/groupApi";
-import postApi from "../features/api/postApi";
-import postSlice from "../features/post/postSlice";
-import authSlice from "../features/auth/authSlice";
 import accountSettingsApi from "../features/api/accountSettingsApi";
-import pulseApi from "../features/api/pulseApi";
-import pulseSlice from "../features/pulse/pulseSlice";
+import authApi from "../features/api/authApi";
 import blockUserApi from "../features/api/blockUserApi";
 import channelApi from "../features/api/channelApi";
-import channelSlice from "../features/channel/channelSlice";
-import joinRequestApi from "../features/api/joinRequestApi";
 import channelInviteApi from "../features/api/channelInviteApi";
-import channelInvitesSlice from "../features/channelInvites/channelInvitesSlice";
+import chatApi from "../features/api/chatApi";
+import chatRequestApi from "../features/api/chatRequestApi";
+import followRequestApi from "../features/api/followRequestApi";
+import groupApi from "../features/api/groupApi";
+import joinRequestApi from "../features/api/joinRequestApi";
+import messageApi from "../features/api/messageApi";
+import notificationSettingsApi from "../features/api/notificationSettingsApi";
+import postApi from "../features/api/postApi";
+import pulseApi from "../features/api/pulseApi";
 import storyApi from "../features/api/storyApi";
+import userApi from "../features/api/userApi";
+import authSlice from "../features/auth/authSlice";
+import channelSlice from "../features/channel/channelSlice";
+import channelInvitesSlice from "../features/channelInvites/channelInvitesSlice";
+import chatSlice from "../features/chat/chatSlice";
+import chatRequestSlice from "../features/chatRequest/chatRequestSlice";
+import followRequestSlice from "../features/followRequest/followRequestSlice";
+import messageSlice from "../features/message/messageSlice";
+import notificationSettingsSlice from "../features/notificationSettings/notificationSettingsSlice";
+import postSlice from "../features/post/postSlice";
+import pulseSlice from "../features/pulse/pulseSlice";
+import searchSlice from "../features/search/searchSlice";
 import storySlice from "../features/story/storySlice";
+import userSlice from "../features/user/userSlice";
 
 const store = configureStore({
   reducer: {
@@ -44,6 +46,7 @@ const store = configureStore({
     [followRequestApi.reducerPath]: followRequestApi.reducer,
     [channelInviteApi.reducerPath]: channelInviteApi.reducer,
     [accountSettingsApi.reducerPath]: accountSettingsApi.reducer,
+    [notificationSettingsApi.reducerPath]: notificationSettingsApi.reducer,
     [userSlice.reducerPath]: userSlice.reducer,
     [authSlice.reducerPath]: authSlice.reducer,
     [postSlice.reducerPath]: postSlice.reducer,
@@ -56,6 +59,7 @@ const store = configureStore({
     [chatRequestSlice.reducerPath]: chatRequestSlice.reducer,
     [followRequestSlice.reducerPath]: followRequestSlice.reducer,
     [channelInvitesSlice.reducerPath]: channelInvitesSlice.reducer,
+    [notificationSettingsSlice.reducerPath]: notificationSettingsSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -73,7 +77,8 @@ const store = configureStore({
       .concat(joinRequestApi.middleware)
       .concat(channelInviteApi.middleware)
       .concat(followRequestApi.middleware)
-      .concat(accountSettingsApi.middleware),
+      .concat(accountSettingsApi.middleware)
+      .concat(notificationSettingsApi.middleware),
 });
 
 export default store;

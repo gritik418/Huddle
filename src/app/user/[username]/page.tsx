@@ -220,10 +220,7 @@ const UserInfo = (): JSX.Element => {
         <div className="flex justify-center bg-white flex-col p-3 rounded-lg">
           <div className="flex relative">
             <Image
-              src={
-                data.user?.coverImage ||
-                "https://images.unsplash.com/photo-1516879175685-210bea8ad74d?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGNvdmVyJTIwaW1hZ2V8ZW58MHx8MHx8fDA%3D"
-              }
+              src={data.user?.coverImage || "/images/default-cover-image.jpg"}
               alt="cover-image"
               height={300}
               width={1000}

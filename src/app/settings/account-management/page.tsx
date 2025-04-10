@@ -22,6 +22,12 @@ const AccountManagement = () => {
         <p className="text-sm text-muted-foreground">
           You can deactivate your account temporarily or delete it permanently.
         </p>
+
+        <div className="mt-4 rounded-md bg-muted p-3 border border-border">
+          <p className="text-sm text-muted-foreground">
+            This feature will be available soon as part of an upcoming update.
+          </p>
+        </div>
       </div>
       <Separator />
 

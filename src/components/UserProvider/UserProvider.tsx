@@ -13,6 +13,7 @@ import NotLoggedIn from "../NotLoggedIn/NotLoggedIn";
 import { useGetBlockedUsersQuery } from "../../features/api/blockUserApi";
 import { useGetAllInvitesQuery } from "../../features/api/channelInviteApi";
 import { useGetOwnStoryQuery } from "../../features/api/storyApi";
+import { useGetNotificationSettingsQuery } from "../../features/api/notificationSettingsApi";
 
 const UserProvider = ({
   children,
@@ -32,6 +33,7 @@ const UserProvider = ({
   useGetBlockedUsersQuery();
   useGetAllInvitesQuery();
   useGetOwnStoryQuery();
+  useGetNotificationSettingsQuery();
 
   if (
     pathname === "/login" ||

@@ -26,10 +26,7 @@ export default function Layout({
           <div className="flex p-3 flex-col bg-white rounded-lg">
             <div className="relative">
               <Image
-                src={
-                  user?.coverImage ||
-                  "https://images.unsplash.com/photo-1615196534055-7aa534f6836b?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGNvdmVyJTIwcGhvdG98ZW58MHx8MHx8fDA%3D"
-                }
+                src={user?.coverImage || "/images/default-cover-image.jpg"}
                 alt="cover-image"
                 height={300}
                 width={800}
