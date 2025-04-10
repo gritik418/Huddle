@@ -134,6 +134,10 @@ const SignUp = (): JSX.Element => {
     }
   };
 
+  const handleGoogleLogin = (): void => {
+    window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/google`;
+  };
+
   if (user && user._id) {
     redirect("/");
   }
@@ -342,9 +346,14 @@ const SignUp = (): JSX.Element => {
             <div className="h-1 w-1/3 border-t-2 border-black"></div>
           </div>
 
-          <button className="flex border-2 items-center justify-center gap-2 text-2xl font-semibold h-12 rounded-lg">
-            <FcGoogle className="text-3xl" />
-            Google
+          <button
+            onClick={handleGoogleLogin}
+            className="group flex items-center justify-center gap-3 h-14 px-6 bg-white border border-gray-300 rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
+          >
+            <FcGoogle className="text-3xl group-hover:scale-110 transition-transform duration-200" />
+            <span className="text-lg font-medium text-gray-700 group-hover:text-black">
+              Sign in with Google
+            </span>
           </button>
 
           <div className="flex items-center justify-center mt-4 gap-1">
