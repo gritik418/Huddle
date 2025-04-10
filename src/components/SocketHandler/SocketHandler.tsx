@@ -1,4 +1,5 @@
 "use client";
+
 import { AppDispatch } from "../../app/store";
 import {
   ACCEPTED_FOLLOW_REQUEST,
@@ -30,11 +31,12 @@ import {
 } from "../../features/user/userSlice";
 import { usePathname } from "next/navigation";
 import React, { JSX, useCallback, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Socket } from "socket.io-client";
 import Notification from "../Notification/Notification";
-import { addToChannelMessages } from "@/features/channel/channelSlice";
+import { addToChannelMessages } from "../../features/channel/channelSlice";
+import { selectNotificationSettings } from "../../features/notificationSettings/notificationSettingsSlice";
 
 const SocketHandler = ({
   children,
@@ -44,6 +46,7 @@ const SocketHandler = ({
   const socket: Socket | null = useSocket();
   const pathname: string = usePathname();
   const dispatch = useDispatch<AppDispatch>();
+  const notificationSettings = useSelector(selectNotificationSettings);
 
   const newMessageHandler = useCallback(
     ({ message, chat }: { message: Message; chat: Chat }) => {
@@ -60,7 +63,7 @@ const SocketHandler = ({
       );
       if (pathname.includes(message.chatId.toString())) {
         dispatch(addMessage(message));
-      } else {
+      } else if (notificationSettings?.allowNewMessageNotification) {
         toast(
           Notification({
             id: message.chatId,
@@ -75,7 +78,7 @@ const SocketHandler = ({
         );
       }
     },
-    [pathname, dispatch]
+    [pathname, dispatch, notificationSettings]
   );
 
   const messageSentHandler = useCallback(
@@ -102,40 +105,44 @@ const SocketHandler = ({
     ({ chatRequest }: { chatRequest: ChatRequest }) => {
       if (chatRequest._id) {
         dispatch(addChatRequest(chatRequest));
-        toast(
-          Notification({
-            id: chatRequest._id,
-            type: "CHAT_REQUEST",
-            chatRequest,
-          }),
-          {
-            hideProgressBar: true,
-            autoClose: 1000,
-          }
-        );
+        if (notificationSettings?.allowChatRequestNotification) {
+          toast(
+            Notification({
+              id: chatRequest._id,
+              type: "CHAT_REQUEST",
+              chatRequest,
+            }),
+            {
+              hideProgressBar: true,
+              autoClose: 1000,
+            }
+          );
+        }
       }
     },
-    [dispatch]
+    [dispatch, notificationSettings]
   );
 
   const newfollowRequestHandler = useCallback(
     ({ followRequest }: { followRequest: FollowRequest }) => {
       if (followRequest._id) {
         dispatch(addFollowRequest(followRequest));
-        toast(
-          Notification({
-            id: followRequest._id,
-            type: "FOLLOW_REQUEST",
-            followRequest,
-          }),
-          {
-            hideProgressBar: true,
-            autoClose: 1000,
-          }
-        );
+        if (notificationSettings?.allowFollowRequestNotification) {
+          toast(
+            Notification({
+              id: followRequest._id,
+              type: "FOLLOW_REQUEST",
+              followRequest,
+            }),
+            {
+              hideProgressBar: true,
+              autoClose: 1000,
+            }
+          );
+        }
       }
     },
-    [dispatch]
+    [dispatch, notificationSettings]
   );
 
   const newChatHandler = useCallback(
@@ -160,7 +167,10 @@ const SocketHandler = ({
 
   const acceptedFollowRequestHandler = useCallback(
     ({ status, receiver }: { status: string; receiver: Follower }) => {
-      if (status === "Accepted") {
+      if (
+        status === "Accepted" &&
+        notificationSettings?.allowAcceptedFollowRequestNotification
+      ) {
         toast(
           Notification({
             id: receiver._id,
@@ -174,12 +184,12 @@ const SocketHandler = ({
         );
       }
     },
-    []
+    [notificationSettings]
   );
 
   const newMentionHandler = useCallback(
     ({ postId, creator }: { postId: string; creator: Follower }) => {
-      if (postId) {
+      if (postId && notificationSettings?.allowNewMentionNotification) {
         toast(
           Notification({
             id: postId,
@@ -194,7 +204,7 @@ const SocketHandler = ({
         );
       }
     },
-    []
+    [notificationSettings]
   );
 
   const unsendMessageHandler = useCallback(
@@ -219,21 +229,23 @@ const SocketHandler = ({
     ({ chat, creator }: { chat: Chat; creator: Follower }) => {
       if (chat._id) {
         dispatch(addChat(chat));
-        toast(
-          Notification({
-            id: `${chat._id}+${creator._id}`,
-            type: "ADDED_TO_GROUP",
-            creator,
-            chat,
-          }),
-          {
-            hideProgressBar: true,
-            autoClose: 1000,
-          }
-        );
+        if (notificationSettings?.allowAddedToGroupNotification) {
+          toast(
+            Notification({
+              id: `${chat._id}+${creator._id}`,
+              type: "ADDED_TO_GROUP",
+              creator,
+              chat,
+            }),
+            {
+              hideProgressBar: true,
+              autoClose: 1000,
+            }
+          );
+        }
       }
     },
-    [dispatch]
+    [dispatch, notificationSettings]
   );
 
   const channelMessageSentHandler = useCallback(
@@ -249,7 +261,7 @@ const SocketHandler = ({
     ({ message, channel }: { message: ChannelMessage; channel: Channel }) => {
       if (pathname.includes(channel._id.toString())) {
         dispatch(addToChannelMessages(message));
-      } else {
+      } else if (notificationSettings?.allowNewChannelMessageNotification) {
         toast(
           Notification({
             id: message._id,
@@ -264,7 +276,7 @@ const SocketHandler = ({
         );
       }
     },
-    [pathname, dispatch]
+    [pathname, dispatch, notificationSettings]
   );
 
   useEffect(() => {
@@ -273,52 +285,30 @@ const SocketHandler = ({
     socket.emit(USER_ONLINE);
 
     socket.on(NEW_MESSAGE, newMessageHandler);
-
     socket.on(MESSAGE_SENT, messageSentHandler);
-
     socket.on(NEW_CHAT_REQUEST, newChatRequestHandler);
-
     socket.on(NEW_FOLLOW_REQUEST, newfollowRequestHandler);
-
     socket.on(NEW_CHAT, newChatHandler);
-
     socket.on(STATUS_UPDATE, statusUpdateHandler);
-
     socket.on(ACCEPTED_FOLLOW_REQUEST, acceptedFollowRequestHandler);
-
     socket.on(NEW_MENTION, newMentionHandler);
-
     socket.on(UNSEND_MESSAGE, unsendMessageHandler);
-
     socket.on(ADDED_TO_GROUP, addedToGroupHandler);
-
     socket.on(CHANNEL_MESSAGE_SENT, channelMessageSentHandler);
-
     socket.on(NEW_CHANNEL_MESSAGE, newChannelMessageHandler);
 
     return () => {
       socket.off(NEW_MESSAGE, newMessageHandler);
-
       socket.off(MESSAGE_SENT, messageSentHandler);
-
       socket.off(NEW_CHAT_REQUEST, newChatRequestHandler);
-
       socket.off(NEW_FOLLOW_REQUEST, newfollowRequestHandler);
-
       socket.off(NEW_CHAT, newChatHandler);
-
       socket.off(STATUS_UPDATE, statusUpdateHandler);
-
       socket.off(ACCEPTED_FOLLOW_REQUEST, acceptedFollowRequestHandler);
-
       socket.off(NEW_MENTION, newMentionHandler);
-
       socket.off(UNSEND_MESSAGE, unsendMessageHandler);
-
       socket.off(ADDED_TO_GROUP, addedToGroupHandler);
-
       socket.off(CHANNEL_MESSAGE_SENT, channelMessageSentHandler);
-
       socket.off(NEW_CHANNEL_MESSAGE, newChannelMessageHandler);
     };
   }, [
@@ -336,6 +326,7 @@ const SocketHandler = ({
     channelMessageSentHandler,
     acceptedFollowRequestHandler,
   ]);
+
   return <div>{children}</div>;
 };
 
