@@ -3,7 +3,6 @@ import Link from "next/link";
 import { JSX, useState } from "react";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import PostMedia from "../PostMedia/PostMedia";
-import PostOptions from "../PostOptions/PostOptions";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../features/user/userSlice";
 import { Bounce, toast } from "react-toastify";

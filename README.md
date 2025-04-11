@@ -54,7 +54,6 @@
 
 ## 📸 Screenshots
 
-> _(Add these to show off the UI!)_  
 > ![Chat UI](./public/images/chat-ss.png)  
 > ![Post Feed](./public/images/post-ss.png)
 
