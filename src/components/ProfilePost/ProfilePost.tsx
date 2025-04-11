@@ -2,7 +2,6 @@ import { selectUser } from "../../features/user/userSlice";
 import Image from "next/image";
 import { JSX, useState } from "react";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
-import { FaRegCommentDots } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import PostMedia from "../PostMedia/PostMedia";
 import ProfilePostOptions from "../ProfilePostOptions/ProfilePostOptions";
@@ -124,10 +123,6 @@ const ProfilePost = ({ post }: PropsType): JSX.Element => {
           {likes.length > 1 && (
             <p className="text-xs text-gray-500">{likes.length} Likes</p>
           )}
-        </div>
-
-        <div className="flex bg-gray-100 cursor-pointer p-2 rounded-lg">
-          <FaRegCommentDots className="text-xl" />
         </div>
       </div>
     </div>

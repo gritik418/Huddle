@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { JSX, useState } from "react";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
-import { FaRegCommentDots } from "react-icons/fa";
 import PostMedia from "../PostMedia/PostMedia";
 import PostOptions from "../PostOptions/PostOptions";
 import { useSelector } from "react-redux";
@@ -98,8 +97,6 @@ const Post = ({ post }: PropsType): JSX.Element => {
             </p>
           </div>
         </Link>
-
-        <PostOptions />
       </div>
 
       <div className="flex p-3">
@@ -128,10 +125,6 @@ const Post = ({ post }: PropsType): JSX.Element => {
           {likes.length > 1 && (
             <p className="text-xs text-gray-500">{likes.length} Likes</p>
           )}
-        </div>
-
-        <div className="flex bg-gray-100 cursor-pointer p-2 rounded-lg">
-          <FaRegCommentDots className="text-xl" />
         </div>
       </div>
     </div>
