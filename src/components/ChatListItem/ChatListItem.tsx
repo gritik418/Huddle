@@ -113,11 +113,11 @@ const ChatListItem = ({ chat, chatId }: PropsType): JSX.Element => {
       }`}
     >
       <div className="flex items-center gap-3">
-        <div className="h-12 w-12 rounded-full relative">
+        <div className="min-h-12 h-12 w-12 min-w-12 rounded-full relative">
           <Image
             src={sender.profilePicture || "/images/default-profile.jpg"}
             alt="proofile-image"
-            className="h-12 w-12 rounded-full object-cover"
+            className="h-full w-full rounded-full object-cover"
             height={48}
             width={48}
           />
@@ -142,13 +142,15 @@ const ChatListItem = ({ chat, chatId }: PropsType): JSX.Element => {
                 isSelected ? "text-gray-50" : "text-black"
               }`}
             >
-              {chat.lastMessage?.content}
+              {chat.lastMessage?.content.length > 30
+                ? chat.lastMessage.content.slice(0, 30) + "..."
+                : chat.lastMessage?.content}
             </p>
           )}
         </div>
       </div>
 
-      <div className="flex flex-col items-center gap-1">
+      <div className="flex flex-col w-max items-center gap-1">
         <p
           className={`text-[10px] font-semibold ${
             isSelected ? "text-white" : "text-black"
